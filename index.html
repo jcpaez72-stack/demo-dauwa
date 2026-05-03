@@ -2,1029 +2,522 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-<title>DAWUA 593IA · Demo WDB</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#075E54">
+<title>WDB/593IA x Xtrim</title>
 <style>
-/* ─── RESET & ROOT ─── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+*{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overflow-x:hidden;background:#111}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif}
 
-:root {
-  --v: #085041; --vm: #1D9E75; --vc: #E1F5EE; --vb: #00D68F;
-  --bg: #0A0A0A; --s1: #141414; --s2: #1E1E1E; --s3: #2A2A2A;
-  --br: #2E2E2E; --tx: #F0F0F0; --ts: #888; --amber: #F5A623;
-  --red: #E24B4A; --pur: #7C3AED; --pur2: #A78BFA;
-  --chat-bot-bg: #162820; --chat-bot-br: #1E3D2F; --chat-user-bg: #0B4034;
-  --ff: 'Inter', sans-serif; --fd: 'Syne', sans-serif; --fm: 'IBM Plex Mono', monospace;
-  --r: 12px; --rs: 8px;
-  /* Safe areas iOS */
-  --sat: env(safe-area-inset-top, 0px);
-  --sar: env(safe-area-inset-right, 0px);
-  --sab: env(safe-area-inset-bottom, 0px);
-  --sal: env(safe-area-inset-left, 0px);
-}
+/* INTRO */
+#intro{position:fixed;inset:0;background:linear-gradient(160deg,#064E47 0%,#075E54 60%,#0A8A7C 100%);display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;padding:30px;z-index:100;-webkit-transition:opacity .5s;transition:opacity .5s}
+#intro.hide{opacity:0;pointer-events:none}
+.ilogo{font-size:52px;margin-bottom:20px}
+.ititle{color:#fff;font-size:28px;font-weight:800;text-align:center;margin-bottom:8px}
+.isub{color:rgba(255,255,255,0.75);font-size:14px;text-align:center;line-height:1.6;margin-bottom:28px;max-width:280px}
+.ibadges{display:-webkit-box;display:-ms-flexbox;display:flex;gap:7px;margin-bottom:30px;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}
+.ib{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 13px;color:#fff;font-size:11px;font-weight:600}
+.ib.g{background:rgba(37,211,102,0.2);border-color:#25D366;color:#4ADE80}
+.sbtn{background:#25D366;color:#fff;border:none;border-radius:16px;padding:17px 0;font-size:16px;font-weight:800;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;width:100%;max-width:280px;-webkit-box-shadow:0 6px 24px rgba(37,211,102,0.35);box-shadow:0 6px 24px rgba(37,211,102,0.35)}
 
-html {
-  width: 100%; height: 100%;
-  height: -webkit-fill-available;
-}
+/* MAIN */
+#main{display:none;min-height:100vh;background:#E5DDD5}
+#main.show{display:block}
 
-body {
-  width: 100%; height: 100%;
-  height: -webkit-fill-available;
-  background: var(--bg);
-  font-family: var(--ff);
-  color: var(--tx);
-  overflow: hidden;
-  -webkit-text-size-adjust: 100%;
-  position: fixed;
-  inset: 0;
-}
+/* TOP BAR */
+.topbar{background:#075E54;position:-webkit-sticky;position:sticky;top:0;z-index:50}
+.tbinner{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:10px;padding:10px 14px}
+.tbav{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:15px;font-weight:800;color:#fff}
+.tbname{color:#fff;font-size:14px;font-weight:700}
+.tbsub{color:rgba(255,255,255,0.72);font-size:11px}
+.tbicons{margin-left:auto;display:-webkit-box;display:-ms-flexbox;display:flex;gap:16px}
+.progbar{height:3px;background:rgba(255,255,255,0.2)}
+.progfill{height:3px;background:#25D366;-webkit-transition:width .5s;transition:width .5s;width:0%}
+.stepbar{background:rgba(0,0,0,0.08);padding:7px 14px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:8px}
+.step-cur{font-size:11px;color:#444;font-weight:600}
+.step-count{margin-left:auto;font-size:11px;color:#888}
 
-/* ══════════════════════════════════════
-   SPLASH
-══════════════════════════════════════ */
-#splash {
-  position: fixed; inset: 0;
-  display: flex; flex-direction: column; align-items: center;
-  overflow-y: auto; -webkit-overflow-scrolling: touch;
-  padding: max(var(--sat), 24px) 20px max(var(--sab), 24px);
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, #0D3D2B 0%, #0A0A0A 70%);
-  z-index: 200;
-}
+/* CHAT */
+.chat{padding:10px 10px 110px 10px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;gap:6px}
+.datepill{-ms-flex-item-align:center;align-self:center;background:rgba(0,0,0,0.1);border-radius:10px;padding:4px 12px;font-size:11px;color:#666}
+.sysmsg{-ms-flex-item-align:center;align-self:center;background:rgba(0,0,0,0.07);border-radius:10px;padding:5px 14px;font-size:11px;color:#555;text-align:center;max-width:85%}
 
-.splash-inner {
-  width: 100%; max-width: 400px;
-  display: flex; flex-direction: column; align-items: center;
-  padding-top: 16px;
-}
+/* BUBBLES */
+.b{max-width:80%;border-radius:10px;padding:8px 11px;font-size:13px;line-height:1.5;word-break:break-word}
+.b.bot{background:#fff;-ms-flex-item-align:start;align-self:flex-start;border-top-left-radius:2px;color:#111;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.b.usr{background:#DCF8C6;-ms-flex-item-align:end;align-self:flex-end;border-top-right-radius:2px;color:#111;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.bt{font-size:10px;color:#999;margin-top:3px;text-align:right}
+.b.bot .bt{text-align:left}
+.apitag{display:inline-block;background:#F59E0B;color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:5px;margin-left:3px;vertical-align:middle}
 
-.sp-eye { font-family: var(--fm); font-size: 10px; letter-spacing: .2em; color: var(--vm); margin-bottom: 16px; }
+/* FLOW TRIGGER BTN */
+.flow-trigger{-ms-flex-item-align:start;align-self:flex-start;margin-top:2px}
+.flow-trigger-btn{background:#fff;border:2px solid #25D366;border-radius:20px;padding:9px 18px;font-size:13px;color:#075E54;font-weight:700;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:7px;-webkit-box-shadow:0 2px 8px rgba(37,211,102,0.2);box-shadow:0 2px 8px rgba(37,211,102,0.2);-webkit-transition:all .15s;transition:all .15s}
+.flow-trigger-btn:active{-webkit-transform:scale(0.96);transform:scale(0.96);background:#E8F5E9}
+.flow-trigger-btn.used{opacity:0.45;pointer-events:none;border-color:#ccc;color:#999}
+.flow-icon-sm{width:22px;height:22px;background:#25D366;border-radius:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:12px;color:#fff;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
 
-.sp-logo {
-  width: 72px; height: 72px; border-radius: 20px;
-  background: linear-gradient(135deg, #0F6E56 0%, #085041 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 36px; margin-bottom: 16px;
-  box-shadow: 0 8px 32px rgba(0,214,143,0.2);
-}
+/* TYPING */
+.ty{display:-webkit-box;display:-ms-flexbox;display:flex;gap:4px;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:10px 12px;background:#fff;border-radius:10px;-ms-flex-item-align:start;align-self:flex-start;border-top-left-radius:2px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.dt{width:7px;height:7px;border-radius:50%;background:#bbb;-webkit-animation:bx 1.2s infinite;animation:bx 1.2s infinite}
+.dt:nth-child(2){-webkit-animation-delay:.2s;animation-delay:.2s}
+.dt:nth-child(3){-webkit-animation-delay:.4s;animation-delay:.4s}
+@-webkit-keyframes bx{0%,60%,100%{-webkit-transform:translateY(0);transform:translateY(0)}30%{-webkit-transform:translateY(-5px);transform:translateY(-5px)}}
+@keyframes bx{0%,60%,100%{-webkit-transform:translateY(0);transform:translateY(0)}30%{-webkit-transform:translateY(-5px);transform:translateY(-5px)}}
 
-.sp-title { font-family: var(--fd); font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-.sp-sub { font-size: 12px; color: var(--ts); text-align: center; margin-bottom: 6px; font-family: var(--fm); }
+/* FLOW SHEET */
+#flow-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}
+#flow-overlay.show{display:-webkit-box;display:-ms-flexbox;display:flex}
+.fsheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;-webkit-animation:sup .3s ease;animation:sup .3s ease}
+@-webkit-keyframes sup{from{-webkit-transform:translateY(100%);transform:translateY(100%)}to{-webkit-transform:translateY(0);transform:translateY(0)}}
+@keyframes sup{from{-webkit-transform:translateY(100%);transform:translateY(100%)}to{-webkit-transform:translateY(0);transform:translateY(0)}}
+.fsh{background:linear-gradient(135deg,#064E47,#075E54);padding:16px 18px 14px;border-radius:22px 22px 0 0}
+.fsh-handle{width:36px;height:4px;background:rgba(255,255,255,0.3);border-radius:2px;margin:0 auto 14px}
+.fsh-row{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:10px}
+.fsh-ico{width:30px;height:30px;background:rgba(255,255,255,0.15);border-radius:9px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:15px}
+.fsh-title{color:#fff;font-size:15px;font-weight:700}
+.fsh-sub{color:rgba(255,255,255,0.7);font-size:11px}
+.fsh-badge{margin-left:auto;background:rgba(37,211,102,0.2);border:1px solid #25D366;border-radius:8px;padding:3px 9px;color:#4ADE80;font-size:9px;font-weight:800;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
+.fbody{padding:18px}
+.fsec{margin-bottom:16px}
+.flabel{font-size:11px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 
-.demo-badge {
-  background: var(--pur); color: #fff; font-family: var(--fm);
-  font-size: 9px; font-weight: 500; letter-spacing: .1em;
-  padding: 3px 12px; border-radius: 20px; margin-bottom: 20px;
-}
+/* OPTIONS */
+.fopts{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;gap:9px}
+.fopt{border:2px solid #e5e7eb;border-radius:14px;padding:13px 14px;cursor:pointer;-webkit-transition:all .15s;transition:all .15s;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:11px;background:#fafafa}
+.fopt:active{-webkit-transform:scale(0.98);transform:scale(0.98)}
+.fopt.sel{border-color:#25D366;background:#F0FFF4}
+.fradio{width:22px;height:22px;border-radius:50%;border:2px solid #d1d5db;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0;position:relative;-webkit-transition:all .15s;transition:all .15s;background:#fff}
+.fopt.sel .fradio{border-color:#25D366;background:#25D366}
+.fradio-dot{width:8px;height:8px;background:#fff;border-radius:50%;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);display:none}
+.fopt.sel .fradio-dot{display:block}
+.fopt-info{-webkit-box-flex:1;-ms-flex:1;flex:1}
+.fopt-title{font-size:13px;font-weight:700;color:#1a1a1a}
+.fopt-sub{font-size:11px;color:#888;margin-top:2px}
+.fopt-price{font-size:15px;font-weight:800;color:#075E54;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
+.fopt-tag{background:#DCFCE7;color:#166534;border-radius:8px;padding:3px 8px;font-size:10px;font-weight:700;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
 
-.sp-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  width: 100%; margin-bottom: 20px;
-}
+/* INPUTS */
+.finput-wrap{margin-bottom:12px}
+.finput-label{font-size:12px;font-weight:600;color:#555;margin-bottom:5px}
+.finput{width:100%;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px 14px;font-size:14px;color:#1a1a1a;background:#fafafa;outline:none;-webkit-appearance:none;font-family:inherit;-webkit-transition:border .15s;transition:border .15s}
+.finput:focus{border-color:#25D366;background:#fff}
 
-.sp-tile {
-  background: var(--s1); border: 0.5px solid var(--br);
-  border-radius: var(--r); padding: 12px 14px;
-  display: flex; align-items: flex-start; gap: 10px;
-}
+/* SUBMIT BTN */
+.fsubmit{background:#25D366;color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;width:100%;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;margin-top:6px;font-family:inherit;-webkit-transition:opacity .15s;transition:opacity .15s}
+.fsubmit:active{opacity:.82}
+.ffoot{padding:10px 18px 24px;text-align:center;font-size:10px;color:#bbb}
+.ffoot span{color:#25D366;font-weight:700}
 
-.sp-tile-icon { font-size: 20px; flex-shrink: 0; }
-.sp-tile-title { font-size: 12px; font-weight: 600; color: var(--tx); margin-bottom: 2px; }
-.sp-tile-sub { font-size: 10px; color: var(--vm); }
-
-.sp-flow-label { font-family: var(--fm); font-size: 9px; letter-spacing: .12em; color: var(--ts); margin-bottom: 10px; }
-
-.sp-flows {
-  display: flex; gap: 8px; margin-bottom: 20px;
-}
-
-.sp-flow-btn {
-  flex: 1; border: 0.5px solid var(--br); border-radius: 20px;
-  background: var(--s1); color: var(--ts); font-family: var(--fm);
-  font-size: 10px; padding: 8px 6px; cursor: pointer;
-  transition: all .2s; text-align: center;
-}
-
-.sp-flow-btn.active {
-  border-color: var(--vb); color: var(--vb);
-  background: rgba(0,214,143,0.08);
-}
-
-.sp-start {
-  width: 100%; background: linear-gradient(135deg, #0F6E56, #085041);
-  color: #fff; border: none; border-radius: var(--r);
-  font-family: var(--fd); font-size: 16px; font-weight: 700;
-  padding: 16px; cursor: pointer; margin-bottom: 14px;
-  box-shadow: 0 4px 20px rgba(0,214,143,0.25);
-  letter-spacing: .01em;
-}
-
-.sp-credit { font-family: var(--fm); font-size: 9px; color: #333; text-align: center; line-height: 1.7; }
-.sp-credit strong { color: var(--vm); }
-
-/* ══════════════════════════════════════
-   APP — layout fijo iOS-safe
-══════════════════════════════════════ */
-#app {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  /* iOS Safari: usar env() para safe areas */
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
-  /* NO padding-bottom — lo maneja .controls */
-  flex-direction: column;
-  background: var(--bg);
-  /* Forzar que los hijos no excedan el contenedor */
-  overflow: hidden;
-}
-
-/* HEADER fijo — nunca se mueve */
-.app-header {
-  flex: 0 0 auto;
-  height: 52px;
-  background: var(--s1);
-  border-bottom: 0.5px solid var(--br);
-  display: flex; align-items: center; gap: 8px;
-  padding: 0 12px;
-  z-index: 10;
-}
-
-.h-back {
-  background: none; border: none; color: var(--vm);
-  font-size: 20px; cursor: pointer; padding: 6px 4px;
-  line-height: 1; flex-shrink: 0;
-}
-
-.h-avatar {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, #0F6E56, #085041);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--fd); font-size: 13px; font-weight: 700;
-  color: #fff; flex-shrink: 0;
-}
-
-.h-info { flex: 1; min-width: 0; }
-.h-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.h-status { font-size: 10px; color: var(--vm); font-family: var(--fm); }
-.h-pill { background: var(--pur); color: #fff; font-family: var(--fm); font-size: 8px; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
-
-/* JELOU BAR — fijo */
-.jelou-bar {
-  flex: 0 0 auto;
-  height: 26px;
-  background: #0A1A14; border-bottom: 0.5px solid #1A2E22;
-  display: flex; align-items: center; gap: 6px;
-  padding: 0 12px; overflow: hidden;
-}
-
-.j-dot { width: 6px; height: 6px; background: var(--vb); border-radius: 50%; flex-shrink: 0; }
-.j-text { font-family: var(--fm); font-size: 9px; color: #4A8A6A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* FLOW TABS — fijos */
-.flow-tabs {
-  flex: 0 0 auto;
-  height: 34px;
-  background: var(--s1); border-bottom: 0.5px solid var(--br);
-  display: flex;
-}
-
-.ft-btn {
-  flex: 1; background: none; border: none; color: #555;
-  font-family: var(--fm); font-size: 8px; cursor: pointer;
-  position: relative; transition: color .2s; padding: 0 2px;
-  text-align: center; line-height: 1.2;
-}
-
-.ft-btn.active { color: var(--vb); }
-.ft-btn.active::after {
-  content: ''; position: absolute;
-  bottom: 0; left: 15%; right: 15%; height: 2px;
-  background: var(--vb); border-radius: 2px 2px 0 0;
-}
-
-/* STEP PILLS — fijos */
-.step-bar {
-  flex: 0 0 auto;
-  height: 32px;
-  background: var(--bg); border-bottom: 0.5px solid #1A1A1A;
-  display: flex; align-items: center; gap: 5px;
-  padding: 0 10px; overflow-x: auto; scrollbar-width: none;
-}
-.step-bar::-webkit-scrollbar { display: none; }
-
-.step-p {
-  flex-shrink: 0; font-family: var(--fm); font-size: 8px;
-  padding: 2px 8px; border-radius: 10px;
-  border: 0.5px solid #333; color: #444; white-space: nowrap;
-  transition: all .2s;
-}
-.step-p.done { border-color: var(--v); color: var(--vm); }
-.step-p.active { border-color: var(--vb); color: var(--vb); background: rgba(0,214,143,0.06); }
-
-/* CHAT AREA — flex: 1, scrollable */
-.chat-area {
-  flex: 1 1 0;
-  min-height: 0; /* CRÍTICO para que flex funcione */
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
-  padding: 12px 10px;
-  display: flex; flex-direction: column; gap: 8px;
-  background: #0C0C0C;
-}
-
-/* CONTROLES — fijos en bottom con safe area */
-.controls {
-  flex: 0 0 auto;
-  /* padding-bottom respeta el home indicator de iPhone */
-  padding: 10px 12px;
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
-  background: var(--s1); border-top: 0.5px solid var(--br);
-  display: flex; gap: 8px; flex-wrap: wrap;
-}
-
-.ctrl-btn {
-  flex: 1; border: 0.5px solid var(--br); border-radius: var(--rs);
-  background: var(--s2); color: var(--ts);
-  font-family: var(--fm); font-size: 11px;
-  padding: 10px 8px; cursor: pointer;
-  transition: all .15s; text-align: center;
-}
-
-.ctrl-btn:active { background: var(--s3); }
-
-.ctrl-next {
-  flex: 2; background: var(--v); border-color: var(--v);
-  color: #fff; font-weight: 600;
-}
-
-.ctrl-next:active { background: #0F6E56; }
-
-.ctrl-hint {
-  text-align: center; font-family: var(--fm); font-size: 9px;
-  color: #444; margin-bottom: 4px; padding: 0 12px;
-  flex-basis: 100%; order: -1;
-}
-
-/* ─── MENSAJES ─── */
-.msg { display: flex; flex-direction: column; }
-.msg-bot { align-items: flex-start; }
-.msg-user { align-items: flex-end; }
-
-.msg-bbl {
-  max-width: 85%; border-radius: 12px;
-  padding: 9px 12px; font-size: 12px; line-height: 1.55;
-}
-
-.msg-bot .msg-bbl {
-  background: var(--chat-bot-bg); border: 0.5px solid var(--chat-bot-br);
-  color: #D8F0E5; border-radius: 4px 12px 12px 12px;
-}
-
-.msg-user .msg-bbl {
-  background: var(--chat-user-bg); color: #fff;
-  border-radius: 12px 12px 4px 12px;
-}
-
-.msg-time { font-family: var(--fm); font-size: 8px; color: #3A3A3A; margin-top: 3px; padding: 0 3px; }
-.msg-bot .msg-time { text-align: left; }
-.msg-user .msg-time { text-align: right; }
-
-/* NLU tag */
-.nlu {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: rgba(124,58,237,.15); border: 0.5px solid rgba(124,58,237,.4);
-  color: var(--pur2); font-family: var(--fm); font-size: 8px;
-  padding: 2px 8px; border-radius: 8px; margin-top: 5px;
-}
-
-/* Flow tag */
-.ftag {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: rgba(29,158,117,.12); border: 0.5px solid rgba(29,158,117,.35);
-  color: var(--vm); font-family: var(--fm); font-size: 8px;
-  padding: 2px 8px; border-radius: 8px; margin-top: 4px; margin-left: 4px;
-}
-
-/* Quick replies */
-.qrs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
-
-.qr {
-  background: none; border: 0.5px solid var(--vm);
-  color: var(--vm); font-family: var(--ff); font-size: 11px;
-  padding: 6px 11px; border-radius: 16px; cursor: pointer;
-  transition: all .15s; text-align: left;
-}
-.qr:active { background: var(--v); color: #fff; border-color: var(--v); }
-
-/* WIDGET in-chat */
-.widget {
-  background: var(--s2); border: 0.5px solid var(--br);
-  border-radius: 10px; overflow: hidden; margin-top: 5px;
-  font-size: 12px; width: 100%; max-width: 85%;
-}
-
-.widget-hd {
-  background: var(--s3); padding: 6px 10px;
-  font-family: var(--fm); font-size: 9px; color: var(--ts);
-  border-bottom: 0.5px solid var(--br);
-  display: flex; align-items: center; gap: 6px;
-}
-
-.widget-body { padding: 10px; }
-
-/* Catálogo card */
-.cat-card {
-  background: var(--s1); border: 0.5px solid var(--br);
-  border-radius: var(--rs); padding: 10px; margin-bottom: 8px;
-  display: flex; gap: 10px; align-items: center;
-}
-.cat-card:last-child { margin-bottom: 0; }
-.cat-emoji { font-size: 28px; }
-.cat-info { flex: 1; }
-.cat-name { font-size: 12px; font-weight: 600; color: var(--tx); }
-.cat-desc { font-size: 10px; color: var(--ts); margin: 2px 0 4px; }
-.cat-price { font-size: 13px; font-weight: 700; color: var(--vb); }
-.cat-badge { font-family: var(--fm); font-size: 8px; color: var(--vm); background: rgba(29,158,117,.12); padding: 1px 6px; border-radius: 8px; }
-
-/* PDV card */
-.pdv-card {
-  background: var(--s1); border: 0.5px solid var(--br);
-  border-radius: var(--rs); padding: 10px; margin-bottom: 6px;
-}
-.pdv-card:last-child { margin-bottom: 0; }
-.pdv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-.pdv-name { font-size: 12px; font-weight: 600; }
-.pdv-dist { font-size: 10px; color: var(--vm); font-family: var(--fm); }
-.pdv-stock-bar { height: 4px; background: var(--s3); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
-.pdv-stock-fill { height: 100%; border-radius: 2px; }
-.pdv-map { font-family: var(--fm); font-size: 9px; color: var(--vm); }
-
-/* Formulario */
-.form-field {
-  background: var(--s1); border: 0.5px solid var(--br);
-  border-radius: var(--rs); padding: 8px 10px; margin-bottom: 6px;
-  font-size: 11px;
-}
-.field-lbl { font-family: var(--fm); font-size: 9px; color: var(--ts); margin-bottom: 2px; }
-.field-val { font-size: 12px; color: var(--tx); font-weight: 500; }
-
-/* Pago */
-.pay-opt {
-  border: 0.5px solid var(--br); border-radius: var(--rs);
-  padding: 10px; margin-bottom: 6px; cursor: pointer;
-  display: flex; align-items: center; gap: 10px;
-  transition: border-color .2s;
-}
-.pay-opt.selected { border-color: var(--vb); background: rgba(0,214,143,0.05); }
-.pay-icon { font-size: 20px; }
-.pay-info { flex: 1; }
-.pay-name { font-size: 12px; font-weight: 600; }
-.pay-sub { font-size: 10px; color: var(--ts); }
-.pay-badge { font-family: var(--fm); font-size: 8px; padding: 2px 7px; border-radius: 8px; }
-.pay-badge-rec { background: rgba(0,214,143,.15); color: var(--vb); }
-.pay-badge-ins { background: rgba(100,149,237,.15); color: #6495ED; }
-.pay-badge-deb { background: rgba(245,166,35,.15); color: var(--amber); }
-
-.cuotas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
-.cuota {
-  background: var(--s1); border: 0.5px solid var(--br);
-  border-radius: var(--rs); padding: 8px 6px; text-align: center;
-  cursor: pointer; transition: all .2s;
-}
-.cuota.sel { border-color: var(--vb); background: rgba(0,214,143,0.08); }
-.cuota-n { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--vb); }
-.cuota-lbl { font-size: 9px; color: var(--ts); }
-.cuota-val { font-size: 11px; font-weight: 600; color: var(--tx); margin-top: 2px; }
-.cuota-int { font-size: 9px; color: var(--amber); }
-
-/* Stock badge */
-.stock-ok { color: var(--vb); }
-.stock-mid { color: var(--amber); }
-.stock-low { color: var(--red); }
-
-/* Reporte */
-.report-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 7px 0; border-bottom: 0.5px solid var(--br);
-  font-size: 11px;
-}
-.report-row:last-child { border-bottom: none; }
-.report-lbl { color: var(--ts); }
-.report-val { font-weight: 600; font-family: var(--fm); font-size: 11px; }
-
-/* Confirmación */
-.confirm-box {
-  background: linear-gradient(135deg, #0A2A1F, #0F3D2A);
-  border: 0.5px solid var(--vm); border-radius: var(--rs);
-  padding: 12px; text-align: center;
-}
-.confirm-icon { font-size: 32px; margin-bottom: 6px; }
-.confirm-title { font-family: var(--fd); font-size: 15px; font-weight: 700; color: var(--vb); margin-bottom: 4px; }
-.confirm-sub { font-size: 11px; color: var(--ts); line-height: 1.5; }
-.confirm-id { font-family: var(--fm); font-size: 9px; color: var(--vm); margin-top: 6px; }
-
-/* Alerta */
-.alert-box {
-  background: #1A0F0F; border: 0.5px solid var(--red);
-  border-radius: var(--rs); padding: 10px;
-  font-size: 11px; color: #F5A5A5;
-}
-.alert-title { font-weight: 600; color: var(--red); margin-bottom: 3px; font-size: 12px; }
-
-/* Typing indicator */
-.typing { display: flex; align-items: center; gap: 3px; padding: 8px 12px; }
-.typing span {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--vm); opacity: .4;
-  animation: blink 1.2s infinite;
-}
-.typing span:nth-child(2) { animation-delay: .2s; }
-.typing span:nth-child(3) { animation-delay: .4s; }
-@keyframes blink { 0%,100%{opacity:.4} 50%{opacity:1} }
-
+/* BOTTOM BAR */
+.bottombar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:8px 12px 16px;-webkit-box-shadow:0 -1px 6px rgba(0,0,0,0.08);box-shadow:0 -1px 6px rgba(0,0,0,0.08);z-index:40}
+.brow{display:-webkit-box;display:-ms-flexbox;display:flex;gap:8px;max-width:500px;margin:0 auto}
+.bbtn{-webkit-box-flex:1;-ms-flex:1;flex:1;padding:12px 8px;border-radius:12px;border:1.5px solid #e5e7eb;background:#f9fafb;font-size:13px;color:#374151;font-weight:600;cursor:pointer;-webkit-appearance:none;outline:none;touch-action:manipulation;font-family:inherit}
+.bbtn.pr{background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;border-color:#075E54;font-weight:800;-webkit-box-shadow:0 3px 12px rgba(7,94,84,0.25);box-shadow:0 3px 12px rgba(7,94,84,0.25)}
+.bbtn.off{opacity:0.35;pointer-events:none}
+.bhint{text-align:center;font-size:10px;color:#bbb;margin-top:6px;max-width:500px;margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════
-     SPLASH
-════════════════════════════════════ -->
-<div id="splash">
-  <div class="splash-inner">
-    <p class="sp-eye">W D B &nbsp;/&nbsp; 5 9 3 I A</p>
-    <div class="sp-logo">🌿</div>
-    <h1 class="sp-title">DAWUA</h1>
-    <p class="sp-sub">Agente Resolutivo · DAWUA NATURE S.A.<br>Todo resuelto dentro de WhatsApp · Jelou</p>
-    <div class="demo-badge">DEMO WDB</div>
+<!-- INTRO -->
+<div id="intro">
+  <div class="ilogo">&#128247;</div>
+  <div class="ititle">WDB/593IA</div>
+  <div class="isub">Demo interactivo del proceso de venta Xtrim con WhatsApp Flows</div>
+  <div class="ibadges">
+    <span class="ib">7 etapas</span>
+    <span class="ib g">&#9889; WhatsApp Flows</span>
+    <span class="ib">Jelou + IA</span>
+    <span class="ib">API Xtrim</span>
+  </div>
+  <button class="sbtn" onclick="startApp()">Iniciar demo &#9658;</button>
+</div>
 
-    <div class="sp-grid">
-      <div class="sp-tile">
-        <span class="sp-tile-icon">💬</span>
-        <div><div class="sp-tile-title">Catálogo in-chat</div><div class="sp-tile-sub">Selección · 100ml · 60ml</div></div>
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <div class="tbinner">
+      <div class="tbav">W</div>
+      <div style="-webkit-box-flex:1;flex:1">
+        <div class="tbname">WDB/593IA &#10003;</div>
+        <div class="tbsub" id="bst">en l&#237;nea</div>
       </div>
-      <div class="sp-tile">
-        <span class="sp-tile-icon">💳</span>
-        <div><div class="sp-tile-title">Pagos integrados</div><div class="sp-tile-sub">Nuvei · Pichincha · Cuotas</div></div>
-      </div>
-      <div class="sp-tile">
-        <span class="sp-tile-icon">📍</span>
-        <div><div class="sp-tile-title">Geolocalización</div><div class="sp-tile-sub">PDV más cercano · stock real</div></div>
-      </div>
-      <div class="sp-tile">
-        <span class="sp-tile-icon">📦</span>
-        <div><div class="sp-tile-title">Trazabilidad</div><div class="sp-tile-sub">5 PDV · Santa Cruz</div></div>
-      </div>
-      <div class="sp-tile">
-        <span class="sp-tile-icon">🌍</span>
-        <div><div class="sp-tile-title">Multilenguaje</div><div class="sp-tile-sub">ES · EN · DE · FR</div></div>
-      </div>
-      <div class="sp-tile">
-        <span class="sp-tile-icon">🛵</span>
-        <div><div class="sp-tile-title">Entrega Ariana</div><div class="sp-tile-sub">Hoteles · Puerto Ayora</div></div>
+      <div class="tbicons">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
       </div>
     </div>
-
-    <p class="sp-flow-label">SELECCIONA EL FLUJO A DEMOSTRAR</p>
-    <div class="sp-flows">
-      <button class="sp-flow-btn active" onclick="selectFlow(0,this)">1 · Cliente</button>
-      <button class="sp-flow-btn" onclick="selectFlow(1,this)">2 · Ariana</button>
-      <button class="sp-flow-btn" onclick="selectFlow(2,this)">3 · Reporte DAWUA</button>
+    <div class="progbar"><div class="progfill" id="pb"></div></div>
+    <div class="stepbar">
+      <div class="step-cur" id="step-cur">Listo para comenzar</div>
+      <div class="step-count" id="step-count">0 / 7</div>
     </div>
+  </div>
 
-    <button class="sp-start" onclick="startDemo()">Iniciar demo ▶</button>
+  <div class="chat" id="chat">
+    <div class="datepill">Hoy</div>
+    <div class="sysmsg">WDB/593IA &middot; Canal oficial de ventas Xtrim</div>
+  </div>
 
-    <p class="sp-credit">
-      <strong>Juan Carlos Páez</strong><br>
-      WDB · 593IA · Arquitectura de proyectos sobre tecnología<br>
-      <strong>JELOU Platform Partner · 593IA</strong>
-    </p>
+  <div class="bottombar">
+    <div class="brow">
+      <button class="bbtn" onclick="resetDemo()">&#8634; Reiniciar</button>
+      <button class="bbtn pr" id="bn" onclick="nextStep()">Iniciar demo &#9658;</button>
+    </div>
+    <div class="bhint" id="ht">Pulsa Iniciar demo para comenzar</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     APP
-════════════════════════════════════ -->
-<div id="app">
-
-  <!-- HEADER -->
-  <div class="app-header">
-    <button class="h-back" onclick="goHome()" title="Menú principal">←</button>
-    <div class="h-avatar" id="hAvatar">DA</div>
-    <div class="h-info">
-      <div class="h-name" id="hName">DAWUA ✓</div>
-      <div class="h-status" id="hStatus">Agente resolutivo · Galápagos · Jelou · ES</div>
-    </div>
-    <div class="h-pill">DEMO WDB</div>
-  </div>
-
-  <!-- JELOU BAR -->
-  <div class="jelou-bar">
-    <div class="j-dot"></div>
-    <div class="j-text" id="jelouCtx">🏝️ Santa Cruz · 🌿 Hierba Luisa · 💵 en proceso</div>
-  </div>
-
-  <!-- FLOW TABS -->
-  <div class="flow-tabs" id="flowTabs"></div>
-
-  <!-- STEP PILLS -->
-  <div class="step-bar" id="stepBar"></div>
-
-  <!-- CHAT -->
-  <div class="chat-area" id="chatArea"></div>
-
-  <!-- CONTROLES -->
-  <div class="controls">
-    <div class="ctrl-hint" id="ctrlHint">Toca el flujo que quieres ver</div>
-    <button class="ctrl-btn" onclick="restartFlow()">↺ Reiniciar</button>
-    <button class="ctrl-btn ctrl-next" id="btnNext" onclick="nextStep()">▶ Siguiente paso</button>
-  </div>
-
+<!-- FLOW OVERLAY -->
+<div id="flow-overlay">
+  <div class="fsheet" id="fsheet"></div>
 </div>
 
 <script>
-// ════════════════════════════════════
-// DATOS / FLOWS
-// ════════════════════════════════════
-let currentFlow = 0;
-let currentStep = 0;
+var cur=-1, running=false, qi=0, qm=[], flowCB=null, activeFlowId=null;
 
-const FLOWS = [
-  {
-    id: 0,
-    label: '1·Cliente',
-    labelFull: 'Flujo Cliente Turista',
-    avatar: 'DA', name: 'DAWUA ✓',
-    status: 'Agente resolutivo · Galápagos · Jelou · ES/EN',
-    tabs: ['Cotización','Catálogo','Ubicación','Entrega','Pago','Confirmación'],
-    steps: ['Saludo','Idioma','Catálogo','PDV cercano','Formulario','Pago','Ticket'],
-    jelouCtxSteps: [
-      '🏝️ Santa Cruz · 🌿 Saludo · idioma pendiente',
-      '🏝️ Santa Cruz · 🌿 Hierba Luisa · EN activo',
-      '🏝️ Santa Cruz · 🌿 100ml $22 · seleccionado',
-      '🏝️ Santa Cruz · 📍 Royal Palm Hotel · 1km',
-      '🏝️ Santa Cruz · 📦 Entrega en hotel · datos OK',
-      '🏝️ Santa Cruz · 💳 Nuvei · 3 cuotas $7.33',
-      '🏝️ Santa Cruz · ✅ #DW-2024-0847 confirmado'
+// ── FLOW DATA ──
+var FD={
+  planes:{icon:'&#128246;',title:'Elige tu plan Xtrim',sub:'Planes disponibles en tu zona',
+    opts:[
+      {id:'p1',title:'30 Mbps',sub:'Ideal para 1-2 personas',price:'$22.99/mes'},
+      {id:'p2',title:'60 Mbps',sub:'Perfecto para familias',price:'$29.99/mes',def:1},
+      {id:'p3',title:'100 Mbps',sub:'M\u00e1xima velocidad',price:'$39.99/mes'}
     ],
-    tabActive: [0,0,1,2,3,4,5],
-    messages: [
-      // Paso 0 — saludo
-      [
-        {role:'user', text:'Hola, vi el aceite repelente DAWUA en mi hotel ¿dónde lo compro?'},
-        {role:'bot', text:'¡Hola! 🌿 Soy el asistente de <b>DAWUA Galápagos</b>. Te ayudo a encontrar nuestro <b>Aceite Repelente de Hierba Luisa</b>, 100% ecuatoriano y permitido por el Parque Nacional. ¿Quieres ver el catálogo o ubicar el punto más cercano?', nlu:'🧠 NLU → SALUDO · idioma: ES · Jelou', qrs:['English please','Ver catálogo','Punto más cercano']}
-      ],
-      // Paso 1 — switch idioma
-      [
-        {role:'user', text:'English please'},
-        {role:'bot', text:'Sure! 🌿 Switching to English. I\'m the <b>DAWUA Galápagos</b> assistant. Our <b>Lemongrass Repellent Oil</b> is 100% Ecuadorian, biodegradable and approved for use inside the National Park. What would you like to do?', nlu:'🧠 NLU → SWITCH_LANG · ES→EN · Jelou', ftag:'🔄 WhatsApp Flow · language switch · Jelou', qrs:['See catalog','Closest store','Order now']}
-      ],
-      // Paso 2 — catálogo
-      [
-        {role:'user', text:'See catalog'},
-        {role:'bot', text:'Here\'s our full catalog 👇', nlu:'🧠 NLU → CATALOG · intent>0.97 · Jelou', widget:'catalog', qrs:['I want 100ml - $22','I want 60ml - $15','Order both']}
-      ],
-      // Paso 3 — PDV
-      [
-        {role:'user', text:'I want 100ml - $22'},
-        {role:'bot', text:'Great choice! 🌿 To find the closest store with confirmed stock, share your hotel name or location:', nlu:'🧠 NLU → FIND_STORE · radius 1km · stock>0', ftag:'📍 WhatsApp Location · Jelou'},
-        {role:'user', text:'Royal Palm Hotel'},
-        {role:'bot', text:'Got it! 🗺️ Closest point with confirmed stock right now:', nlu:'🧠 NLU → FIND_STORE · Royal Palm · Jelou', widget:'pdv', qrs:['Walk me there 🗺️','Deliver to my hotel 🛵']},
-        {role:'bot', text:'📍 <b>Hotel Finch Bay</b> — 850m from Royal Palm Hotel\n\nWould you like directions?\n👉 <a href="https://maps.google.com/?q=Hotel+Finch+Bay+Galapagos" style="color:#00D68F">Open in Google Maps</a>\n\nOr I can arrange delivery directly to your hotel with Ariana (~30 min)', nlu:'🧠 NLU → MAPS_LINK · Finch Bay · stock:9u · Jelou', ftag:'📍 WhatsApp Location · Google Maps · Jelou', qrs:['Walk me there 🗺️','Deliver to my hotel 🛵']}
-      ],
-      // Paso 4 — formulario entrega
-      [
-        {role:'user', text:'Deliver to my hotel 🛵'},
-        {role:'bot', text:'Perfect! Ariana will deliver to your hotel in ~30 min. Please confirm your details:', nlu:'🧠 NLU → DELIVERY · hotel mode · Jelou', widget:'form', qrs:['Confirm details ✓']}
-      ],
-      // Paso 5 — pago
-      [
-        {role:'user', text:'Confirm details ✓'},
-        {role:'bot', text:'Almost done! 💳 Choose your payment method:', nlu:'🧠 NLU → PAYMENT · Nuvei · 3DS · Jelou', widget:'payment', qrs:[]}
-      ],
-      // Paso 6 — confirmación
-      [
-        {role:'user', text:'De Una · Banco Pichincha — 3 cuotas'},
-        {role:'bot', text:'', widget:'confirm', nlu:'🧠 NLU → CONFIRM · Nuvei OK · order placed · Jelou'}
-      ]
-    ]
+    selKey:'plan', defVal:'p2',
+    getBtnLabel:function(){return 'Confirmar plan';},
+    getResult:function(sel){
+      var map={p1:'Plan 30 Mbps - $22.99/mes seleccionado \u2705',p2:'Plan 60 Mbps - $29.99/mes seleccionado \u2705',p3:'Plan 100 Mbps - $39.99/mes seleccionado \u2705'};
+      return map[sel]||'Plan seleccionado \u2705';
+    }
   },
-  {
-    id: 1,
-    label: '2·Ariana',
-    labelFull: 'Flujo Operación Ariana',
-    avatar: 'AR', name: 'Ariana Páez ✓',
-    status: 'Operadora territorial · Santa Cruz · Jelou',
-    tabs: ['Registro','Stock','Ventas PDV','Alerta','Reposición','Reporte'],
-    steps: ['Entrega PDV','Confirmación','Venta PDV','Alerta baja','Reabastece','Resumen'],
-    jelouCtxSteps: [
-      '🏝️ Santa Cruz · 📦 Registro entrega · Ikala',
-      '🏝️ Santa Cruz · ✅ Stock actualizado · Ikala 16u',
-      '🏝️ Santa Cruz · 🛍️ Malecón #1 · vendió 3u · stock: 3u',
-      '🏝️ Santa Cruz · 🚨 Alerta automática · Malecón #1 crítico',
-      '🏝️ Santa Cruz · 🔄 Reposición solicitada · DAWUA GYE',
-      '🏝️ Santa Cruz · 📊 Reporte semanal listo'
+  datos:{icon:'&#128100;',title:'Tus datos personales',sub:'Formulario seguro dentro de WhatsApp',
+    fields:[
+      {id:'nom',label:'Nombre completo',val:'Carlos Mendoza Vera',type:'text'},
+      {id:'dir',label:'Direcci\u00f3n exacta de instalaci\u00f3n',val:'Cdla. Kennedy Norte, Av. San Jorge 412',type:'text'},
+      {id:'mail',label:'Correo electr\u00f3nico',val:'carlos.mendoza@gmail.com',type:'email'}
     ],
-    tabActive: [0,0,1,2,3,4,5],
-    messages: [
-      [
-        {role:'user', text:'entregué 12 100ml en Ikala'},
-        {role:'bot', text:'✅ Entrega registrada:\n\n<b>Hotel Ikala</b> — +12 unidades 100ml\nStock actual: <b>16 unidades</b>\nFecha: hoy 14:32\n\n¿Confirmas el movimiento?', nlu:'🧠 NLU → STOCK_IN · PDV:Ikala · qty:12 · Jelou', ftag:'📦 WhatsApp Flow · inventario · Jelou', qrs:['Sí, confirmar ✓','Corregir cantidad']}
-      ],
-      [
-        {role:'user', text:'Sí, confirmar ✓'},
-        {role:'bot', text:'Stock actualizado en el sistema 📦\n\n<b>Ikala:</b> 16u ✅ Stock OK\n<b>Red Mangrove:</b> 9u ✅ Stock OK\n<b>Finch Bay:</b> 11u ✅ Stock OK\n<b>Malecón #1:</b> 3u ⚠️ Stock bajo\n<b>Royal Palm:</b> 7u ✅ Stock OK', nlu:'🧠 NLU → STOCK_CONFIRM · sync OK · Jelou'}
-      ],
-      // Paso B — PDV confirma ventas
-      [
-        {role:'user', text:'Malecón #1: vendí 3 frascos hoy'},
-        {role:'bot', text:'✅ Venta registrada en <b>Tienda Malecón #1</b>\n\n— 3 unidades 100ml · hoy 16:45\n— Stock anterior: 6u → Stock actual: <b>3u</b>\n\n⚠️ Stock bajo — umbral mínimo: 5u\nAriana recibirá alerta de reposición ahora.', nlu:'🧠 NLU → STOCK_OUT · PDV:Malecón#1 · qty:3 · Jelou', ftag:'📦 WhatsApp Flow · venta PDV · Jelou'}
-      ],
-      // Paso C — Alerta automática
-      [
-        {role:'bot', text:'', widget:'alert', qrs:['Voy a reponer ahora','Pedir lote a DAWUA GYE']}
-      ],
-      // Paso D — Reposición
-      [
-        {role:'user', text:'Pedir lote a DAWUA GYE'},
-        {role:'bot', text:'Solicitud de reposición enviada automáticamente a DAWUA Guayaquil 📤\n\n<b>Destino:</b> Tienda Malecón #1\n<b>Cantidad sugerida:</b> 15 unidades 100ml\n<b>Método:</b> Próximo vuelo UIO-GPS\n<b>ETA estimado:</b> 2 días hábiles\n\nDAWUA recibirá la alerta en su WhatsApp ahora.', nlu:'🧠 NLU → RESTOCK_REQUEST · auto · Jelou', ftag:'✈️ Logística GPS · vuelo próximo · Jelou'}
-      ],
-      [
-        {role:'user', text:'resumen de la semana'},
-        {role:'bot', text:'Aquí tienes el resumen semanal 📊', nlu:'🧠 NLU → WEEKLY_REPORT · auto · Jelou', widget:'report_ariana'}
-      ]
-    ]
+    getResult:function(){return 'Datos personales confirmados \u2705';}
   },
-  {
-    id: 2,
-    label: '3·Reporte',
-    labelFull: 'Reporte Semanal DAWUA',
-    avatar: 'DG', name: 'DAWUA GYE ✓',
-    status: 'Administración · Guayaquil · Jelou',
-    tabs: ['Ventas','Stock','Pedido','Despacho'],
-    steps: ['Reporte auto','Stock semáforo','Pedido sugerido','Aprobar envío'],
-    jelouCtxSteps: [
-      '🏝️ Santa Cruz · 📊 Reporte lunes 08:00 · auto',
-      '🏝️ Santa Cruz · 🚦 Semáforos stock · 5 PDV',
-      '🏝️ Santa Cruz · 📋 Pedido sugerido · 30u 100ml',
-      '🏝️ Santa Cruz · ✅ Despacho #DSP-0291 aprobado'
+  pago:{icon:'&#128179;',title:'Configura tu pago',sub:'Datos cifrados end-to-end por WhatsApp',
+    opts:[
+      {id:'m1',title:'D\u00e9bito autom\u00e1tico',sub:'Descuento mensual desde cuenta bancaria',def:1},
+      {id:'m2',title:'Tarjeta de cr\u00e9dito / d\u00e9bito',sub:'Visa \u00b7 Mastercard \u00b7 American Express'},
+      {id:'m3',title:'Contra factura',sub:'Pago al recibir la factura mensual Xtrim'}
     ],
-    tabActive: [0,1,2,3],
-    messages: [
-      [
-        {role:'bot', text:'🌅 <b>Buenos días, DAWUA Galápagos</b>\nReporte semanal automático — lunes 08:00\n\nSemana del 22 al 28 de abril 2026:', nlu:'🧠 NLU → WEEKLY_AUTO · lunes 08:00 · Jelou', widget:'report_dawua', qrs:['Ver stock por PDV','Ver pedido sugerido']}
-      ],
-      [
-        {role:'user', text:'Ver stock por PDV'},
-        {role:'bot', text:'Estado actual de inventario en las 5 islas 🚦', nlu:'🧠 NLU → STOCK_MAP · 5PDV · Jelou', widget:'stock_map', qrs:['Ver pedido sugerido']}
-      ],
-      [
-        {role:'user', text:'Ver pedido sugerido'},
-        {role:'bot', text:'Basado en la velocidad de venta de esta semana, el sistema sugiere el siguiente reabastecimiento:\n\n<b>100ml:</b> 30 unidades\n<b>60ml:</b> 15 unidades\n<b>Total estimado:</b> $562.50\n<b>Prioridad:</b> Tienda Malecón #1 urgente\n\n¿Apruebas el pedido para despacho?', nlu:'🧠 NLU → RESTOCK_SUGGEST · velocity · Jelou', qrs:['✅ Aprobar y despachar','📝 Modificar cantidades']}
-      ],
-      [
-        {role:'user', text:'✅ Aprobar y despachar'},
-        {role:'bot', text:'', widget:'despacho', nlu:'🧠 NLU → DISPATCH_OK · Nuvei · Jelou'}
-      ]
-    ]
+    selKey:'metodo', defVal:'m1',
+    fields:[
+      {id:'banco',label:'Banco emisor',val:'Banco Pichincha',type:'text'},
+      {id:'cuenta',label:'N\u00famero de cuenta / tarjeta',val:'2234567890',type:'tel'}
+    ],
+    getResult:function(sel){
+      var map={m1:'D\u00e9bito autom\u00e1tico Banco Pichincha \u2705',m2:'Tarjeta de cr\u00e9dito/d\u00e9bito registrada \u2705',m3:'Contra factura seleccionado \u2705'};
+      return map[sel]||'Forma de pago configurada \u2705';
+    }
+  },
+  agenda:{icon:'&#128197;',title:'Agenda tu instalaci\u00f3n',sub:'Disponibilidad Xtrim en tiempo real',
+    opts:[
+      {id:'a1',title:'Ma\u00f1ana',sub:'9:00am \u2014 12:00pm',tag:'Disponible',def:1},
+      {id:'a2',title:'Ma\u00f1ana',sub:'2:00pm \u2014 6:00pm',tag:'Disponible'},
+      {id:'a3',title:'Pasado ma\u00f1ana',sub:'9:00am \u2014 12:00pm',tag:'Disponible'},
+      {id:'a4',title:'Pasado ma\u00f1ana',sub:'2:00pm \u2014 6:00pm',tag:'Disponible'}
+    ],
+    selKey:'fecha', defVal:'a1',
+    getResult:function(sel){
+      var map={a1:'Ma\u00f1ana 9am-12pm confirmado \u2705',a2:'Ma\u00f1ana 2pm-6pm confirmado \u2705',a3:'Pasado 9am-12pm confirmado \u2705',a4:'Pasado 2pm-6pm confirmado \u2705'};
+      return map[sel]||'Instalaci\u00f3n agendada \u2705';
+    }
   }
-];
+};
 
-// ════════════════════════════════════
-// WIDGETS
-// ════════════════════════════════════
-function renderWidget(type) {
-  switch(type) {
-    case 'catalog': return `
-      <div class="widget msg-bot" style="max-width:90%">
-        <div class="widget-hd">💬 CATÁLOGO DAWUA · WhatsApp Card · Jelou</div>
-        <div class="widget-body">
-          <div class="cat-card">
-            <span class="cat-emoji">🌿</span>
-            <div class="cat-info">
-              <div class="cat-name">Aceite Repelente 100ml</div>
-              <div class="cat-desc">Hierba Luisa · Ungurahua · Sin DEET</div>
-              <div class="cat-price">$22 <span class="cat-badge">PNG ✓</span></div>
-            </div>
-          </div>
-          <div class="cat-card">
-            <span class="cat-emoji">🌱</span>
-            <div class="cat-info">
-              <div class="cat-name">Aceite Repelente 60ml</div>
-              <div class="cat-desc">Talla viaje · Equipaje de mano</div>
-              <div class="cat-price">$15 <span class="cat-badge">Carry-on ✓</span></div>
-            </div>
-          </div>
-        </div>
-      </div>`;
+// State for current selections
+var curSel={};
 
-    case 'pdv': return `
-      <div class="widget msg-bot" style="max-width:92%">
-        <div class="widget-hd">📍 PUNTO MÁS CERCANO · stock confirmado · Jelou</div>
-        <div class="widget-body">
-          <div class="pdv-card">
-            <div class="pdv-top">
-              <span class="pdv-name">🏨 Hotel Finch Bay</span>
-              <span class="pdv-dist">850m · 4 min</span>
-            </div>
-            <div class="pdv-stock-bar"><div class="pdv-stock-fill stock-ok" style="width:75%;background:#00D68F"></div></div>
-            <div class="pdv-map">📍 Playa de los Alemanes · Stock OK (9u) · <span style="color:#00D68F">Abierto ahora</span></div>
-          </div>
-          <div class="pdv-card">
-            <div class="pdv-top">
-              <span class="pdv-name">🏨 Hotel Ikala</span>
-              <span class="pdv-dist">1.1km · 6 min</span>
-            </div>
-            <div class="pdv-stock-bar"><div class="pdv-stock-fill" style="width:55%;background:#F5A623"></div></div>
-            <div class="pdv-map">📍 Malecón · Stock medio (5u) · <span style="color:#F5A623">Abierto</span></div>
-          </div>
-        </div>
-      </div>`;
+// ── BUILD FLOW ──
+function buildFlow(fid){
+  var f=FD[fid];
+  var h='<div class="fsh"><div class="fsh-handle"></div><div class="fsh-row">';
+  h+='<div class="fsh-ico">'+f.icon+'</div>';
+  h+='<div><div class="fsh-title">'+f.title+'</div><div class="fsh-sub">'+f.sub+'</div></div>';
+  h+='<div class="fsh-badge">&#9889; WhatsApp Flow</div>';
+  h+='</div></div>';
+  h+='<div class="fbody">';
 
-    case 'form': return `
-      <div class="widget msg-bot" style="max-width:92%">
-        <div class="widget-hd">📋 FORMULARIO ENTREGA · WhatsApp Flow · Jelou</div>
-        <div class="widget-body">
-          <div class="form-field"><div class="field-lbl">HOTEL</div><div class="field-val">Royal Palm Hotel</div></div>
-          <div class="form-field"><div class="field-lbl">HABITACIÓN</div><div class="field-val">Hab. 12 — confirmar en recepción</div></div>
-          <div class="form-field"><div class="field-lbl">PRODUCTO</div><div class="field-val">Aceite 100ml × 1 · $22</div></div>
-          <div class="form-field"><div class="field-lbl">ENTREGA ESTIMADA</div><div class="field-val">~30 minutos · Ariana</div></div>
-        </div>
-      </div>`;
-
-    case 'payment': return `
-      <div class="widget msg-bot" style="max-width:95%">
-        <div class="widget-hd">💳 PAGO SEGURO · Nuvei · 3D Secure · Jelou</div>
-        <div class="widget-body">
-          <div class="pay-opt selected">
-            <span class="pay-icon">🏦</span>
-            <div class="pay-info">
-              <div class="pay-name">De Una · Banco Pichincha</div>
-              <div class="pay-sub">Sin interés hasta 6 cuotas</div>
-            </div>
-            <span class="pay-badge pay-badge-rec">RECOMENDADO</span>
-          </div>
-          <div class="cuotas">
-            <div class="cuota sel">
-              <div class="cuota-n">3</div>
-              <div class="cuota-lbl">cuotas</div>
-              <div class="cuota-val">$7.33</div>
-              <div class="cuota-int">sin interés</div>
-            </div>
-            <div class="cuota">
-              <div class="cuota-n">6</div>
-              <div class="cuota-lbl">cuotas</div>
-              <div class="cuota-val">$3.67</div>
-              <div class="cuota-int">sin interés</div>
-            </div>
-            <div class="cuota">
-              <div class="cuota-n">12</div>
-              <div class="cuota-lbl">cuotas</div>
-              <div class="cuota-val">$1.98</div>
-              <div class="cuota-int">+8% interés</div>
-            </div>
-          </div>
-          <p style="font-size:9px;color:#444;text-align:center;margin-top:8px;font-family:var(--fm)">🔒 Pago seguro · SSL · 3D Secure · Powered by Nuvei</p>
-        </div>
-      </div>`;
-
-    case 'confirm': return `
-      <div class="widget msg-bot" style="max-width:92%">
-        <div class="widget-hd">✅ PEDIDO CONFIRMADO · Jelou</div>
-        <div class="widget-body">
-          <div class="confirm-box">
-            <div class="confirm-icon">🎉</div>
-            <div class="confirm-title">¡Pedido confirmado!</div>
-            <div class="confirm-sub">Ariana está en camino a Royal Palm Hotel.<br>Tiempo estimado: <b>28 minutos</b></div>
-            <div class="confirm-id">Pedido #DW-2024-0847 · $22 · 3 cuotas $7.33</div>
-          </div>
-          <div style="margin-top:8px;font-size:11px;color:var(--ts);text-align:center">
-            ¿Te gustaría recibir novedades de DAWUA?
-          </div>
-        </div>
-      </div>`;
-
-    case 'alert': return `
-      <div class="widget msg-bot" style="max-width:92%">
-        <div class="widget-hd">🚨 ALERTA STOCK BAJO · automática · Jelou</div>
-        <div class="widget-body">
-          <div class="alert-box">
-            <div class="alert-title">⚠ Tienda Malecón #1 — Stock crítico</div>
-            Solo quedan <b>3 unidades</b> disponibles.<br>
-            Velocidad de venta: ~4 u/día<br>
-            <b>Agotamiento estimado: 18 horas</b>
-          </div>
-        </div>
-      </div>`;
-
-    case 'report_ariana': return `
-      <div class="widget msg-bot" style="max-width:95%">
-        <div class="widget-hd">📊 RESUMEN SEMANAL · Santa Cruz · Jelou</div>
-        <div class="widget-body">
-          <div class="report-row"><span class="report-lbl">Total vendido</span><span class="report-val" style="color:var(--vb)">47 u</span></div>
-          <div class="report-row"><span class="report-lbl">Ingresos generados</span><span class="report-val" style="color:var(--vb)">$893</span></div>
-          <div class="report-row"><span class="report-lbl">PDV más activo</span><span class="report-val">Finch Bay (14u)</span></div>
-          <div class="report-row"><span class="report-lbl">Stock total isla</span><span class="report-val">46 u</span></div>
-          <div class="report-row"><span class="report-lbl">PDVs con alerta</span><span class="report-val" style="color:var(--red)">1 (Malecón #1)</span></div>
-          <div class="report-row"><span class="report-lbl">Entregas Ariana</span><span class="report-val">6 deliveries</span></div>
-        </div>
-      </div>`;
-
-    case 'report_dawua': return `
-      <div class="widget msg-bot" style="max-width:95%">
-        <div class="widget-hd">📊 REPORTE SEMANAL AUTO · lun 08:00 · Jelou</div>
-        <div class="widget-body">
-          <div class="report-row"><span class="report-lbl">Semana</span><span class="report-val">22–28 Abr 2026</span></div>
-          <div class="report-row"><span class="report-lbl">Unidades vendidas</span><span class="report-val" style="color:var(--vb)">47 u</span></div>
-          <div class="report-row"><span class="report-lbl">Ingresos brutos</span><span class="report-val" style="color:var(--vb)">$893</span></div>
-          <div class="report-row"><span class="report-lbl">Pedidos bot 593IA</span><span class="report-val">12 pedidos</span></div>
-          <div class="report-row"><span class="report-lbl">Idiomas atendidos</span><span class="report-val">ES 58% · EN 35% · DE 7%</span></div>
-          <div class="report-row"><span class="report-lbl">Stock total isla</span><span class="report-val" style="color:var(--amber)">46 u · 1 PDV en alerta</span></div>
-        </div>
-      </div>`;
-
-    case 'stock_map': return `
-      <div class="widget msg-bot" style="max-width:95%">
-        <div class="widget-hd">🚦 STOCK POR PDV · Santa Cruz · Jelou</div>
-        <div class="widget-body">
-          <div class="report-row"><span class="report-lbl">🏨 Finch Bay</span><span class="report-val stock-ok">11u ✅</span></div>
-          <div class="report-row"><span class="report-lbl">🏨 Hotel Ikala</span><span class="report-val stock-ok">16u ✅</span></div>
-          <div class="report-row"><span class="report-lbl">🏨 Red Mangrove</span><span class="report-val stock-mid">9u ⚠️</span></div>
-          <div class="report-row"><span class="report-lbl">🏨 Royal Palm</span><span class="report-val stock-ok">7u ✅</span></div>
-          <div class="report-row"><span class="report-lbl">🛍️ Malecón #1</span><span class="report-val stock-low">3u 🚨 URGENTE</span></div>
-        </div>
-      </div>`;
-
-    case 'despacho': return `
-      <div class="widget msg-bot" style="max-width:92%">
-        <div class="widget-hd">✅ DESPACHO APROBADO · Jelou</div>
-        <div class="widget-body">
-          <div class="confirm-box">
-            <div class="confirm-icon">📦</div>
-            <div class="confirm-title">¡Despacho confirmado!</div>
-            <div class="confirm-sub">
-              30u 100ml + 15u 60ml<br>
-              Vuelo UIO-GPS próximo disponible<br>
-              Ariana recibirá en 2 días hábiles
-            </div>
-            <div class="confirm-id">Despacho #DSP-0291 · $562.50 · Aprobado por DAWUA GYE</div>
-          </div>
-        </div>
-      </div>`;
-
-    default: return '';
+  // OPTIONS (planes, pago metodo, agenda)
+  if(f.opts){
+    h+='<div class="fsec"><div class="flabel">'+(fid==='planes'?'Planes disponibles':fid==='agenda'?'Ventanas disponibles':'M\u00e9todo de pago')+'</div><div class="fopts" id="opts_'+fid+'">';
+    for(var i=0;i<f.opts.length;i++){
+      var o=f.opts[i];
+      var isSel=o.def?'sel':'';
+      h+='<div class="fopt '+isSel+'" data-val="'+o.id+'">';
+      h+='<div class="fradio"><div class="fradio-dot"></div></div>';
+      h+='<div class="fopt-info"><div class="fopt-title">'+o.title+'</div><div class="fopt-sub">'+o.sub+'</div></div>';
+      if(o.price)h+='<div class="fopt-price">'+o.price+'</div>';
+      if(o.tag)h+='<div class="fopt-tag">'+o.tag+'</div>';
+      h+='</div>';
+    }
+    h+='</div></div>';
+    // Initialize default selection
+    if(f.selKey&&f.defVal){ curSel[f.selKey]=f.defVal; }
   }
+
+  // FIELDS
+  if(f.fields){
+    h+='<div class="fsec">';
+    if(f.opts)h+='<div class="flabel">Datos bancarios</div>'; // Only show label for pago
+    for(var j=0;j<f.fields.length;j++){
+      var fd=f.fields[j];
+      h+='<div class="finput-wrap">';
+      h+='<div class="finput-label">'+fd.label+'</div>';
+      h+='<input class="finput" id="fi_'+fd.id+'" type="'+fd.type+'" value="'+fd.val+'">';
+      h+='</div>';
+    }
+    h+='</div>';
+  }
+
+  h+='<button class="fsubmit" id="fsub_'+fid+'">'+(f.getBtnLabel?f.getBtnLabel():'Confirmar')+ ' &#10003;</button>';
+  h+='</div>';
+  h+='<div class="ffoot">Datos protegidos por cifrado end-to-end &middot; <span>WhatsApp</span></div>';
+  return h;
 }
 
-// ════════════════════════════════════
-// LÓGICA PRINCIPAL
-// ════════════════════════════════════
-function selectFlow(idx, btn) {
-  currentFlow = idx;
-  document.querySelectorAll('.sp-flow-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
+// ── ATTACH FLOW EVENTS (called after innerHTML set) ──
+function attachFlowEvents(fid){
+  var f=FD[fid];
 
-function startDemo() {
-  document.getElementById('splash').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  currentStep = 0;
-  renderFlowUI();
-  renderMessages();
-}
-
-function goHome() {
-  document.getElementById('splash').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  // Reset flow buttons
-  document.querySelectorAll('.sp-flow-btn').forEach((b,i) => {
-    b.classList.toggle('active', i === currentFlow);
-  });
-}
-
-function renderFlowUI() {
-  const flow = FLOWS[currentFlow];
-
-  // Header
-  document.getElementById('hAvatar').textContent = flow.avatar;
-  document.getElementById('hName').textContent = flow.name;
-  document.getElementById('hStatus').textContent = flow.status;
-
-  // Flow tabs
-  const ft = document.getElementById('flowTabs');
-  ft.innerHTML = flow.tabs.map((t,i) => `<button class="ft-btn${i===0?' active':''}" id="ft_${i}">${t}</button>`).join('');
-
-  // Step pills
-  updateStepPills();
-  updateJelouCtx();
-}
-
-function updateStepPills() {
-  const flow = FLOWS[currentFlow];
-  const bar = document.getElementById('stepBar');
-  bar.innerHTML = flow.steps.map((s,i) => {
-    let cls = 'step-p';
-    if(i < currentStep) cls += ' done';
-    else if(i === currentStep) cls += ' active';
-    return `<div class="${cls}">${s}</div>`;
-  }).join('');
-}
-
-function updateJelouCtx() {
-  const flow = FLOWS[currentFlow];
-  const idx = Math.min(currentStep, flow.jelouCtxSteps.length-1);
-  document.getElementById('jelouCtx').textContent = flow.jelouCtxSteps[idx];
-}
-
-function updateTabActive() {
-  const flow = FLOWS[currentFlow];
-  const activeIdx = flow.tabActive[Math.min(currentStep, flow.tabActive.length-1)];
-  document.querySelectorAll('.ft-btn').forEach((b,i) => {
-    b.classList.toggle('active', i === activeIdx);
-  });
-}
-
-function renderMessages() {
-  const flow = FLOWS[currentFlow];
-  const chat = document.getElementById('chatArea');
-  chat.innerHTML = '';
-
-  // Renderizar todos los pasos hasta currentStep
-  for(let s = 0; s <= currentStep && s < flow.messages.length; s++) {
-    const msgs = flow.messages[s];
-    for(const m of msgs) {
-      if(!m) continue;
-
-      if(m.role === 'user') {
-        chat.innerHTML += `
-          <div class="msg msg-user">
-            <div class="msg-bbl">${m.text}</div>
-            <div class="msg-time">21:${23+s} ✓✓</div>
-          </div>`;
-      } else {
-        // Bot message
-        let inner = '';
-        if(m.text) inner += `<div class="msg-bbl">${m.text.replace(/\n/g,'<br>')}</div>`;
-        if(m.widget) inner += renderWidget(m.widget);
-        if(m.nlu) inner += `<div><span class="nlu">${m.nlu}</span>${m.ftag ? `<span class="ftag">${m.ftag}</span>` : ''}</div>`;
-        // Quick replies solo en el último paso
-        if(m.qrs && s === currentStep && m.qrs.length > 0) {
-          inner += `<div class="qrs">${m.qrs.map(q=>`<button class="qr">${q}</button>`).join('')}</div>`;
-        }
-
-        chat.innerHTML += `
-          <div class="msg msg-bot">
-            ${inner}
-            <div class="msg-time">21:${23+s}</div>
-          </div>`;
-      }
+  // Option click events
+  var optsWrap=document.getElementById('opts_'+fid);
+  if(optsWrap){
+    var opts=optsWrap.getElementsByClassName('fopt');
+    for(var i=0;i<opts.length;i++){
+      (function(el){
+        el.addEventListener('click',function(){
+          for(var k=0;k<opts.length;k++){opts[k].className='fopt';}
+          el.className='fopt sel';
+          if(f.selKey){ curSel[f.selKey]=el.getAttribute('data-val'); }
+          // Dynamic label update for pago
+          if(fid==='pago'){
+            var sel=el.getAttribute('data-val');
+            var bancoLabel=document.querySelector('#fi_banco') ? document.querySelector('#fi_banco').previousSibling : null;
+            var cuentaLabelEl=document.querySelector('.finput-label:last-of-type');
+            var bancoEl=document.getElementById('fi_banco');
+            var cuentaEl=document.getElementById('fi_cuenta');
+            var fieldsDiv=document.querySelector('.fbody .fsec:last-of-type');
+            if(sel==='m2'){
+              if(bancoEl)bancoEl.placeholder='Ej: Banco Pichincha';
+              if(cuentaEl){cuentaEl.placeholder='Ej: 4111 1111 1111 1111';cuentaEl.value='';}
+              var labels=fieldsDiv?fieldsDiv.getElementsByClassName('finput-label'):[];
+              if(labels[0])labels[0].textContent='Banco emisor de la tarjeta';
+              if(labels[1])labels[1].textContent='N\u00famero de tarjeta';
+            } else if(sel==='m3'){
+              if(bancoEl){bancoEl.value='';bancoEl.placeholder='No requerido';}
+              if(cuentaEl){cuentaEl.value='';cuentaEl.placeholder='No requerido';}
+              var labels3=fieldsDiv?fieldsDiv.getElementsByClassName('finput-label'):[];
+              if(labels3[0])labels3[0].textContent='No aplica';
+              if(labels3[1])labels3[1].textContent='No aplica';
+              if(bancoEl){bancoEl.value='Banco Pichincha';}
+              if(cuentaEl){cuentaEl.value='2234567890';}
+              var labels2=fieldsDiv?fieldsDiv.getElementsByClassName('finput-label'):[];
+              if(labels2[0])labels2[0].textContent='Banco emisor';
+              if(labels2[1])labels2[1].textContent='N\u00famero de cuenta / tarjeta';
+            }
+          }
+        });
+      })(opts[i]);
     }
   }
 
-  updateStepPills();
-  updateTabActive();
-  updateJelouCtx();
-  updateControls();
-
-  // Scroll al final
-  requestAnimationFrame(() => {
-    chat.scrollTop = chat.scrollHeight;
-  });
+  // Submit button
+  var subBtn=document.getElementById('fsub_'+fid);
+  if(subBtn){
+    subBtn.addEventListener('click',function(){
+      var result='';
+      var sel=f.selKey?curSel[f.selKey]:'';
+      if(f.getResult){ result=f.getResult(sel); }
+      closeFlow();
+      setTimeout(function(){
+        addMsg({s:'usr',x:result});
+        setTimeout(function(){
+          if(flowCB){var cb=flowCB;flowCB=null;cb();}
+        },400);
+      },300);
+    });
+  }
 }
 
-function updateControls() {
-  const flow = FLOWS[currentFlow];
-  const hint = document.getElementById('ctrlHint');
-  const btnNext = document.getElementById('btnNext');
+function openFlow(fid,cb){
+  flowCB=cb||null;
+  activeFlowId=fid;
+  curSel={};
+  document.getElementById('fsheet').innerHTML=buildFlow(fid);
+  attachFlowEvents(fid);
+  document.getElementById('flow-overlay').style.display='-webkit-box';
+  document.getElementById('flow-overlay').style.display='-ms-flexbox';
+  document.getElementById('flow-overlay').style.display='flex';
+}
 
-  if(currentStep >= flow.messages.length - 1) {
-    hint.textContent = '✅ Flujo completo — reinicia o cambia de flujo';
-    btnNext.textContent = '✓ Completado';
-    btnNext.style.opacity = '0.5';
-    btnNext.style.pointerEvents = 'none';
+function closeFlow(){
+  document.getElementById('flow-overlay').style.display='none';
+  activeFlowId=null;
+}
+
+document.getElementById('flow-overlay').addEventListener('click',function(e){
+  if(e.target===this)closeFlow();
+});
+
+// ── STEP DATA ──
+var ST=[
+  {l:'Geolocalizaci\u00f3n',
+   m:[
+    {s:'sys',x:'WDB/593IA \u00b7 Canal oficial de ventas Xtrim'},
+    {s:'bot',x:'Hola! Soy WDB/593IA \ud83d\udc4b\nTe ayudo a contratar internet Xtrim sin salir de WhatsApp.\n\n\u00bfEn qu\u00e9 direcci\u00f3n necesitas el servicio?'},
+    {s:'usr',x:'Cdla. Kennedy Norte, Guayaquil'},
+    {s:'bot',x:'Consultando cobertura Xtrim...',a:1},
+    {s:'bot',x:'\u2705 \u00a1Cobertura disponible!\n\nEncontr\u00e9 3 planes para tu zona:'},
+    {s:'flow',fid:'planes',label:'&#128246; Seleccionar mi plan',next:'Plan 60 Mbps - $29.99/mes \u2705'}
+  ]},
+  {l:'Selecci\u00f3n de plan',
+   m:[
+    {s:'bot',x:'Perfecto! Plan confirmado \u2705\n\nAhora verificar\u00e9 tu elegibilidad con Xtrim.\n\n\u00bfCu\u00e1l es tu n\u00famero de c\u00e9dula?'},
+    {s:'usr',x:'1756432890'}
+  ]},
+  {l:'Validaci\u00f3n crediticia',
+   m:[
+    {s:'bot',x:'Consultando bur\u00f3 con Xtrim...',a:1},
+    {s:'bot',x:'\u2705 \u00a1Aprobado!\n\nPerfil crediticio validado por Xtrim.\n\nIngresa tus datos personales para continuar:'},
+    {s:'flow',fid:'datos',label:'&#128100; Completar mis datos',next:'Datos personales confirmados \u2705'}
+  ]},
+  {l:'Datos personales',
+   m:[
+    {s:'bot',x:'Datos registrados \u2705\n\nConfigura tu forma de pago:'},
+    {s:'flow',fid:'pago',label:'&#128179; Configurar pago',next:'D\u00e9bito Banco Pichincha \u2705'}
+  ]},
+  {l:'Forma de pago',
+   m:[
+    {s:'bot',x:'Pago configurado \u2705\n\nVamos con el contrato:\n\n1\ufe0f\u20e3 Foto c\u00e9dula (ambos lados)\n2\ufe0f\u20e3 Selfie para biometr\u00eda'},
+    {s:'usr',x:'\ud83d\udcce cedula_frente.jpg'},
+    {s:'usr',x:'\ud83d\udcce cedula_posterior.jpg'},
+    {s:'usr',x:'\ud83d\udcce selfie_biometria.jpg'},
+    {s:'bot',x:'Biometr\u00eda validada \u2705\nFirma electr\u00f3nica completada \u2705\nContrato enviado a tu correo \ud83d\udce7'}
+  ]},
+  {l:'Instalaci\u00f3n',
+   m:[
+    {s:'bot',x:'Elige tu ventana de instalaci\u00f3n:'},
+    {s:'flow',fid:'agenda',label:'&#128197; Agendar instalaci\u00f3n',next:'Ma\u00f1ana 9am-12pm confirmado \u2705'}
+  ]},
+  {l:'Comisi\u00f3n',
+   m:[
+    {s:'sys',x:'Notificaci\u00f3n Xtrim: Servicio instalado y activo \u2705'},
+    {s:'bot',x:'\ud83d\udd14 Xtrim confirm\u00f3:\nServicio activo en Kennedy Norte \u2705'},
+    {s:'bot',x:'\ud83d\udcb0 \u00a1Comisi\u00f3n procesada!\n\nSe han transferido $20.00 a tu cuenta.\n\n\u00a1Gracias por usar WDB/593IA! \ud83d\ude80'}
+  ]}
+];
+
+// ── CHAT ENGINE ──
+function getTS(){var n=new Date();return n.getHours()+':'+('0'+n.getMinutes()).slice(-2);}
+function scrollDown(){window.scrollTo(0,document.body.scrollHeight+999);}
+function removeTyping(){var t=document.getElementById('td');if(t&&t.parentNode)t.parentNode.removeChild(t);}
+function showTyping(){
+  removeTyping();
+  var c=document.getElementById('chat');
+  var d=document.createElement('div');d.className='ty';d.id='td';
+  d.innerHTML='<div class="dt"></div><div class="dt"></div><div class="dt"></div>';
+  c.appendChild(d);scrollDown();
+}
+
+function addMsg(m){
+  removeTyping();
+  var c=document.getElementById('chat');
+  if(m.s==='sys'){
+    var d=document.createElement('div');d.className='sysmsg';d.textContent=m.x;c.appendChild(d);scrollDown();return;
+  }
+  if(m.s==='flow'){
+    // Flow trigger button
+    var wrap=document.createElement('div');wrap.className='flow-trigger';
+    var btn=document.createElement('button');btn.className='flow-trigger-btn';
+    btn.innerHTML='<div class="flow-icon-sm">&#9889;</div>'+m.label;
+    var fid=m.fid;
+    btn.addEventListener('click',function(){
+      btn.className='flow-trigger-btn used';
+      openFlow(fid,function(){
+        // After submit, continue queue
+        setTimeout(nextMsg,300);
+      });
+    });
+    wrap.appendChild(btn);
+    c.appendChild(wrap);
+    scrollDown();
+    // PAUSE — wait for user to open and submit flow
+    return 'pause';
+  }
+  var d=document.createElement('div');d.className='b '+m.s;
+  var h=m.x.replace(/\n/g,'<br>');
+  if(m.a)h+=' <span class="apitag">API Xtrim</span>';
+  h+='<div class="bt">'+getTS()+(m.s==='usr'?' \u2713\u2713':'')+'</div>';
+  d.innerHTML=h;c.appendChild(d);scrollDown();
+}
+
+function nextMsg(){
+  if(qi>=qm.length){stepDone();return;}
+  var m=qm[qi];qi++;
+  if(m.s==='sys'||m.s==='flow'){
+    var r=addMsg(m);
+    if(r==='pause'){running=false;return;} // Wait for flow
+    setTimeout(nextMsg,350);return;
+  }
+  showTyping();
+  setTimeout(function(){addMsg(m);setTimeout(nextMsg,300);},m.s==='bot'?850:380);
+}
+
+function stepDone(){
+  document.getElementById('bst').textContent='en l\u00ednea';
+  var last=cur===ST.length-1;
+  if(last){
+    document.getElementById('ht').textContent='Venta cerrada \u00b7 comisi\u00f3n de $20 transferida \u2713';
+    btnOn('Completado \u2713');document.getElementById('bn').className='bbtn pr off';
   } else {
-    const stepNames = ['ver respuesta del bot','continuar','ver catálogo','ver PDV cercano','ver formulario','ver pago','ver confirmación','siguiente'];
-    hint.textContent = `Toca para ${stepNames[currentStep+1] || 'continuar'}`;
-    btnNext.textContent = '▶ Siguiente paso';
-    btnNext.style.opacity = '1';
-    btnNext.style.pointerEvents = 'auto';
+    document.getElementById('ht').textContent='Etapa '+(cur+1)+' de 7 \u2014 pulsa Siguiente';
+    btnOn('Siguiente etapa \u25ba');
   }
+  running=false;
 }
 
-function nextStep() {
-  const flow = FLOWS[currentFlow];
-  if(currentStep < flow.messages.length - 1) {
-    currentStep++;
-    renderMessages();
-  }
+function renderProgress(a){
+  document.getElementById('pb').style.width=(a<0?'0':Math.round(((a+1)/7)*100))+'%';
+  document.getElementById('step-count').textContent=(a<0?0:a+1)+' / 7';
+  document.getElementById('step-cur').textContent=a<0?'Listo para comenzar':ST[a].l;
 }
 
-function restartFlow() {
-  currentStep = 0;
-  renderMessages();
+function btnOff(){document.getElementById('bn').className='bbtn pr off';}
+function btnOn(t){var b=document.getElementById('bn');b.className='bbtn pr';b.textContent=t;}
+
+function nextStep(){
+  if(running)return;running=true;btnOff();
+  cur++;
+  if(cur>=ST.length){running=false;return;}
+  renderProgress(cur);
+  document.getElementById('bst').textContent='escribiendo\u2026';
+  qm=ST[cur].m;qi=0;nextMsg();
+}
+
+function resetDemo(){
+  cur=-1;running=false;qi=0;qm=[];flowCB=null;
+  removeTyping();closeFlow();
+  document.getElementById('chat').innerHTML='<div class="datepill">Hoy</div><div class="sysmsg">WDB/593IA \u00b7 Canal oficial de ventas Xtrim</div>';
+  document.getElementById('ht').textContent='Pulsa Iniciar demo para comenzar';
+  document.getElementById('bst').textContent='en l\u00ednea';
+  btnOn('Iniciar demo \u25ba');
+  renderProgress(-1);
+}
+
+function startApp(){
+  var i=document.getElementById('intro');i.className='hide';
+  setTimeout(function(){i.style.display='none';},500);
+  document.getElementById('main').className='show';
+  renderProgress(-1);
 }
 </script>
 </body>
