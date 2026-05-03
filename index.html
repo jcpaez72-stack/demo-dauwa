@@ -24,13 +24,21 @@
   --sal: env(safe-area-inset-left, 0px);
 }
 
-html, body {
+html {
   width: 100%; height: 100%;
+  height: -webkit-fill-available;
+}
+
+body {
+  width: 100%; height: 100%;
+  height: -webkit-fill-available;
   background: var(--bg);
   font-family: var(--ff);
   color: var(--tx);
   overflow: hidden;
   -webkit-text-size-adjust: 100%;
+  position: fixed;
+  inset: 0;
 }
 
 /* ══════════════════════════════════════
@@ -120,14 +128,17 @@ html, body {
 ══════════════════════════════════════ */
 #app {
   display: none;
-  position: fixed; inset: 0;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  /* iOS Safari: usar env() para safe areas */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  /* NO padding-bottom — lo maneja .controls */
   flex-direction: column;
-  /* Forzar que el contenedor respete safe areas */
-  padding-top: var(--sat);
-  padding-left: var(--sal);
-  padding-right: var(--sar);
-  /* NO padding-bottom aquí — lo manejamos en los controles */
   background: var(--bg);
+  /* Forzar que los hijos no excedan el contenedor */
+  overflow: hidden;
 }
 
 /* HEADER fijo — nunca se mueve */
@@ -228,9 +239,11 @@ html, body {
 /* CONTROLES — fijos en bottom con safe area */
 .controls {
   flex: 0 0 auto;
-  padding: 10px 12px max(var(--sab), 10px);
+  /* padding-bottom respeta el home indicator de iPhone */
+  padding: 10px 12px;
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
   background: var(--s1); border-top: 0.5px solid var(--br);
-  display: flex; gap: 8px;
+  display: flex; gap: 8px; flex-wrap: wrap;
 }
 
 .ctrl-btn {
@@ -499,7 +512,7 @@ html, body {
 
   <!-- HEADER -->
   <div class="app-header">
-    <button class="h-back" onclick="goHome()" title="Regresar al inicio">←</button>
+    <button class="h-back" onclick="goHome()" title="Menú principal">←</button>
     <div class="h-avatar" id="hAvatar">DA</div>
     <div class="h-info">
       <div class="h-name" id="hName">DAWUA ✓</div>
@@ -579,7 +592,8 @@ const FLOWS = [
         {role:'user', text:'I want 100ml - $22'},
         {role:'bot', text:'Great choice! 🌿 To find the closest store with confirmed stock, share your hotel name or location:', nlu:'🧠 NLU → FIND_STORE · radius 1km · stock>0', ftag:'📍 WhatsApp Location · Jelou'},
         {role:'user', text:'Royal Palm Hotel'},
-        {role:'bot', text:'Got it! 🗺️ Closest point with confirmed stock right now:', nlu:'🧠 NLU → FIND_STORE · Royal Palm · Jelou', widget:'pdv', qrs:['Walk me there 🗺️','Deliver to my hotel 🛵']}
+        {role:'bot', text:'Got it! 🗺️ Closest point with confirmed stock right now:', nlu:'🧠 NLU → FIND_STORE · Royal Palm · Jelou', widget:'pdv', qrs:['Walk me there 🗺️','Deliver to my hotel 🛵']},
+        {role:'bot', text:'📍 <b>Hotel Finch Bay</b> — 850m from Royal Palm Hotel\n\nWould you like directions?\n👉 <a href="https://maps.google.com/?q=Hotel+Finch+Bay+Galapagos" style="color:#00D68F">Open in Google Maps</a>\n\nOr I can arrange delivery directly to your hotel with Ariana (~30 min)', nlu:'🧠 NLU → MAPS_LINK · Finch Bay · stock:9u · Jelou', ftag:'📍 WhatsApp Location · Google Maps · Jelou', qrs:['Walk me there 🗺️','Deliver to my hotel 🛵']}
       ],
       // Paso 4 — formulario entrega
       [
@@ -604,16 +618,17 @@ const FLOWS = [
     labelFull: 'Flujo Operación Ariana',
     avatar: 'AR', name: 'Ariana Páez ✓',
     status: 'Operadora territorial · Santa Cruz · Jelou',
-    tabs: ['Registro','Stock','Alerta','Reposición','Reporte'],
-    steps: ['Entrega PDV','Confirmación','Alerta baja','Reabastece','Resumen'],
+    tabs: ['Registro','Stock','Ventas PDV','Alerta','Reposición','Reporte'],
+    steps: ['Entrega PDV','Confirmación','Venta PDV','Alerta baja','Reabastece','Resumen'],
     jelouCtxSteps: [
       '🏝️ Santa Cruz · 📦 Registro entrega · Ikala',
-      '🏝️ Santa Cruz · ✅ Stock actualizado · Ikala 12u',
-      '🏝️ Santa Cruz · 🚨 Stock bajo · Tienda Malecón #1',
+      '🏝️ Santa Cruz · ✅ Stock actualizado · Ikala 16u',
+      '🏝️ Santa Cruz · 🛍️ Malecón #1 · vendió 3u · stock: 3u',
+      '🏝️ Santa Cruz · 🚨 Alerta automática · Malecón #1 crítico',
       '🏝️ Santa Cruz · 🔄 Reposición solicitada · DAWUA GYE',
       '🏝️ Santa Cruz · 📊 Reporte semanal listo'
     ],
-    tabActive: [0,0,1,2,3,4],
+    tabActive: [0,0,1,2,3,4,5],
     messages: [
       [
         {role:'user', text:'entregué 12 100ml en Ikala'},
@@ -623,9 +638,16 @@ const FLOWS = [
         {role:'user', text:'Sí, confirmar ✓'},
         {role:'bot', text:'Stock actualizado en el sistema 📦\n\n<b>Ikala:</b> 16u ✅ Stock OK\n<b>Red Mangrove:</b> 9u ✅ Stock OK\n<b>Finch Bay:</b> 11u ✅ Stock OK\n<b>Malecón #1:</b> 3u ⚠️ Stock bajo\n<b>Royal Palm:</b> 7u ✅ Stock OK', nlu:'🧠 NLU → STOCK_CONFIRM · sync OK · Jelou'}
       ],
+      // Paso B — PDV confirma ventas
+      [
+        {role:'user', text:'Malecón #1: vendí 3 frascos hoy'},
+        {role:'bot', text:'✅ Venta registrada en <b>Tienda Malecón #1</b>\n\n— 3 unidades 100ml · hoy 16:45\n— Stock anterior: 6u → Stock actual: <b>3u</b>\n\n⚠️ Stock bajo — umbral mínimo: 5u\nAriana recibirá alerta de reposición ahora.', nlu:'🧠 NLU → STOCK_OUT · PDV:Malecón#1 · qty:3 · Jelou', ftag:'📦 WhatsApp Flow · venta PDV · Jelou'}
+      ],
+      // Paso C — Alerta automática
       [
         {role:'bot', text:'', widget:'alert', qrs:['Voy a reponer ahora','Pedir lote a DAWUA GYE']}
       ],
+      // Paso D — Reposición
       [
         {role:'user', text:'Pedir lote a DAWUA GYE'},
         {role:'bot', text:'Solicitud de reposición enviada automáticamente a DAWUA Guayaquil 📤\n\n<b>Destino:</b> Tienda Malecón #1\n<b>Cantidad sugerida:</b> 15 unidades 100ml\n<b>Método:</b> Próximo vuelo UIO-GPS\n<b>ETA estimado:</b> 2 días hábiles\n\nDAWUA recibirá la alerta en su WhatsApp ahora.', nlu:'🧠 NLU → RESTOCK_REQUEST · auto · Jelou', ftag:'✈️ Logística GPS · vuelo próximo · Jelou'}
