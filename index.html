@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<title>DAWUA 593IA · Demo WDB</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & ROOT ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --v: #085041; --vm: #1D9E75; --vc: #E1F5EE; --vb: #00D68F;
+  --bg: #0A0A0A; --s1: #141414; --s2: #1E1E1E; --s3: #2A2A2A;
+  --br: #2E2E2E; --tx: #F0F0F0; --ts: #888; --amber: #F5A623;
+  --red: #E24B4A; --pur: #7C3AED; --pur2: #A78BFA;
+  --chat-bot-bg: #162820; --chat-bot-br: #1E3D2F; --chat-user-bg: #0B4034;
+  --ff: 'Inter', sans-serif; --fd: 'Syne', sans-serif; --fm: 'IBM Plex Mono', monospace;
+  --r: 12px; --rs: 8px;
+  /* Safe areas iOS */
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  font-family: var(--ff);
+  color: var(--tx);
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ══════════════════════════════════════
+   SPLASH
+══════════════════════════════════════ */
+#splash {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column; align-items: center;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: max(var(--sat), 24px) 20px max(var(--sab), 24px);
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, #0D3D2B 0%, #0A0A0A 70%);
+  z-index: 200;
+}
+
+.splash-inner {
+  width: 100%; max-width: 400px;
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 16px;
+}
+
+.sp-eye { font-family: var(--fm); font-size: 10px; letter-spacing: .2em; color: var(--vm); margin-bottom: 16px; }
+
+.sp-logo {
+  width: 72px; height: 72px; border-radius: 20px;
+  background: linear-gradient(135deg, #0F6E56 0%, #085041 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; margin-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(0,214,143,0.2);
+}
+
+.sp-title { font-family: var(--fd); font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.sp-sub { font-size: 12px; color: var(--ts); text-align: center; margin-bottom: 6px; font-family: var(--fm); }
+
+.demo-badge {
+  background: var(--pur); color: #fff; font-family: var(--fm);
+  font-size: 9px; font-weight: 500; letter-spacing: .1em;
+  padding: 3px 12px; border-radius: 20px; margin-bottom: 20px;
+}
+
+.sp-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  width: 100%; margin-bottom: 20px;
+}
+
+.sp-tile {
+  background: var(--s1); border: 0.5px solid var(--br);
+  border-radius: var(--r); padding: 12px 14px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+
+.sp-tile-icon { font-size: 20px; flex-shrink: 0; }
+.sp-tile-title { font-size: 12px; font-weight: 600; color: var(--tx); margin-bottom: 2px; }
+.sp-tile-sub { font-size: 10px; color: var(--vm); }
+
+.sp-flow-label { font-family: var(--fm); font-size: 9px; letter-spacing: .12em; color: var(--ts); margin-bottom: 10px; }
+
+.sp-flows {
+  display: flex; gap: 8px; margin-bottom: 20px;
+}
+
+.sp-flow-btn {
+  flex: 1; border: 0.5px solid var(--br); border-radius: 20px;
+  background: var(--s1); color: var(--ts); font-family: var(--fm);
+  font-size: 10px; padding: 8px 6px; cursor: pointer;
+  transition: all .2s; text-align: center;
+}
+
+.sp-flow-btn.active {
+  border-color: var(--vb); color: var(--vb);
+  background: rgba(0,214,143,0.08);
+}
+
+.sp-start {
+  width: 100%; background: linear-gradient(135deg, #0F6E56, #085041);
+  color: #fff; border: none; border-radius: var(--r);
+  font-family: var(--fd); font-size: 16px; font-weight: 700;
+  padding: 16px; cursor: pointer; margin-bottom: 14px;
+  box-shadow: 0 4px 20px rgba(0,214,143,0.25);
+  letter-spacing: .01em;
+}
+
+.sp-credit { font-family: var(--fm); font-size: 9px; color: #333; text-align: center; line-height: 1.7; }
+.sp-credit strong { color: var(--vm); }
+
+/* ══════════════════════════════════════
+   APP — layout fijo iOS-safe
+══════════════════════════════════════ */
+#app {
+  display: none;
+  position: fixed; inset: 0;
+  flex-direction: column;
+  /* Forzar que el contenedor respete safe areas */
+  padding-top: var(--sat);
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+  /* NO padding-bottom aquí — lo manejamos en los controles */
+  background: var(--bg);
+}
+
+/* HEADER fijo — nunca se mueve */
+.app-header {
+  flex: 0 0 auto;
+  height: 52px;
+  background: var(--s1);
+  border-bottom: 0.5px solid var(--br);
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 12px;
+  z-index: 10;
+}
+
+.h-back {
+  background: none; border: none; color: var(--vm);
+  font-size: 20px; cursor: pointer; padding: 6px 4px;
+  line-height: 1; flex-shrink: 0;
+}
+
+.h-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, #0F6E56, #085041);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fd); font-size: 13px; font-weight: 700;
+  color: #fff; flex-shrink: 0;
+}
+
+.h-info { flex: 1; min-width: 0; }
+.h-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.h-status { font-size: 10px; color: var(--vm); font-family: var(--fm); }
+.h-pill { background: var(--pur); color: #fff; font-family: var(--fm); font-size: 8px; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
+
+/* JELOU BAR — fijo */
+.jelou-bar {
+  flex: 0 0 auto;
+  height: 26px;
+  background: #0A1A14; border-bottom: 0.5px solid #1A2E22;
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px; overflow: hidden;
+}
+
+.j-dot { width: 6px; height: 6px; background: var(--vb); border-radius: 50%; flex-shrink: 0; }
+.j-text { font-family: var(--fm); font-size: 9px; color: #4A8A6A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* FLOW TABS — fijos */
+.flow-tabs {
+  flex: 0 0 auto;
+  height: 34px;
+  background: var(--s1); border-bottom: 0.5px solid var(--br);
+  display: flex;
+}
+
+.ft-btn {
+  flex: 1; background: none; border: none; color: #555;
+  font-family: var(--fm); font-size: 8px; cursor: pointer;
+  position: relative; transition: color .2s; padding: 0 2px;
+  text-align: center; line-height: 1.2;
+}
+
+.ft-btn.active { color: var(--vb); }
+.ft-btn.active::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 15%; right: 15%; height: 2px;
+  background: var(--vb); border-radius: 2px 2px 0 0;
+}
+
+/* STEP PILLS — fijos */
+.step-bar {
+  flex: 0 0 auto;
+  height: 32px;
+  background: var(--bg); border-bottom: 0.5px solid #1A1A1A;
+  display: flex; align-items: center; gap: 5px;
+  padding: 0 10px; overflow-x: auto; scrollbar-width: none;
+}
+.step-bar::-webkit-scrollbar { display: none; }
+
+.step-p {
+  flex-shrink: 0; font-family: var(--fm); font-size: 8px;
+  padding: 2px 8px; border-radius: 10px;
+  border: 0.5px solid #333; color: #444; white-space: nowrap;
+  transition: all .2s;
+}
+.step-p.done { border-color: var(--v); color: var(--vm); }
+.step-p.active { border-color: var(--vb); color: var(--vb); background: rgba(0,214,143,0.06); }
+
+/* CHAT AREA — flex: 1, scrollable */
+.chat-area {
+  flex: 1 1 0;
+  min-height: 0; /* CRÍTICO para que flex funcione */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  padding: 12px 10px;
+  display: flex; flex-direction: column; gap: 8px;
+  background: #0C0C0C;
+}
+
+/* CONTROLES — fijos en bottom con safe area */
+.controls {
+  flex: 0 0 auto;
+  padding: 10px 12px max(var(--sab), 10px);
+  background: var(--s1); border-top: 0.5px solid var(--br);
+  display: flex; gap: 8px;
+}
+
+.ctrl-btn {
+  flex: 1; border: 0.5px solid var(--br); border-radius: var(--rs);
+  background: var(--s2); color: var(--ts);
+  font-family: var(--fm); font-size: 11px;
+  padding: 10px 8px; cursor: pointer;
+  transition: all .15s; text-align: center;
+}
+
+.ctrl-btn:active { background: var(--s3); }
+
+.ctrl-next {
+  flex: 2; background: var(--v); border-color: var(--v);
+  color: #fff; font-weight: 600;
+}
+
+.ctrl-next:active { background: #0F6E56; }
+
+.ctrl-hint {
+  text-align: center; font-family: var(--fm); font-size: 9px;
+  color: #444; margin-bottom: 4px; padding: 0 12px;
+  flex-basis: 100%; order: -1;
+}
+
+/* ─── MENSAJES ─── */
+.msg { display: flex; flex-direction: column; }
+.msg-bot { align-items: flex-start; }
+.msg-user { align-items: flex-end; }
+
+.msg-bbl {
+  max-width: 85%; border-radius: 12px;
+  padding: 9px 12px; font-size: 12px; line-height: 1.55;
+}
+
+.msg-bot .msg-bbl {
+  background: var(--chat-bot-bg); border: 0.5px solid var(--chat-bot-br);
+  color: #D8F0E5; border-radius: 4px 12px 12px 12px;
+}
+
+.msg-user .msg-bbl {
+  background: var(--chat-user-bg); color: #fff;
+  border-radius: 12px 12px 4px 12px;
+}
+
+.msg-time { font-family: var(--fm); font-size: 8px; color: #3A3A3A; margin-top: 3px; padding: 0 3px; }
+.msg-bot .msg-time { text-align: left; }
+.msg-user .msg-time { text-align: right; }
+
+/* NLU tag */
+.nlu {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(124,58,237,.15); border: 0.5px solid rgba(124,58,237,.4);
+  color: var(--pur2); font-family: var(--fm); font-size: 8px;
+  padding: 2px 8px; border-radius: 8px; margin-top: 5px;
+}
+
+/* Flow tag */
+.ftag {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(29,158,117,.12); border: 0.5px solid rgba(29,158,117,.35);
+  color: var(--vm); font-family: var(--fm); font-size: 8px;
+  padding: 2px 8px; border-radius: 8px; margin-top: 4px; margin-left: 4px;
+}
+
+/* Quick replies */
+.qrs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+
+.qr {
+  background: none; border: 0.5px solid var(--vm);
+  color: var(--vm); font-family: var(--ff); font-size: 11px;
+  padding: 6px 11px; border-radius: 16px; cursor: pointer;
+  transition: all .15s; text-align: left;
+}
+.qr:active { background: var(--v); color: #fff; border-color: var(--v); }
+
+/* WIDGET in-chat */
+.widget {
+  background: var(--s2); border: 0.5px solid var(--br);
+  border-radius: 10px; overflow: hidden; margin-top: 5px;
+  font-size: 12px; width: 100%; max-width: 85%;
+}
+
+.widget-hd {
+  background: var(--s3); padding: 6px 10px;
+  font-family: var(--fm); font-size: 9px; color: var(--ts);
+  border-bottom: 0.5px solid var(--br);
+  display: flex; align-items: center; gap: 6px;
+}
+
+.widget-body { padding: 10px; }
+
+/* Catálogo card */
+.cat-card {
+  background: var(--s1); border: 0.5px solid var(--br);
+  border-radius: var(--rs); padding: 10px; margin-bottom: 8px;
+  display: flex; gap: 10px; align-items: center;
+}
+.cat-card:last-child { margin-bottom: 0; }
+.cat-emoji { font-size: 28px; }
+.cat-info { flex: 1; }
+.cat-name { font-size: 12px; font-weight: 600; color: var(--tx); }
+.cat-desc { font-size: 10px; color: var(--ts); margin: 2px 0 4px; }
+.cat-price { font-size: 13px; font-weight: 700; color: var(--vb); }
+.cat-badge { font-family: var(--fm); font-size: 8px; color: var(--vm); background: rgba(29,158,117,.12); padding: 1px 6px; border-radius: 8px; }
+
+/* PDV card */
+.pdv-card {
+  background: var(--s1); border: 0.5px solid var(--br);
+  border-radius: var(--rs); padding: 10px; margin-bottom: 6px;
+}
+.pdv-card:last-child { margin-bottom: 0; }
+.pdv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.pdv-name { font-size: 12px; font-weight: 600; }
+.pdv-dist { font-size: 10px; color: var(--vm); font-family: var(--fm); }
+.pdv-stock-bar { height: 4px; background: var(--s3); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.pdv-stock-fill { height: 100%; border-radius: 2px; }
+.pdv-map { font-family: var(--fm); font-size: 9px; color: var(--vm); }
+
+/* Formulario */
+.form-field {
+  background: var(--s1); border: 0.5px solid var(--br);
+  border-radius: var(--rs); padding: 8px 10px; margin-bottom: 6px;
+  font-size: 11px;
+}
+.field-lbl { font-family: var(--fm); font-size: 9px; color: var(--ts); margin-bottom: 2px; }
+.field-val { font-size: 12px; color: var(--tx); font-weight: 500; }
+
+/* Pago */
+.pay-opt {
+  border: 0.5px solid var(--br); border-radius: var(--rs);
+  padding: 10px; margin-bottom: 6px; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  transition: border-color .2s;
+}
+.pay-opt.selected { border-color: var(--vb); background: rgba(0,214,143,0.05); }
+.pay-icon { font-size: 20px; }
+.pay-info { flex: 1; }
+.pay-name { font-size: 12px; font-weight: 600; }
+.pay-sub { font-size: 10px; color: var(--ts); }
+.pay-badge { font-family: var(--fm); font-size: 8px; padding: 2px 7px; border-radius: 8px; }
+.pay-badge-rec { background: rgba(0,214,143,.15); color: var(--vb); }
+.pay-badge-ins { background: rgba(100,149,237,.15); color: #6495ED; }
+.pay-badge-deb { background: rgba(245,166,35,.15); color: var(--amber); }
+
+.cuotas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
+.cuota {
+  background: var(--s1); border: 0.5px solid var(--br);
+  border-radius: var(--rs); padding: 8px 6px; text-align: center;
+  cursor: pointer; transition: all .2s;
+}
+.cuota.sel { border-color: var(--vb); background: rgba(0,214,143,0.08); }
+.cuota-n { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--vb); }
+.cuota-lbl { font-size: 9px; color: var(--ts); }
+.cuota-val { font-size: 11px; font-weight: 600; color: var(--tx); margin-top: 2px; }
+.cuota-int { font-size: 9px; color: var(--amber); }
+
+/* Stock badge */
+.stock-ok { color: var(--vb); }
+.stock-mid { color: var(--amber); }
+.stock-low { color: var(--red); }
+
+/* Reporte */
+.report-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0; border-bottom: 0.5px solid var(--br);
+  font-size: 11px;
+}
+.report-row:last-child { border-bottom: none; }
+.report-lbl { color: var(--ts); }
+.report-val { font-weight: 600; font-family: var(--fm); font-size: 11px; }
+
+/* Confirmación */
+.confirm-box {
+  background: linear-gradient(135deg, #0A2A1F, #0F3D2A);
+  border: 0.5px solid var(--vm); border-radius: var(--rs);
+  padding: 12px; text-align: center;
+}
+.confirm-icon { font-size: 32px; margin-bottom: 6px; }
+.confirm-title { font-family: var(--fd); font-size: 15px; font-weight: 700; color: var(--vb); margin-bottom: 4px; }
+.confirm-sub { font-size: 11px; color: var(--ts); line-height: 1.5; }
+.confirm-id { font-family: var(--fm); font-size: 9px; color: var(--vm); margin-top: 6px; }
+
+/* Alerta */
+.alert-box {
+  background: #1A0F0F; border: 0.5px solid var(--red);
+  border-radius: var(--rs); padding: 10px;
+  font-size: 11px; color: #F5A5A5;
+}
+.alert-title { font-weight: 600; color: var(--red); margin-bottom: 3px; font-size: 12px; }
+
+/* Typing indicator */
+.typing { display: flex; align-items: center; gap: 3px; padding: 8px 12px; }
+.typing span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--vm); opacity: .4;
+  animation: blink 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay: .2s; }
+.typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     SPLASH
+════════════════════════════════════ -->
+<div id="splash">
+  <div class="splash-inner">
+    <p class="sp-eye">W D B &nbsp;/&nbsp; 5 9 3 I A</p>
+    <div class="sp-logo">🌿</div>
+    <h1 class="sp-title">DAWUA</h1>
+    <p class="sp-sub">Agente Resolutivo · DAWUA NATURE S.A.<br>Todo resuelto dentro de WhatsApp · Jelou</p>
+    <div class="demo-badge">DEMO WDB</div>
+
+    <div class="sp-grid">
+      <div class="sp-tile">
+        <span class="sp-tile-icon">💬</span>
+        <div><div class="sp-tile-title">Catálogo in-chat</div><div class="sp-tile-sub">Selección · 100ml · 60ml</div></div>
+      </div>
+      <div class="sp-tile">
+        <span class="sp-tile-icon">💳</span>
+        <div><div class="sp-tile-title">Pagos integrados</div><div class="sp-tile-sub">Nuvei · Pichincha · Cuotas</div></div>
+      </div>
+      <div class="sp-tile">
+        <span class="sp-tile-icon">📍</span>
+        <div><div class="sp-tile-title">Geolocalización</div><div class="sp-tile-sub">PDV más cercano · stock real</div></div>
+      </div>
+      <div class="sp-tile">
+        <span class="sp-tile-icon">📦</span>
+        <div><div class="sp-tile-title">Trazabilidad</div><div class="sp-tile-sub">5 PDV · Santa Cruz</div></div>
+      </div>
+      <div class="sp-tile">
+        <span class="sp-tile-icon">🌍</span>
+        <div><div class="sp-tile-title">Multilenguaje</div><div class="sp-tile-sub">ES · EN · DE · FR</div></div>
+      </div>
+      <div class="sp-tile">
+        <span class="sp-tile-icon">🛵</span>
+        <div><div class="sp-tile-title">Entrega Ariana</div><div class="sp-tile-sub">Hoteles · Puerto Ayora</div></div>
+      </div>
+    </div>
+
+    <p class="sp-flow-label">SELECCIONA EL FLUJO A DEMOSTRAR</p>
+    <div class="sp-flows">
+      <button class="sp-flow-btn active" onclick="selectFlow(0,this)">1 · Cliente</button>
+      <button class="sp-flow-btn" onclick="selectFlow(1,this)">2 · Ariana</button>
+      <button class="sp-flow-btn" onclick="selectFlow(2,this)">3 · Reporte DAWUA</button>
+    </div>
+
+    <button class="sp-start" onclick="startDemo()">Iniciar demo ▶</button>
+
+    <p class="sp-credit">
+      <strong>Juan Carlos Páez</strong><br>
+      WDB · 593IA · Arquitectura de proyectos sobre tecnología<br>
+      <strong>JELOU Platform Partner · 593IA</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     APP
+════════════════════════════════════ -->
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="app-header">
+    <button class="h-back" onclick="goHome()" title="Regresar al inicio">←</button>
+    <div class="h-avatar" id="hAvatar">DA</div>
+    <div class="h-info">
+      <div class="h-name" id="hName">DAWUA ✓</div>
+      <div class="h-status" id="hStatus">Agente resolutivo · Galápagos · Jelou · ES</div>
+    </div>
+    <div class="h-pill">DEMO WDB</div>
+  </div>
+
+  <!-- JELOU BAR -->
+  <div class="jelou-bar">
+    <div class="j-dot"></div>
+    <div class="j-text" id="jelouCtx">🏝️ Santa Cruz · 🌿 Hierba Luisa · 💵 en proceso</div>
+  </div>
+
+  <!-- FLOW TABS -->
+  <div class="flow-tabs" id="flowTabs"></div>
+
+  <!-- STEP PILLS -->
+  <div class="step-bar" id="stepBar"></div>
+
+  <!-- CHAT -->
+  <div class="chat-area" id="chatArea"></div>
+
+  <!-- CONTROLES -->
+  <div class="controls">
+    <div class="ctrl-hint" id="ctrlHint">Toca el flujo que quieres ver</div>
+    <button class="ctrl-btn" onclick="restartFlow()">↺ Reiniciar</button>
+    <button class="ctrl-btn ctrl-next" id="btnNext" onclick="nextStep()">▶ Siguiente paso</button>
+  </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════
+// DATOS / FLOWS
+// ════════════════════════════════════
+let currentFlow = 0;
+let currentStep = 0;
+
+const FLOWS = [
+  {
+    id: 0,
+    label: '1·Cliente',
+    labelFull: 'Flujo Cliente Turista',
+    avatar: 'DA', name: 'DAWUA ✓',
+    status: 'Agente resolutivo · Galápagos · Jelou · ES/EN',
+    tabs: ['Cotización','Catálogo','Ubicación','Entrega','Pago','Confirmación'],
+    steps: ['Saludo','Idioma','Catálogo','PDV cercano','Formulario','Pago','Ticket'],
+    jelouCtxSteps: [
+      '🏝️ Santa Cruz · 🌿 Saludo · idioma pendiente',
+      '🏝️ Santa Cruz · 🌿 Hierba Luisa · EN activo',
+      '🏝️ Santa Cruz · 🌿 100ml $22 · seleccionado',
+      '🏝️ Santa Cruz · 📍 Royal Palm Hotel · 1km',
+      '🏝️ Santa Cruz · 📦 Entrega en hotel · datos OK',
+      '🏝️ Santa Cruz · 💳 Nuvei · 3 cuotas $7.33',
+      '🏝️ Santa Cruz · ✅ #DW-2024-0847 confirmado'
+    ],
+    tabActive: [0,0,1,2,3,4,5],
+    messages: [
+      // Paso 0 — saludo
+      [
+        {role:'user', text:'Hola, vi el aceite repelente DAWUA en mi hotel ¿dónde lo compro?'},
+        {role:'bot', text:'¡Hola! 🌿 Soy el asistente de <b>DAWUA Galápagos</b>. Te ayudo a encontrar nuestro <b>Aceite Repelente de Hierba Luisa</b>, 100% ecuatoriano y permitido por el Parque Nacional. ¿Quieres ver el catálogo o ubicar el punto más cercano?', nlu:'🧠 NLU → SALUDO · idioma: ES · Jelou', qrs:['English please','Ver catálogo','Punto más cercano']}
+      ],
+      // Paso 1 — switch idioma
+      [
+        {role:'user', text:'English please'},
+        {role:'bot', text:'Sure! 🌿 Switching to English. I\'m the <b>DAWUA Galápagos</b> assistant. Our <b>Lemongrass Repellent Oil</b> is 100% Ecuadorian, biodegradable and approved for use inside the National Park. What would you like to do?', nlu:'🧠 NLU → SWITCH_LANG · ES→EN · Jelou', ftag:'🔄 WhatsApp Flow · language switch · Jelou', qrs:['See catalog','Closest store','Order now']}
+      ],
+      // Paso 2 — catálogo
+      [
+        {role:'user', text:'See catalog'},
+        {role:'bot', text:'Here\'s our full catalog 👇', nlu:'🧠 NLU → CATALOG · intent>0.97 · Jelou', widget:'catalog', qrs:['I want 100ml - $22','I want 60ml - $15','Order both']}
+      ],
+      // Paso 3 — PDV
+      [
+        {role:'user', text:'I want 100ml - $22'},
+        {role:'bot', text:'Great choice! 🌿 To find the closest store with confirmed stock, share your hotel name or location:', nlu:'🧠 NLU → FIND_STORE · radius 1km · stock>0', ftag:'📍 WhatsApp Location · Jelou'},
+        {role:'user', text:'Royal Palm Hotel'},
+        {role:'bot', text:'Got it! 🗺️ Closest point with confirmed stock right now:', nlu:'🧠 NLU → FIND_STORE · Royal Palm · Jelou', widget:'pdv', qrs:['Walk me there 🗺️','Deliver to my hotel 🛵']}
+      ],
+      // Paso 4 — formulario entrega
+      [
+        {role:'user', text:'Deliver to my hotel 🛵'},
+        {role:'bot', text:'Perfect! Ariana will deliver to your hotel in ~30 min. Please confirm your details:', nlu:'🧠 NLU → DELIVERY · hotel mode · Jelou', widget:'form', qrs:['Confirm details ✓']}
+      ],
+      // Paso 5 — pago
+      [
+        {role:'user', text:'Confirm details ✓'},
+        {role:'bot', text:'Almost done! 💳 Choose your payment method:', nlu:'🧠 NLU → PAYMENT · Nuvei · 3DS · Jelou', widget:'payment', qrs:[]}
+      ],
+      // Paso 6 — confirmación
+      [
+        {role:'user', text:'De Una · Banco Pichincha — 3 cuotas'},
+        {role:'bot', text:'', widget:'confirm', nlu:'🧠 NLU → CONFIRM · Nuvei OK · order placed · Jelou'}
+      ]
+    ]
+  },
+  {
+    id: 1,
+    label: '2·Ariana',
+    labelFull: 'Flujo Operación Ariana',
+    avatar: 'AR', name: 'Ariana Páez ✓',
+    status: 'Operadora territorial · Santa Cruz · Jelou',
+    tabs: ['Registro','Stock','Alerta','Reposición','Reporte'],
+    steps: ['Entrega PDV','Confirmación','Alerta baja','Reabastece','Resumen'],
+    jelouCtxSteps: [
+      '🏝️ Santa Cruz · 📦 Registro entrega · Ikala',
+      '🏝️ Santa Cruz · ✅ Stock actualizado · Ikala 12u',
+      '🏝️ Santa Cruz · 🚨 Stock bajo · Tienda Malecón #1',
+      '🏝️ Santa Cruz · 🔄 Reposición solicitada · DAWUA GYE',
+      '🏝️ Santa Cruz · 📊 Reporte semanal listo'
+    ],
+    tabActive: [0,0,1,2,3,4],
+    messages: [
+      [
+        {role:'user', text:'entregué 12 100ml en Ikala'},
+        {role:'bot', text:'✅ Entrega registrada:\n\n<b>Hotel Ikala</b> — +12 unidades 100ml\nStock actual: <b>16 unidades</b>\nFecha: hoy 14:32\n\n¿Confirmas el movimiento?', nlu:'🧠 NLU → STOCK_IN · PDV:Ikala · qty:12 · Jelou', ftag:'📦 WhatsApp Flow · inventario · Jelou', qrs:['Sí, confirmar ✓','Corregir cantidad']}
+      ],
+      [
+        {role:'user', text:'Sí, confirmar ✓'},
+        {role:'bot', text:'Stock actualizado en el sistema 📦\n\n<b>Ikala:</b> 16u ✅ Stock OK\n<b>Red Mangrove:</b> 9u ✅ Stock OK\n<b>Finch Bay:</b> 11u ✅ Stock OK\n<b>Malecón #1:</b> 3u ⚠️ Stock bajo\n<b>Royal Palm:</b> 7u ✅ Stock OK', nlu:'🧠 NLU → STOCK_CONFIRM · sync OK · Jelou'}
+      ],
+      [
+        {role:'bot', text:'', widget:'alert', qrs:['Voy a reponer ahora','Pedir lote a DAWUA GYE']}
+      ],
+      [
+        {role:'user', text:'Pedir lote a DAWUA GYE'},
+        {role:'bot', text:'Solicitud de reposición enviada automáticamente a DAWUA Guayaquil 📤\n\n<b>Destino:</b> Tienda Malecón #1\n<b>Cantidad sugerida:</b> 15 unidades 100ml\n<b>Método:</b> Próximo vuelo UIO-GPS\n<b>ETA estimado:</b> 2 días hábiles\n\nDAWUA recibirá la alerta en su WhatsApp ahora.', nlu:'🧠 NLU → RESTOCK_REQUEST · auto · Jelou', ftag:'✈️ Logística GPS · vuelo próximo · Jelou'}
+      ],
+      [
+        {role:'user', text:'resumen de la semana'},
+        {role:'bot', text:'Aquí tienes el resumen semanal 📊', nlu:'🧠 NLU → WEEKLY_REPORT · auto · Jelou', widget:'report_ariana'}
+      ]
+    ]
+  },
+  {
+    id: 2,
+    label: '3·Reporte',
+    labelFull: 'Reporte Semanal DAWUA',
+    avatar: 'DG', name: 'DAWUA GYE ✓',
+    status: 'Administración · Guayaquil · Jelou',
+    tabs: ['Ventas','Stock','Pedido','Despacho'],
+    steps: ['Reporte auto','Stock semáforo','Pedido sugerido','Aprobar envío'],
+    jelouCtxSteps: [
+      '🏝️ Santa Cruz · 📊 Reporte lunes 08:00 · auto',
+      '🏝️ Santa Cruz · 🚦 Semáforos stock · 5 PDV',
+      '🏝️ Santa Cruz · 📋 Pedido sugerido · 30u 100ml',
+      '🏝️ Santa Cruz · ✅ Despacho #DSP-0291 aprobado'
+    ],
+    tabActive: [0,1,2,3],
+    messages: [
+      [
+        {role:'bot', text:'🌅 <b>Buenos días, DAWUA Galápagos</b>\nReporte semanal automático — lunes 08:00\n\nSemana del 22 al 28 de abril 2026:', nlu:'🧠 NLU → WEEKLY_AUTO · lunes 08:00 · Jelou', widget:'report_dawua', qrs:['Ver stock por PDV','Ver pedido sugerido']}
+      ],
+      [
+        {role:'user', text:'Ver stock por PDV'},
+        {role:'bot', text:'Estado actual de inventario en las 5 islas 🚦', nlu:'🧠 NLU → STOCK_MAP · 5PDV · Jelou', widget:'stock_map', qrs:['Ver pedido sugerido']}
+      ],
+      [
+        {role:'user', text:'Ver pedido sugerido'},
+        {role:'bot', text:'Basado en la velocidad de venta de esta semana, el sistema sugiere el siguiente reabastecimiento:\n\n<b>100ml:</b> 30 unidades\n<b>60ml:</b> 15 unidades\n<b>Total estimado:</b> $562.50\n<b>Prioridad:</b> Tienda Malecón #1 urgente\n\n¿Apruebas el pedido para despacho?', nlu:'🧠 NLU → RESTOCK_SUGGEST · velocity · Jelou', qrs:['✅ Aprobar y despachar','📝 Modificar cantidades']}
+      ],
+      [
+        {role:'user', text:'✅ Aprobar y despachar'},
+        {role:'bot', text:'', widget:'despacho', nlu:'🧠 NLU → DISPATCH_OK · Nuvei · Jelou'}
+      ]
+    ]
+  }
+];
+
+// ════════════════════════════════════
+// WIDGETS
+// ════════════════════════════════════
+function renderWidget(type) {
+  switch(type) {
+    case 'catalog': return `
+      <div class="widget msg-bot" style="max-width:90%">
+        <div class="widget-hd">💬 CATÁLOGO DAWUA · WhatsApp Card · Jelou</div>
+        <div class="widget-body">
+          <div class="cat-card">
+            <span class="cat-emoji">🌿</span>
+            <div class="cat-info">
+              <div class="cat-name">Aceite Repelente 100ml</div>
+              <div class="cat-desc">Hierba Luisa · Ungurahua · Sin DEET</div>
+              <div class="cat-price">$22 <span class="cat-badge">PNG ✓</span></div>
+            </div>
+          </div>
+          <div class="cat-card">
+            <span class="cat-emoji">🌱</span>
+            <div class="cat-info">
+              <div class="cat-name">Aceite Repelente 60ml</div>
+              <div class="cat-desc">Talla viaje · Equipaje de mano</div>
+              <div class="cat-price">$15 <span class="cat-badge">Carry-on ✓</span></div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    case 'pdv': return `
+      <div class="widget msg-bot" style="max-width:92%">
+        <div class="widget-hd">📍 PUNTO MÁS CERCANO · stock confirmado · Jelou</div>
+        <div class="widget-body">
+          <div class="pdv-card">
+            <div class="pdv-top">
+              <span class="pdv-name">🏨 Hotel Finch Bay</span>
+              <span class="pdv-dist">850m · 4 min</span>
+            </div>
+            <div class="pdv-stock-bar"><div class="pdv-stock-fill stock-ok" style="width:75%;background:#00D68F"></div></div>
+            <div class="pdv-map">📍 Playa de los Alemanes · Stock OK (9u) · <span style="color:#00D68F">Abierto ahora</span></div>
+          </div>
+          <div class="pdv-card">
+            <div class="pdv-top">
+              <span class="pdv-name">🏨 Hotel Ikala</span>
+              <span class="pdv-dist">1.1km · 6 min</span>
+            </div>
+            <div class="pdv-stock-bar"><div class="pdv-stock-fill" style="width:55%;background:#F5A623"></div></div>
+            <div class="pdv-map">📍 Malecón · Stock medio (5u) · <span style="color:#F5A623">Abierto</span></div>
+          </div>
+        </div>
+      </div>`;
+
+    case 'form': return `
+      <div class="widget msg-bot" style="max-width:92%">
+        <div class="widget-hd">📋 FORMULARIO ENTREGA · WhatsApp Flow · Jelou</div>
+        <div class="widget-body">
+          <div class="form-field"><div class="field-lbl">HOTEL</div><div class="field-val">Royal Palm Hotel</div></div>
+          <div class="form-field"><div class="field-lbl">HABITACIÓN</div><div class="field-val">Hab. 12 — confirmar en recepción</div></div>
+          <div class="form-field"><div class="field-lbl">PRODUCTO</div><div class="field-val">Aceite 100ml × 1 · $22</div></div>
+          <div class="form-field"><div class="field-lbl">ENTREGA ESTIMADA</div><div class="field-val">~30 minutos · Ariana</div></div>
+        </div>
+      </div>`;
+
+    case 'payment': return `
+      <div class="widget msg-bot" style="max-width:95%">
+        <div class="widget-hd">💳 PAGO SEGURO · Nuvei · 3D Secure · Jelou</div>
+        <div class="widget-body">
+          <div class="pay-opt selected">
+            <span class="pay-icon">🏦</span>
+            <div class="pay-info">
+              <div class="pay-name">De Una · Banco Pichincha</div>
+              <div class="pay-sub">Sin interés hasta 6 cuotas</div>
+            </div>
+            <span class="pay-badge pay-badge-rec">RECOMENDADO</span>
+          </div>
+          <div class="cuotas">
+            <div class="cuota sel">
+              <div class="cuota-n">3</div>
+              <div class="cuota-lbl">cuotas</div>
+              <div class="cuota-val">$7.33</div>
+              <div class="cuota-int">sin interés</div>
+            </div>
+            <div class="cuota">
+              <div class="cuota-n">6</div>
+              <div class="cuota-lbl">cuotas</div>
+              <div class="cuota-val">$3.67</div>
+              <div class="cuota-int">sin interés</div>
+            </div>
+            <div class="cuota">
+              <div class="cuota-n">12</div>
+              <div class="cuota-lbl">cuotas</div>
+              <div class="cuota-val">$1.98</div>
+              <div class="cuota-int">+8% interés</div>
+            </div>
+          </div>
+          <p style="font-size:9px;color:#444;text-align:center;margin-top:8px;font-family:var(--fm)">🔒 Pago seguro · SSL · 3D Secure · Powered by Nuvei</p>
+        </div>
+      </div>`;
+
+    case 'confirm': return `
+      <div class="widget msg-bot" style="max-width:92%">
+        <div class="widget-hd">✅ PEDIDO CONFIRMADO · Jelou</div>
+        <div class="widget-body">
+          <div class="confirm-box">
+            <div class="confirm-icon">🎉</div>
+            <div class="confirm-title">¡Pedido confirmado!</div>
+            <div class="confirm-sub">Ariana está en camino a Royal Palm Hotel.<br>Tiempo estimado: <b>28 minutos</b></div>
+            <div class="confirm-id">Pedido #DW-2024-0847 · $22 · 3 cuotas $7.33</div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--ts);text-align:center">
+            ¿Te gustaría recibir novedades de DAWUA?
+          </div>
+        </div>
+      </div>`;
+
+    case 'alert': return `
+      <div class="widget msg-bot" style="max-width:92%">
+        <div class="widget-hd">🚨 ALERTA STOCK BAJO · automática · Jelou</div>
+        <div class="widget-body">
+          <div class="alert-box">
+            <div class="alert-title">⚠ Tienda Malecón #1 — Stock crítico</div>
+            Solo quedan <b>3 unidades</b> disponibles.<br>
+            Velocidad de venta: ~4 u/día<br>
+            <b>Agotamiento estimado: 18 horas</b>
+          </div>
+        </div>
+      </div>`;
+
+    case 'report_ariana': return `
+      <div class="widget msg-bot" style="max-width:95%">
+        <div class="widget-hd">📊 RESUMEN SEMANAL · Santa Cruz · Jelou</div>
+        <div class="widget-body">
+          <div class="report-row"><span class="report-lbl">Total vendido</span><span class="report-val" style="color:var(--vb)">47 u</span></div>
+          <div class="report-row"><span class="report-lbl">Ingresos generados</span><span class="report-val" style="color:var(--vb)">$893</span></div>
+          <div class="report-row"><span class="report-lbl">PDV más activo</span><span class="report-val">Finch Bay (14u)</span></div>
+          <div class="report-row"><span class="report-lbl">Stock total isla</span><span class="report-val">46 u</span></div>
+          <div class="report-row"><span class="report-lbl">PDVs con alerta</span><span class="report-val" style="color:var(--red)">1 (Malecón #1)</span></div>
+          <div class="report-row"><span class="report-lbl">Entregas Ariana</span><span class="report-val">6 deliveries</span></div>
+        </div>
+      </div>`;
+
+    case 'report_dawua': return `
+      <div class="widget msg-bot" style="max-width:95%">
+        <div class="widget-hd">📊 REPORTE SEMANAL AUTO · lun 08:00 · Jelou</div>
+        <div class="widget-body">
+          <div class="report-row"><span class="report-lbl">Semana</span><span class="report-val">22–28 Abr 2026</span></div>
+          <div class="report-row"><span class="report-lbl">Unidades vendidas</span><span class="report-val" style="color:var(--vb)">47 u</span></div>
+          <div class="report-row"><span class="report-lbl">Ingresos brutos</span><span class="report-val" style="color:var(--vb)">$893</span></div>
+          <div class="report-row"><span class="report-lbl">Pedidos bot 593IA</span><span class="report-val">12 pedidos</span></div>
+          <div class="report-row"><span class="report-lbl">Idiomas atendidos</span><span class="report-val">ES 58% · EN 35% · DE 7%</span></div>
+          <div class="report-row"><span class="report-lbl">Stock total isla</span><span class="report-val" style="color:var(--amber)">46 u · 1 PDV en alerta</span></div>
+        </div>
+      </div>`;
+
+    case 'stock_map': return `
+      <div class="widget msg-bot" style="max-width:95%">
+        <div class="widget-hd">🚦 STOCK POR PDV · Santa Cruz · Jelou</div>
+        <div class="widget-body">
+          <div class="report-row"><span class="report-lbl">🏨 Finch Bay</span><span class="report-val stock-ok">11u ✅</span></div>
+          <div class="report-row"><span class="report-lbl">🏨 Hotel Ikala</span><span class="report-val stock-ok">16u ✅</span></div>
+          <div class="report-row"><span class="report-lbl">🏨 Red Mangrove</span><span class="report-val stock-mid">9u ⚠️</span></div>
+          <div class="report-row"><span class="report-lbl">🏨 Royal Palm</span><span class="report-val stock-ok">7u ✅</span></div>
+          <div class="report-row"><span class="report-lbl">🛍️ Malecón #1</span><span class="report-val stock-low">3u 🚨 URGENTE</span></div>
+        </div>
+      </div>`;
+
+    case 'despacho': return `
+      <div class="widget msg-bot" style="max-width:92%">
+        <div class="widget-hd">✅ DESPACHO APROBADO · Jelou</div>
+        <div class="widget-body">
+          <div class="confirm-box">
+            <div class="confirm-icon">📦</div>
+            <div class="confirm-title">¡Despacho confirmado!</div>
+            <div class="confirm-sub">
+              30u 100ml + 15u 60ml<br>
+              Vuelo UIO-GPS próximo disponible<br>
+              Ariana recibirá en 2 días hábiles
+            </div>
+            <div class="confirm-id">Despacho #DSP-0291 · $562.50 · Aprobado por DAWUA GYE</div>
+          </div>
+        </div>
+      </div>`;
+
+    default: return '';
+  }
+}
+
+// ════════════════════════════════════
+// LÓGICA PRINCIPAL
+// ════════════════════════════════════
+function selectFlow(idx, btn) {
+  currentFlow = idx;
+  document.querySelectorAll('.sp-flow-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function startDemo() {
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  currentStep = 0;
+  renderFlowUI();
+  renderMessages();
+}
+
+function goHome() {
+  document.getElementById('splash').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  // Reset flow buttons
+  document.querySelectorAll('.sp-flow-btn').forEach((b,i) => {
+    b.classList.toggle('active', i === currentFlow);
+  });
+}
+
+function renderFlowUI() {
+  const flow = FLOWS[currentFlow];
+
+  // Header
+  document.getElementById('hAvatar').textContent = flow.avatar;
+  document.getElementById('hName').textContent = flow.name;
+  document.getElementById('hStatus').textContent = flow.status;
+
+  // Flow tabs
+  const ft = document.getElementById('flowTabs');
+  ft.innerHTML = flow.tabs.map((t,i) => `<button class="ft-btn${i===0?' active':''}" id="ft_${i}">${t}</button>`).join('');
+
+  // Step pills
+  updateStepPills();
+  updateJelouCtx();
+}
+
+function updateStepPills() {
+  const flow = FLOWS[currentFlow];
+  const bar = document.getElementById('stepBar');
+  bar.innerHTML = flow.steps.map((s,i) => {
+    let cls = 'step-p';
+    if(i < currentStep) cls += ' done';
+    else if(i === currentStep) cls += ' active';
+    return `<div class="${cls}">${s}</div>`;
+  }).join('');
+}
+
+function updateJelouCtx() {
+  const flow = FLOWS[currentFlow];
+  const idx = Math.min(currentStep, flow.jelouCtxSteps.length-1);
+  document.getElementById('jelouCtx').textContent = flow.jelouCtxSteps[idx];
+}
+
+function updateTabActive() {
+  const flow = FLOWS[currentFlow];
+  const activeIdx = flow.tabActive[Math.min(currentStep, flow.tabActive.length-1)];
+  document.querySelectorAll('.ft-btn').forEach((b,i) => {
+    b.classList.toggle('active', i === activeIdx);
+  });
+}
+
+function renderMessages() {
+  const flow = FLOWS[currentFlow];
+  const chat = document.getElementById('chatArea');
+  chat.innerHTML = '';
+
+  // Renderizar todos los pasos hasta currentStep
+  for(let s = 0; s <= currentStep && s < flow.messages.length; s++) {
+    const msgs = flow.messages[s];
+    for(const m of msgs) {
+      if(!m) continue;
+
+      if(m.role === 'user') {
+        chat.innerHTML += `
+          <div class="msg msg-user">
+            <div class="msg-bbl">${m.text}</div>
+            <div class="msg-time">21:${23+s} ✓✓</div>
+          </div>`;
+      } else {
+        // Bot message
+        let inner = '';
+        if(m.text) inner += `<div class="msg-bbl">${m.text.replace(/\n/g,'<br>')}</div>`;
+        if(m.widget) inner += renderWidget(m.widget);
+        if(m.nlu) inner += `<div><span class="nlu">${m.nlu}</span>${m.ftag ? `<span class="ftag">${m.ftag}</span>` : ''}</div>`;
+        // Quick replies solo en el último paso
+        if(m.qrs && s === currentStep && m.qrs.length > 0) {
+          inner += `<div class="qrs">${m.qrs.map(q=>`<button class="qr">${q}</button>`).join('')}</div>`;
+        }
+
+        chat.innerHTML += `
+          <div class="msg msg-bot">
+            ${inner}
+            <div class="msg-time">21:${23+s}</div>
+          </div>`;
+      }
+    }
+  }
+
+  updateStepPills();
+  updateTabActive();
+  updateJelouCtx();
+  updateControls();
+
+  // Scroll al final
+  requestAnimationFrame(() => {
+    chat.scrollTop = chat.scrollHeight;
+  });
+}
+
+function updateControls() {
+  const flow = FLOWS[currentFlow];
+  const hint = document.getElementById('ctrlHint');
+  const btnNext = document.getElementById('btnNext');
+
+  if(currentStep >= flow.messages.length - 1) {
+    hint.textContent = '✅ Flujo completo — reinicia o cambia de flujo';
+    btnNext.textContent = '✓ Completado';
+    btnNext.style.opacity = '0.5';
+    btnNext.style.pointerEvents = 'none';
+  } else {
+    const stepNames = ['ver respuesta del bot','continuar','ver catálogo','ver PDV cercano','ver formulario','ver pago','ver confirmación','siguiente'];
+    hint.textContent = `Toca para ${stepNames[currentStep+1] || 'continuar'}`;
+    btnNext.textContent = '▶ Siguiente paso';
+    btnNext.style.opacity = '1';
+    btnNext.style.pointerEvents = 'auto';
+  }
+}
+
+function nextStep() {
+  const flow = FLOWS[currentFlow];
+  if(currentStep < flow.messages.length - 1) {
+    currentStep++;
+    renderMessages();
+  }
+}
+
+function restartFlow() {
+  currentStep = 0;
+  renderMessages();
+}
+</script>
+</body>
+</html>
