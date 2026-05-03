@@ -2,523 +2,921 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#075E54">
-<title>WDB/593IA x Xtrim</title>
+<title>DAWUA · Agente Resolutivo · WDB</title>
 <style>
-*{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{overflow-x:hidden;background:#111}
-body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root{--g1:#064E47;--g2:#075E54;--g3:#128C7E;--wa:#25D366;--wam:#DCF8C6;--chat:#E5DDD5;--f:'Plus Jakarta Sans',sans-serif;--m:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100dvh;overflow:hidden;background:#111827;font-family:var(--f)}
 
-/* INTRO */
-#intro{position:fixed;inset:0;background:linear-gradient(160deg,#064E47 0%,#075E54 60%,#0A8A7C 100%);display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;padding:30px;z-index:100;-webkit-transition:opacity .5s;transition:opacity .5s}
-#intro.hide{opacity:0;pointer-events:none}
-.ilogo{font-size:52px;margin-bottom:20px}
-.ititle{color:#fff;font-size:28px;font-weight:800;text-align:center;margin-bottom:8px}
-.isub{color:rgba(255,255,255,0.75);font-size:14px;text-align:center;line-height:1.6;margin-bottom:28px;max-width:280px}
-.ibadges{display:-webkit-box;display:-ms-flexbox;display:flex;gap:7px;margin-bottom:30px;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}
-.ib{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 13px;color:#fff;font-size:11px;font-weight:600}
-.ib.g{background:rgba(37,211,102,0.2);border-color:#25D366;color:#4ADE80}
-.sbtn{background:#25D366;color:#fff;border:none;border-radius:16px;padding:17px 0;font-size:16px;font-weight:800;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;width:100%;max-width:280px;-webkit-box-shadow:0 6px 24px rgba(37,211,102,0.35);box-shadow:0 6px 24px rgba(37,211,102,0.35)}
+/* ── SPLASH ── */
+#splash{position:fixed;inset:0;z-index:100;background:linear-gradient(160deg,#042F2A,#064E47 50%,#0A7A6C);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;overflow-y:auto;-webkit-overflow-scrolling:touch;transition:opacity .5s}
+#splash.hide{opacity:0;pointer-events:none}
+.sl{width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,#075E54,#25D366);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:14px;box-shadow:0 0 0 1px rgba(37,211,102,.3),0 8px 40px rgba(37,211,102,.35)}
+.sbr{color:rgba(255,255,255,.45);font-size:11px;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.str{color:#fff;font-size:34px;font-weight:800;letter-spacing:-1.5px;text-align:center;margin-bottom:4px}
+.ssu{color:rgba(255,255,255,.5);font-size:12px;text-align:center;margin-bottom:20px;line-height:1.6}
+.sgr{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:20px;width:100%;max-width:400px}
+.scd{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 12px;display:flex;align-items:flex-start;gap:8px}
+.sic{font-size:17px;flex-shrink:0}
+.stx{font-size:11px;color:rgba(255,255,255,.75);font-weight:500;line-height:1.3}
+.stg{font-size:9px;color:var(--wa);font-weight:700;letter-spacing:.5px;display:block;margin-top:2px}
+.sbt{background:var(--wa);color:#fff;border:none;border-radius:18px;padding:16px 0;font-size:16px;font-weight:800;cursor:pointer;width:100%;max-width:360px;font-family:var(--f);box-shadow:0 8px 32px rgba(37,211,102,.4);transition:transform .15s}
+.sbt:active{transform:scale(.97)}
+.scr{margin-top:18px;text-align:center}
+.scr-n{color:rgba(255,255,255,.75);font-size:13px;font-weight:700}
+.scr-r{color:rgba(255,255,255,.38);font-size:11px;margin-top:2px}
+.scr-t{color:var(--wa);font-size:11px;font-weight:700;margin-top:3px;letter-spacing:.5px}
 
-/* MAIN */
-#main{display:none;min-height:100vh;background:#E5DDD5}
-#main.show{display:block}
+/* ── MAIN ── */
+#main{display:none;height:100dvh;flex-direction:column}
+#main.show{display:flex}
 
-/* TOP BAR */
-.topbar{background:#075E54;position:-webkit-sticky;position:sticky;top:0;z-index:50}
-.tbinner{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:10px;padding:10px 14px}
-.tbav{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:15px;font-weight:800;color:#fff}
-.tbname{color:#fff;font-size:14px;font-weight:700}
-.tbsub{color:rgba(255,255,255,0.72);font-size:11px}
-.tbicons{margin-left:auto;display:-webkit-box;display:-ms-flexbox;display:flex;gap:16px}
-.progbar{height:3px;background:rgba(255,255,255,0.2)}
-.progfill{height:3px;background:#25D366;-webkit-transition:width .5s;transition:width .5s;width:0%}
-.stepbar{background:rgba(0,0,0,0.08);padding:7px 14px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:8px}
-.step-cur{font-size:11px;color:#444;font-weight:600}
-.step-count{margin-left:auto;font-size:11px;color:#888}
+/* TOPBAR */
+.topbar{background:var(--g2);flex-shrink:0}
+.tb1{display:flex;align-items:center;gap:8px;padding:8px 12px}
+.av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#128C7E,#25D366);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;cursor:pointer}
+.tbn{color:#fff;font-size:15px;font-weight:700}
+.tbs{color:rgba(255,255,255,.6);font-size:10px;margin-top:1px}
+.tbbg{margin-left:auto;background:rgba(37,211,102,.2);border:1px solid rgba(37,211,102,.4);border-radius:7px;padding:4px 10px;color:#4ADE80;font-size:9px;font-weight:800;letter-spacing:.5px;flex-shrink:0}
+
+/* CONTEXTO */
+.ctx{background:rgba(0,0,0,.2);padding:5px 14px;display:flex;align-items:center;gap:5px}
+.ctxd{width:5px;height:5px;border-radius:50%;background:#4ADE80;animation:pu 2s infinite;flex-shrink:0}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.25}}
+.ctxl{font-size:9px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:.5px}
+.ctxv{font-size:10px;color:#4ADE80;font-weight:700;margin-left:auto;max-width:72%;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* FLOW SELECTOR — barra de flujos */
+.flow-sel{background:rgba(0,0,0,.25);padding:5px 10px;display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.flow-sel::-webkit-scrollbar{display:none}
+.fs-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 10px;font-size:9px;color:rgba(255,255,255,.6);font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;font-family:var(--f)}
+.fs-btn.on{background:var(--wa);border-color:var(--wa);color:#fff}
+
+/* STEP TABS — barra de pasos */
+.step-tabs{background:rgba(0,0,0,.15);padding:5px 10px;display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.step-tabs::-webkit-scrollbar{display:none}
+.st-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:3px 8px;font-size:8px;color:rgba(255,255,255,.4);font-weight:600;white-space:nowrap;flex-shrink:0;font-family:var(--f);transition:all .15s}
+.st-btn.done{border-color:rgba(37,211,102,.4);color:rgba(37,211,102,.7)}
+.st-btn.active{background:var(--wa);border-color:var(--wa);color:#fff}
 
 /* CHAT */
-.chat{padding:10px 10px 110px 10px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;gap:6px}
-.datepill{-ms-flex-item-align:center;align-self:center;background:rgba(0,0,0,0.1);border-radius:10px;padding:4px 12px;font-size:11px;color:#666}
-.sysmsg{-ms-flex-item-align:center;align-self:center;background:rgba(0,0,0,0.07);border-radius:10px;padding:5px 14px;font-size:11px;color:#555;text-align:center;max-width:85%}
+.chat{flex:1;min-height:0;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px;background:var(--chat);-webkit-overflow-scrolling:touch}
+.dp{align-self:center;background:rgba(0,0,0,.12);border-radius:10px;padding:4px 14px;font-size:11px;color:#666}
+.sm{align-self:center;background:rgba(7,94,84,.1);border:1px solid rgba(7,94,84,.18);border-radius:10px;padding:5px 14px;font-size:11px;color:var(--g2);font-weight:600;text-align:center;max-width:94%}
 
-/* BUBBLES */
-.b{max-width:80%;border-radius:10px;padding:8px 11px;font-size:13px;line-height:1.5;word-break:break-word}
-.b.bot{background:#fff;-ms-flex-item-align:start;align-self:flex-start;border-top-left-radius:2px;color:#111;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-.b.usr{background:#DCF8C6;-ms-flex-item-align:end;align-self:flex-end;border-top-right-radius:2px;color:#111;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-.bt{font-size:10px;color:#999;margin-top:3px;text-align:right}
+/* BURBUJAS */
+.b{max-width:86%;border-radius:14px;padding:9px 12px;font-size:13px;line-height:1.55;word-break:break-word}
+.b.bot{background:#fff;align-self:flex-start;border-top-left-radius:3px;color:#111;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.b.usr{background:var(--wam);align-self:flex-end;border-top-right-radius:3px;color:#111;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.bt{font-size:9px;color:#999;margin-top:5px;text-align:right}
 .b.bot .bt{text-align:left}
-.apitag{display:inline-block;background:#F59E0B;color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:5px;margin-left:3px;vertical-align:middle}
 
-/* FLOW TRIGGER BTN */
-.flow-trigger{-ms-flex-item-align:start;align-self:flex-start;margin-top:2px}
-.flow-trigger-btn{background:#fff;border:2px solid #25D366;border-radius:20px;padding:9px 18px;font-size:13px;color:#075E54;font-weight:700;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:7px;-webkit-box-shadow:0 2px 8px rgba(37,211,102,0.2);box-shadow:0 2px 8px rgba(37,211,102,0.2);-webkit-transition:all .15s;transition:all .15s}
-.flow-trigger-btn:active{-webkit-transform:scale(0.96);transform:scale(0.96);background:#E8F5E9}
-.flow-trigger-btn.used{opacity:0.45;pointer-events:none;border-color:#ccc;color:#999}
-.flow-icon-sm{width:22px;height:22px;background:#25D366;border-radius:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:12px;color:#fff;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
+/* TAGS NLU */
+.lvl{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;margin-top:6px;border:.5px solid;font-family:var(--m)}
+.nlu{background:#EDE9FE;color:#7C3AED;border-color:#7C3AED}
+.api{background:#D1FAE5;color:#065F46;border-color:#065F46}
+.ia{background:#FEF3C7;color:#92400E;border-color:#92400E}
+.wa2{background:#E7F8EE;color:#075E54;border-color:#075E54}
+.pay{background:#FFF1F2;color:#9F1239;border-color:#9F1239}
 
-/* TYPING */
-.ty{display:-webkit-box;display:-ms-flexbox;display:flex;gap:4px;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:10px 12px;background:#fff;border-radius:10px;-ms-flex-item-align:start;align-self:flex-start;border-top-left-radius:2px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-.dt{width:7px;height:7px;border-radius:50%;background:#bbb;-webkit-animation:bx 1.2s infinite;animation:bx 1.2s infinite}
-.dt:nth-child(2){-webkit-animation-delay:.2s;animation-delay:.2s}
-.dt:nth-child(3){-webkit-animation-delay:.4s;animation-delay:.4s}
-@-webkit-keyframes bx{0%,60%,100%{-webkit-transform:translateY(0);transform:translateY(0)}30%{-webkit-transform:translateY(-5px);transform:translateY(-5px)}}
-@keyframes bx{0%,60%,100%{-webkit-transform:translateY(0);transform:translateY(0)}30%{-webkit-transform:translateY(-5px);transform:translateY(-5px)}}
+/* QUICK REPLIES */
+.qr-wrap{align-self:flex-start;display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;max-width:90%;padding-left:2px}
+.qr-btn{background:#fff;border:1.5px solid var(--g2);border-radius:20px;padding:7px 13px;font-size:12px;font-weight:600;color:var(--g2);cursor:pointer;transition:all .15s;font-family:var(--f);white-space:nowrap}
+.qr-btn:active{background:var(--g2);color:#fff}
 
-/* FLOW SHEET */
-#flow-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}
-#flow-overlay.show{display:-webkit-box;display:-ms-flexbox;display:flex}
-.fsheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;-webkit-animation:sup .3s ease;animation:sup .3s ease}
-@-webkit-keyframes sup{from{-webkit-transform:translateY(100%);transform:translateY(100%)}to{-webkit-transform:translateY(0);transform:translateY(0)}}
-@keyframes sup{from{-webkit-transform:translateY(100%);transform:translateY(100%)}to{-webkit-transform:translateY(0);transform:translateY(0)}}
-.fsh{background:linear-gradient(135deg,#064E47,#075E54);padding:16px 18px 14px;border-radius:22px 22px 0 0}
-.fsh-handle{width:36px;height:4px;background:rgba(255,255,255,0.3);border-radius:2px;margin:0 auto 14px}
-.fsh-row{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:10px}
-.fsh-ico{width:30px;height:30px;background:rgba(255,255,255,0.15);border-radius:9px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:15px}
-.fsh-title{color:#fff;font-size:15px;font-weight:700}
-.fsh-sub{color:rgba(255,255,255,0.7);font-size:11px}
-.fsh-badge{margin-left:auto;background:rgba(37,211,102,0.2);border:1px solid #25D366;border-radius:8px;padding:3px 9px;color:#4ADE80;font-size:9px;font-weight:800;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
-.fbody{padding:18px}
-.fsec{margin-bottom:16px}
-.flabel{font-size:11px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+/* INPUT BAR */
+.ibar{background:#F0EAE0;padding:6px 10px;padding-bottom:max(10px,env(safe-area-inset-bottom));flex-shrink:0;border-top:1px solid rgba(0,0,0,.07);z-index:10}
+.irow{display:flex;align-items:center;gap:8px;max-width:600px;margin:0 auto}
+.ihnt{text-align:center;font-size:9px;color:#aaa;margin-top:3px}
+.inxt{flex:1;background:var(--wa);color:#fff;border:none;border-radius:24px;padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--f);box-shadow:0 3px 12px rgba(37,211,102,.4);transition:all .15s}
+.inxt:active{transform:scale(.97)}
+.inxt:disabled{background:#ccc;box-shadow:none;cursor:default;transform:none}
+.irst{background:rgba(7,94,84,.1);border:1.5px solid rgba(7,94,84,.25);color:var(--g2);border-radius:24px;padding:11px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f)}
 
-/* OPTIONS */
-.fopts{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;gap:9px}
-.fopt{border:2px solid #e5e7eb;border-radius:14px;padding:13px 14px;cursor:pointer;-webkit-transition:all .15s;transition:all .15s;touch-action:manipulation;-webkit-user-select:none;user-select:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:11px;background:#fafafa}
-.fopt:active{-webkit-transform:scale(0.98);transform:scale(0.98)}
-.fopt.sel{border-color:#25D366;background:#F0FFF4}
-.fradio{width:22px;height:22px;border-radius:50%;border:2px solid #d1d5db;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0;position:relative;-webkit-transition:all .15s;transition:all .15s;background:#fff}
-.fopt.sel .fradio{border-color:#25D366;background:#25D366}
-.fradio-dot{width:8px;height:8px;background:#fff;border-radius:50%;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);display:none}
-.fopt.sel .fradio-dot{display:block}
-.fopt-info{-webkit-box-flex:1;-ms-flex:1;flex:1}
-.fopt-title{font-size:13px;font-weight:700;color:#1a1a1a}
-.fopt-sub{font-size:11px;color:#888;margin-top:2px}
-.fopt-price{font-size:15px;font-weight:800;color:#075E54;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
-.fopt-tag{background:#DCFCE7;color:#166534;border-radius:8px;padding:3px 8px;font-size:10px;font-weight:700;-webkit-box-flex:0;-ms-flex-positive:0;flex-shrink:0}
-
-/* INPUTS */
-.finput-wrap{margin-bottom:12px}
-.finput-label{font-size:12px;font-weight:600;color:#555;margin-bottom:5px}
-.finput{width:100%;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px 14px;font-size:14px;color:#1a1a1a;background:#fafafa;outline:none;-webkit-appearance:none;font-family:inherit;-webkit-transition:border .15s;transition:border .15s}
-.finput:focus{border-color:#25D366;background:#fff}
-
-/* SUBMIT BTN */
-.fsubmit{background:#25D366;color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;width:100%;cursor:pointer;-webkit-appearance:none;touch-action:manipulation;margin-top:6px;font-family:inherit;-webkit-transition:opacity .15s;transition:opacity .15s}
-.fsubmit:active{opacity:.82}
-.ffoot{padding:10px 18px 24px;text-align:center;font-size:10px;color:#bbb}
-.ffoot span{color:#25D366;font-weight:700}
-
-/* BOTTOM BAR */
-.bottombar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:8px 12px 16px;-webkit-box-shadow:0 -1px 6px rgba(0,0,0,0.08);box-shadow:0 -1px 6px rgba(0,0,0,0.08);z-index:40}
-.brow{display:-webkit-box;display:-ms-flexbox;display:flex;gap:8px;max-width:500px;margin:0 auto}
-.bbtn{-webkit-box-flex:1;-ms-flex:1;flex:1;padding:12px 8px;border-radius:12px;border:1.5px solid #e5e7eb;background:#f9fafb;font-size:13px;color:#374151;font-weight:600;cursor:pointer;-webkit-appearance:none;outline:none;touch-action:manipulation;font-family:inherit}
-.bbtn.pr{background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;border-color:#075E54;font-weight:800;-webkit-box-shadow:0 3px 12px rgba(7,94,84,0.25);box-shadow:0 3px 12px rgba(7,94,84,0.25)}
-.bbtn.off{opacity:0.35;pointer-events:none}
-.bhint{text-align:center;font-size:10px;color:#bbb;margin-top:6px;max-width:500px;margin-left:auto;margin-right:auto}
+/* iOS fix */
+@supports (-webkit-touch-callout:none){
+  html,body{height:-webkit-fill-available}
+  #main{height:-webkit-fill-available;min-height:-webkit-fill-available}
+}
+#main.show{display:flex;height:100dvh;min-height:-webkit-fill-available}
 </style>
 </head>
 <body>
 
-<!-- INTRO -->
-<div id="intro">
-  <div class="ilogo">&#128247;</div>
-  <div class="ititle">WDB/593IA</div>
-  <div class="isub">Demo interactivo del proceso de venta Xtrim con WhatsApp Flows</div>
-  <div class="ibadges">
-    <span class="ib">7 etapas</span>
-    <span class="ib g">&#9889; WhatsApp Flows</span>
-    <span class="ib">Jelou + IA</span>
-    <span class="ib">API Xtrim</span>
+<!-- SPLASH -->
+<div id="splash">
+  <div class="sl">🌿</div>
+  <div class="sbr">WDB / 593IA</div>
+  <div class="str">DAWUA</div>
+  <div class="ssu">Agente Resolutivo · DAWUA NATURE S.A.<br>Todo resuelto dentro de WhatsApp · Jelou</div>
+  <div class="sgr">
+    <div class="scd"><div class="sic">💬</div><div class="stx">Catálogo in-chat<span class="stg">Selección · 100ml · 60ml</span></div></div>
+    <div class="scd"><div class="sic">💳</div><div class="stx">Pagos integrados<span class="stg">Nuvei · Pichincha · Cuotas</span></div></div>
+    <div class="scd"><div class="sic">📍</div><div class="stx">Geolocalización<span class="stg">PDV más cercano · stock real</span></div></div>
+    <div class="scd"><div class="sic">📦</div><div class="stx">Trazabilidad<span class="stg">5 PDV · Santa Cruz</span></div></div>
+    <div class="scd"><div class="sic">🌍</div><div class="stx">Multilenguaje<span class="stg">ES · EN · DE · FR</span></div></div>
+    <div class="scd"><div class="sic">🛵</div><div class="stx">Entrega Ariana<span class="stg">Hoteles · Puerto Ayora</span></div></div>
   </div>
-  <button class="sbtn" onclick="startApp()">Iniciar demo &#9658;</button>
+  <button class="sbt" onclick="startApp()">Iniciar demo ▶</button>
+  <div class="scr">
+    <div class="scr-n">Juan Carlos Páez</div>
+    <div class="scr-r">WDB · 593IA · Arquitectura de proyectos sobre tecnología</div>
+    <div class="scr-t">JELOU Platform Partner · 593IA</div>
+  </div>
 </div>
 
 <!-- MAIN -->
 <div id="main">
   <div class="topbar">
-    <div class="tbinner">
-      <div class="tbav">W</div>
-      <div style="-webkit-box-flex:1;flex:1">
-        <div class="tbname">WDB/593IA &#10003;</div>
-        <div class="tbsub" id="bst">en l&#237;nea</div>
+    <div class="tb1">
+      <div class="av" onclick="goHome()">DA</div>
+      <div style="flex:1">
+        <div class="tbn" id="hName">DAWUA ✓</div>
+        <div class="tbs" id="hStatus">Agente resolutivo · Galápagos · Jelou · ES/EN</div>
       </div>
-      <div class="tbicons">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-      </div>
+      <div class="tbbg">DEMO WDB</div>
     </div>
-    <div class="progbar"><div class="progfill" id="pb"></div></div>
-    <div class="stepbar">
-      <div class="step-cur" id="step-cur">Listo para comenzar</div>
-      <div class="step-count" id="step-count">0 / 7</div>
+    <div class="ctx">
+      <div class="ctxd"></div>
+      <div class="ctxl">CONTEXTO JELOU</div>
+      <div class="ctxv" id="ctxv">🏝️ Santa Cruz · 🌿 Hierba Luisa · iniciando</div>
     </div>
+    <div class="flow-sel" id="flowSel"></div>
+    <div class="step-tabs" id="stepTabs"></div>
   </div>
-
   <div class="chat" id="chat">
-    <div class="datepill">Hoy</div>
-    <div class="sysmsg">WDB/593IA &middot; Canal oficial de ventas Xtrim</div>
+    <div class="dp">Hoy · Demo en vivo · WDB / 593IA · DAWUA NATURE S.A.</div>
+    <div class="sm">DAWUA · Repelente Hierba Luisa · 100ml · 60ml · NSO: NSOC02329-21EC · Galápagos</div>
   </div>
-
-  <div class="bottombar">
-    <div class="brow">
-      <button class="bbtn" onclick="resetDemo()">&#8634; Reiniciar</button>
-      <button class="bbtn pr" id="bn" onclick="nextStep()">Iniciar demo &#9658;</button>
+  <div class="ibar">
+    <div class="irow">
+      <button class="irst" onclick="restartFlow()">↺ Repetir</button>
+      <button class="inxt" id="nxtbtn" onclick="nextStep()">▶ Siguiente paso</button>
     </div>
-    <div class="bhint" id="ht">Pulsa Iniciar demo para comenzar</div>
+    <div class="ihnt" id="hint">Presiona "Siguiente paso" para comenzar</div>
   </div>
 </div>
 
-<!-- FLOW OVERLAY -->
-<div id="flow-overlay">
-  <div class="fsheet" id="fsheet"></div>
-</div>
+<script>'use strict';
 
-<script>
-var cur=-1, running=false, qi=0, qm=[], flowCB=null, activeFlowId=null;
+/* ══════════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════════ */
+function ts(){var n=new Date();return n.getHours()+':'+('0'+n.getMinutes()).slice(-2);}
+function scrollDn(){var c=document.getElementById('chat');requestAnimationFrame(function(){c.scrollTop=c.scrollHeight+9999;});}
+function setCtx(t){document.getElementById('ctxv').textContent=t;}
+function setHint(t){document.getElementById('hint').textContent=t;}
 
-// ── FLOW DATA ──
-var FD={
-  planes:{icon:'&#128246;',title:'Elige tu plan Xtrim',sub:'Planes disponibles en tu zona',
-    opts:[
-      {id:'p1',title:'30 Mbps',sub:'Ideal para 1-2 personas',price:'$22.99/mes'},
-      {id:'p2',title:'60 Mbps',sub:'Perfecto para familias',price:'$29.99/mes',def:1},
-      {id:'p3',title:'100 Mbps',sub:'M\u00e1xima velocidad',price:'$39.99/mes'}
-    ],
-    selKey:'plan', defVal:'p2',
-    getBtnLabel:function(){return 'Confirmar plan';},
-    getResult:function(sel){
-      var map={p1:'Plan 30 Mbps - $22.99/mes seleccionado \u2705',p2:'Plan 60 Mbps - $29.99/mes seleccionado \u2705',p3:'Plan 100 Mbps - $39.99/mes seleccionado \u2705'};
-      return map[sel]||'Plan seleccionado \u2705';
-    }
-  },
-  datos:{icon:'&#128100;',title:'Tus datos personales',sub:'Formulario seguro dentro de WhatsApp',
-    fields:[
-      {id:'nom',label:'Nombre completo',val:'Carlos Mendoza Vera',type:'text'},
-      {id:'dir',label:'Direcci\u00f3n exacta de instalaci\u00f3n',val:'Cdla. Kennedy Norte, Av. San Jorge 412',type:'text'},
-      {id:'mail',label:'Correo electr\u00f3nico',val:'carlos.mendoza@gmail.com',type:'email'}
-    ],
-    getResult:function(){return 'Datos personales confirmados \u2705';}
-  },
-  pago:{icon:'&#128179;',title:'Configura tu pago',sub:'Datos cifrados end-to-end por WhatsApp',
-    opts:[
-      {id:'m1',title:'D\u00e9bito autom\u00e1tico',sub:'Descuento mensual desde cuenta bancaria',def:1},
-      {id:'m2',title:'Tarjeta de cr\u00e9dito / d\u00e9bito',sub:'Visa \u00b7 Mastercard \u00b7 American Express'},
-      {id:'m3',title:'Contra factura',sub:'Pago al recibir la factura mensual Xtrim'}
-    ],
-    selKey:'metodo', defVal:'m1',
-    fields:[
-      {id:'banco',label:'Banco emisor',val:'Banco Pichincha',type:'text'},
-      {id:'cuenta',label:'N\u00famero de cuenta / tarjeta',val:'2234567890',type:'tel'}
-    ],
-    getResult:function(sel){
-      var map={m1:'D\u00e9bito autom\u00e1tico Banco Pichincha \u2705',m2:'Tarjeta de cr\u00e9dito/d\u00e9bito registrada \u2705',m3:'Contra factura seleccionado \u2705'};
-      return map[sel]||'Forma de pago configurada \u2705';
-    }
-  },
-  agenda:{icon:'&#128197;',title:'Agenda tu instalaci\u00f3n',sub:'Disponibilidad Xtrim en tiempo real',
-    opts:[
-      {id:'a1',title:'Ma\u00f1ana',sub:'9:00am \u2014 12:00pm',tag:'Disponible',def:1},
-      {id:'a2',title:'Ma\u00f1ana',sub:'2:00pm \u2014 6:00pm',tag:'Disponible'},
-      {id:'a3',title:'Pasado ma\u00f1ana',sub:'9:00am \u2014 12:00pm',tag:'Disponible'},
-      {id:'a4',title:'Pasado ma\u00f1ana',sub:'2:00pm \u2014 6:00pm',tag:'Disponible'}
-    ],
-    selKey:'fecha', defVal:'a1',
-    getResult:function(sel){
-      var map={a1:'Ma\u00f1ana 9am-12pm confirmado \u2705',a2:'Ma\u00f1ana 2pm-6pm confirmado \u2705',a3:'Pasado 9am-12pm confirmado \u2705',a4:'Pasado 2pm-6pm confirmado \u2705'};
-      return map[sel]||'Instalaci\u00f3n agendada \u2705';
-    }
-  }
-};
+/* ── addBot: muestra mensaje del bot, opcionalmente con quick replies
+   opts = { tag, lvl, qrs:[], ctx, hint } */
+function addBot(html, opts){
+  opts=opts||{};
+  var c=document.getElementById('chat');
+  // Eliminar QRs anteriores
+  var oldQr=c.querySelector('.qr-wrap');
+  if(oldQr) oldQr.remove();
 
-// State for current selections
-var curSel={};
+  var d=document.createElement('div');
+  d.className='b bot';
+  var em={'api':'⚡','ia':'🤖','wa2':'⚡','pay':'💳','nlu':'🧠'}[opts.lvl||'nlu']||'🧠';
+  var tag=opts.tag||'';
+  d.innerHTML=html+(tag?'<br><span class="lvl '+(opts.lvl||'nlu')+'">'+em+' '+tag+'</span>':'')+'<div class="bt">'+ts()+'</div>';
+  c.appendChild(d);
 
-// ── BUILD FLOW ──
-function buildFlow(fid){
-  var f=FD[fid];
-  var h='<div class="fsh"><div class="fsh-handle"></div><div class="fsh-row">';
-  h+='<div class="fsh-ico">'+f.icon+'</div>';
-  h+='<div><div class="fsh-title">'+f.title+'</div><div class="fsh-sub">'+f.sub+'</div></div>';
-  h+='<div class="fsh-badge">&#9889; WhatsApp Flow</div>';
-  h+='</div></div>';
-  h+='<div class="fbody">';
+  if(opts.ctx) setCtx(opts.ctx);
+  if(opts.hint) setHint(opts.hint);
 
-  // OPTIONS (planes, pago metodo, agenda)
-  if(f.opts){
-    h+='<div class="fsec"><div class="flabel">'+(fid==='planes'?'Planes disponibles':fid==='agenda'?'Ventanas disponibles':'M\u00e9todo de pago')+'</div><div class="fopts" id="opts_'+fid+'">';
-    for(var i=0;i<f.opts.length;i++){
-      var o=f.opts[i];
-      var isSel=o.def?'sel':'';
-      h+='<div class="fopt '+isSel+'" data-val="'+o.id+'">';
-      h+='<div class="fradio"><div class="fradio-dot"></div></div>';
-      h+='<div class="fopt-info"><div class="fopt-title">'+o.title+'</div><div class="fopt-sub">'+o.sub+'</div></div>';
-      if(o.price)h+='<div class="fopt-price">'+o.price+'</div>';
-      if(o.tag)h+='<div class="fopt-tag">'+o.tag+'</div>';
-      h+='</div>';
-    }
-    h+='</div></div>';
-    // Initialize default selection
-    if(f.selKey&&f.defVal){ curSel[f.selKey]=f.defVal; }
-  }
-
-  // FIELDS
-  if(f.fields){
-    h+='<div class="fsec">';
-    if(f.opts)h+='<div class="flabel">Datos bancarios</div>'; // Only show label for pago
-    for(var j=0;j<f.fields.length;j++){
-      var fd=f.fields[j];
-      h+='<div class="finput-wrap">';
-      h+='<div class="finput-label">'+fd.label+'</div>';
-      h+='<input class="finput" id="fi_'+fd.id+'" type="'+fd.type+'" value="'+fd.val+'">';
-      h+='</div>';
-    }
-    h+='</div>';
-  }
-
-  h+='<button class="fsubmit" id="fsub_'+fid+'">'+(f.getBtnLabel?f.getBtnLabel():'Confirmar')+ ' &#10003;</button>';
-  h+='</div>';
-  h+='<div class="ffoot">Datos protegidos por cifrado end-to-end &middot; <span>WhatsApp</span></div>';
-  return h;
-}
-
-// ── ATTACH FLOW EVENTS (called after innerHTML set) ──
-function attachFlowEvents(fid){
-  var f=FD[fid];
-
-  // Option click events
-  var optsWrap=document.getElementById('opts_'+fid);
-  if(optsWrap){
-    var opts=optsWrap.getElementsByClassName('fopt');
-    for(var i=0;i<opts.length;i++){
-      (function(el){
-        el.addEventListener('click',function(){
-          for(var k=0;k<opts.length;k++){opts[k].className='fopt';}
-          el.className='fopt sel';
-          if(f.selKey){ curSel[f.selKey]=el.getAttribute('data-val'); }
-          // Dynamic label update for pago
-          if(fid==='pago'){
-            var sel=el.getAttribute('data-val');
-            var bancoLabel=document.querySelector('#fi_banco') ? document.querySelector('#fi_banco').previousSibling : null;
-            var cuentaLabelEl=document.querySelector('.finput-label:last-of-type');
-            var bancoEl=document.getElementById('fi_banco');
-            var cuentaEl=document.getElementById('fi_cuenta');
-            var fieldsDiv=document.querySelector('.fbody .fsec:last-of-type');
-            if(sel==='m2'){
-              if(bancoEl)bancoEl.placeholder='Ej: Banco Pichincha';
-              if(cuentaEl){cuentaEl.placeholder='Ej: 4111 1111 1111 1111';cuentaEl.value='';}
-              var labels=fieldsDiv?fieldsDiv.getElementsByClassName('finput-label'):[];
-              if(labels[0])labels[0].textContent='Banco emisor de la tarjeta';
-              if(labels[1])labels[1].textContent='N\u00famero de tarjeta';
-            } else if(sel==='m3'){
-              if(bancoEl){bancoEl.value='';bancoEl.placeholder='No requerido';}
-              if(cuentaEl){cuentaEl.value='';cuentaEl.placeholder='No requerido';}
-              var labels3=fieldsDiv?fieldsDiv.getElementsByClassName('finput-label'):[];
-              if(labels3[0])labels3[0].textContent='No aplica';
-              if(labels3[1])labels3[1].textContent='No aplica';
-              if(bancoEl){bancoEl.value='Banco Pichincha';}
-              if(cuentaEl){cuentaEl.value='2234567890';}
-              var labels2=fieldsDiv?fieldsDiv.getElementsByClassName('finput-label'):[];
-              if(labels2[0])labels2[0].textContent='Banco emisor';
-              if(labels2[1])labels2[1].textContent='N\u00famero de cuenta / tarjeta';
-            }
-          }
-        });
-      })(opts[i]);
-    }
-  }
-
-  // Submit button
-  var subBtn=document.getElementById('fsub_'+fid);
-  if(subBtn){
-    subBtn.addEventListener('click',function(){
-      var result='';
-      var sel=f.selKey?curSel[f.selKey]:'';
-      if(f.getResult){ result=f.getResult(sel); }
-      closeFlow();
-      setTimeout(function(){
-        addMsg({s:'usr',x:result});
-        setTimeout(function(){
-          if(flowCB){var cb=flowCB;flowCB=null;cb();}
-        },400);
-      },300);
+  // Renderizar quick replies si existen
+  if(opts.qrs && opts.qrs.length>0){
+    var wrap=document.createElement('div');
+    wrap.className='qr-wrap';
+    opts.qrs.forEach(function(q){
+      var btn=document.createElement('button');
+      btn.className='qr-btn';
+      btn.textContent=q.label;
+      btn.onclick=function(){
+        // Deshabilitar todos los QRs
+        wrap.querySelectorAll('.qr-btn').forEach(function(b){b.disabled=true;b.style.opacity='.5';});
+        // Agregar mensaje usuario
+        addUsr(q.label);
+        // Ejecutar acción del step siguiente
+        if(typeof q.action==='function') q.action();
+        // Si tiene nextStep automático
+        if(q.auto!==false){
+          advanceStep();
+        }
+      };
+      wrap.appendChild(btn);
     });
+    c.appendChild(wrap);
   }
+  scrollDn();
 }
 
-function openFlow(fid,cb){
-  flowCB=cb||null;
-  activeFlowId=fid;
-  curSel={};
-  document.getElementById('fsheet').innerHTML=buildFlow(fid);
-  attachFlowEvents(fid);
-  document.getElementById('flow-overlay').style.display='-webkit-box';
-  document.getElementById('flow-overlay').style.display='-ms-flexbox';
-  document.getElementById('flow-overlay').style.display='flex';
+function addUsr(t){
+  var c=document.getElementById('chat');
+  // Eliminar QRs
+  var oldQr=c.querySelector('.qr-wrap');
+  if(oldQr) oldQr.remove();
+  var d=document.createElement('div');
+  d.className='b usr';
+  d.innerHTML=t+'<div class="bt">'+ts()+' ✓✓</div>';
+  c.appendChild(d);
+  scrollDn();
 }
 
-function closeFlow(){
-  document.getElementById('flow-overlay').style.display='none';
-  activeFlowId=null;
+/* ══════════════════════════════════════════════════
+   CARD BUILDERS — estilo InterNOVA
+══════════════════════════════════════════════════ */
+function HDR(title,sub,extra){
+  extra=extra||'';
+  return '<div style="background:linear-gradient(135deg,#064E47,#075E54);margin:-10px -13px 10px -13px;padding:12px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px">'+extra
+    +'<div><div style="color:#fff;font-size:12px;font-weight:800">'+title+'</div>'
+    +'<div style="color:rgba(255,255,255,.55);font-size:10px;margin-top:1px">'+sub+'</div></div></div>';
 }
 
-document.getElementById('flow-overlay').addEventListener('click',function(e){
-  if(e.target===this)closeFlow();
-});
+function CATCARD(ico,name,desc,price,badge,selected){
+  var sel=selected?';border:2px solid #075E54;background:#F0FDF4':'';
+  return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f5f5f5'+sel+'">'
+    +'<span style="font-size:28px;flex-shrink:0">'+ico+'</span>'
+    +'<div style="flex:1">'
+    +'<div style="font-size:13px;font-weight:700;color:#111">'+name+'</div>'
+    +'<div style="font-size:11px;color:#888;margin-top:2px">'+desc+'</div>'
+    +'<div style="margin-top:4px"><span style="font-size:14px;font-weight:800;color:#065F46">'+price+'</span>'
+    +' <span style="background:#D1FAE5;color:#065F46;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px">'+badge+'</span></div>'
+    +'</div></div>';
+}
 
-// ── STEP DATA ──
-var ST=[
-  {l:'Geolocalizaci\u00f3n',
-   m:[
-    {s:'sys',x:'WDB/593IA \u00b7 Canal oficial de ventas Xtrim'},
-    {s:'bot',x:'Hola! Soy WDB/593IA \ud83d\udc4b\nTe ayudo a contratar internet Xtrim sin salir de WhatsApp.\n\n\u00bfEn qu\u00e9 direcci\u00f3n necesitas el servicio?'},
-    {s:'usr',x:'Cdla. Kennedy Norte, Guayaquil'},
-    {s:'bot',x:'Consultando cobertura Xtrim...',a:1},
-    {s:'bot',x:'\u2705 \u00a1Cobertura disponible!\n\nEncontr\u00e9 3 planes para tu zona:'},
-    {s:'flow',fid:'planes',label:'&#128246; Seleccionar mi plan',next:'Plan 60 Mbps - $29.99/mes \u2705'}
-  ]},
-  {l:'Selecci\u00f3n de plan',
-   m:[
-    {s:'bot',x:'Perfecto! Plan confirmado \u2705\n\nAhora verificar\u00e9 tu elegibilidad con Xtrim.\n\n\u00bfCu\u00e1l es tu n\u00famero de c\u00e9dula?'},
-    {s:'usr',x:'1756432890'}
-  ]},
-  {l:'Validaci\u00f3n crediticia',
-   m:[
-    {s:'bot',x:'Consultando bur\u00f3 con Xtrim...',a:1},
-    {s:'bot',x:'\u2705 \u00a1Aprobado!\n\nPerfil crediticio validado por Xtrim.\n\nIngresa tus datos personales para continuar:'},
-    {s:'flow',fid:'datos',label:'&#128100; Completar mis datos',next:'Datos personales confirmados \u2705'}
-  ]},
-  {l:'Datos personales',
-   m:[
-    {s:'bot',x:'Datos registrados \u2705\n\nConfigura tu forma de pago:'},
-    {s:'flow',fid:'pago',label:'&#128179; Configurar pago',next:'D\u00e9bito Banco Pichincha \u2705'}
-  ]},
-  {l:'Forma de pago',
-   m:[
-    {s:'bot',x:'Pago configurado \u2705\n\nVamos con el contrato:\n\n1\ufe0f\u20e3 Foto c\u00e9dula (ambos lados)\n2\ufe0f\u20e3 Selfie para biometr\u00eda'},
-    {s:'usr',x:'\ud83d\udcce cedula_frente.jpg'},
-    {s:'usr',x:'\ud83d\udcce cedula_posterior.jpg'},
-    {s:'usr',x:'\ud83d\udcce selfie_biometria.jpg'},
-    {s:'bot',x:'Biometr\u00eda validada \u2705\nFirma electr\u00f3nica completada \u2705\nContrato enviado a tu correo \ud83d\udce7'}
-  ]},
-  {l:'Instalaci\u00f3n',
-   m:[
-    {s:'bot',x:'Elige tu ventana de instalaci\u00f3n:'},
-    {s:'flow',fid:'agenda',label:'&#128197; Agendar instalaci\u00f3n',next:'Ma\u00f1ana 9am-12pm confirmado \u2705'}
-  ]},
-  {l:'Comisi\u00f3n',
-   m:[
-    {s:'sys',x:'Notificaci\u00f3n Xtrim: Servicio instalado y activo \u2705'},
-    {s:'bot',x:'\ud83d\udd14 Xtrim confirm\u00f3:\nServicio activo en Kennedy Norte \u2705'},
-    {s:'bot',x:'\ud83d\udcb0 \u00a1Comisi\u00f3n procesada!\n\nSe han transferido $20.00 a tu cuenta.\n\n\u00a1Gracias por usar WDB/593IA! \ud83d\ude80'}
-  ]}
+function PDVCARD(ico,name,dist,tiempo,stock,pct,color,estado){
+  return '<div style="border:1px solid #f0f0f0;border-radius:10px;padding:10px 12px;margin-bottom:6px">'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px">'
+    +'<span style="font-size:13px;font-weight:700;color:#111">'+ico+' '+name+'</span>'
+    +'<span style="font-size:10px;font-weight:700;color:#075E54">'+dist+' · '+tiempo+'</span></div>'
+    +'<div style="height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden;margin-bottom:5px">'
+    +'<div style="height:100%;width:'+pct+'%;background:'+color+';border-radius:3px"></div></div>'
+    +'<div style="font-size:10px;color:#888">Stock: <strong style="color:'+color+'">'+stock+' u</strong> · <span style="color:'+color+'">'+estado+'</span></div></div>';
+}
+
+function FORMFIELD(lbl,val){
+  return '<div style="margin-bottom:8px">'
+    +'<div style="font-size:9px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">'+lbl+'</div>'
+    +'<div style="border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 12px;font-size:13px;color:#111;background:#fafafa">'+val+'</div></div>';
+}
+
+function RROW(lbl,val,color){
+  return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f5f5f5">'
+    +'<span style="font-size:12px;color:#666">'+lbl+'</span>'
+    +'<span style="font-size:12px;font-weight:700;color:'+(color||'#111')+'">'+val+'</span></div>';
+}
+
+function PMETHOD(ico,name,desc,tag,tagcls){
+  return '<div style="display:flex;align-items:center;gap:12px;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 14px;margin-bottom:6px">'
+    +'<span style="font-size:22px;flex-shrink:0">'+ico+'</span>'
+    +'<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#111">'+name+'</div>'
+    +'<div style="font-size:10px;color:#888;margin-top:1px">'+desc+'</div></div>'
+    +'<span style="font-size:9px;font-weight:800;padding:2px 8px;border-radius:5px;flex-shrink:0;'+tagcls+'">'+tag+'</span></div>';
+}
+
+function WFLOW_HDR(title,sub){
+  return '<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);margin:-10px -13px 10px -13px;padding:12px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:10px">'
+    +'<div style="width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">⚡</div>'
+    +'<div style="flex:1"><div style="color:#fff;font-size:12px;font-weight:800">'+title+'</div>'
+    +'<div style="color:rgba(255,255,255,.5);font-size:10px;margin-top:1px">'+sub+'</div></div>'
+    +'<div style="background:#25D366;color:#fff;border-radius:5px;padding:2px 8px;font-size:9px;font-weight:800;flex-shrink:0">WhatsApp Flow</div></div>';
+}
+
+/* ══════════════════════════════════════════════════
+   FLUJOS — DEFINICIÓN COMPLETA
+   Cada step tiene:
+   - type: 'usr' | 'bot'
+   - text: texto a mostrar
+   - opts: (para bot) { tag, lvl, widget, qrs, ctx, hint }
+   - qrs automáticamente frenan "Siguiente paso" hasta que el usuario toque
+══════════════════════════════════════════════════ */
+
+var FLOWS=[
+
+/* ═══════════════════════════════════════
+   FLUJO 0 — CLIENTE TURISTA
+═══════════════════════════════════════ */
+{
+  name:'1·Cliente',
+  hName:'DAWUA ✓',
+  hStatus:'Agente resolutivo · Galápagos · Jelou · ES/EN',
+  stepLabels:['Saludo','Idioma','Catálogo','PDV','Entrega','Pago','Ticket'],
+  flowTabs:['💬 Cotización','🌿 Catálogo','📍 Ubicación','📦 Entrega','💳 Pago','✅ Confirmación'],
+  steps:[
+
+    // 0: TURISTA ESCRIBE
+    {type:'usr', text:'Hola, vi el aceite repelente DAWUA en mi hotel ¿dónde lo compro?'},
+
+    // 1: BOT SALUDA + QRs
+    {type:'bot', html:'¡Hola! 🌿 Soy el asistente de <strong>DAWUA Galápagos</strong>. Te ayudo a encontrar nuestro <strong>Aceite Repelente de Hierba Luisa</strong>, 100% ecuatoriano y permitido por el Parque Nacional Galápagos.<br><br>¿Quieres ver el catálogo o ubicar el punto más cercano?',
+      opts:{tag:'NLU → SALUDO · idioma: ES · Jelou', lvl:'nlu',
+        ctx:'🏝️ Santa Cruz · 🌿 Saludo recibido · idioma ES',
+        hint:'👇 El turista toca una opción',
+        qrs:[
+          {label:'English please', action:function(){
+            addBot('Sure! 🌿 Switching to English. I\'m the <strong>DAWUA Galápagos</strong> assistant. Our <strong>Lemongrass Repellent Oil</strong> is 100% Ecuadorian, biodegradable and approved inside the National Park. What would you like to do?',
+              {tag:'NLU → SWITCH_LANG · ES→EN · Jelou', lvl:'nlu',
+               ctx:'🏝️ Santa Cruz · 🌿 Hierba Luisa · EN activo',
+               hint:'👇 Tourist selects next action',
+               qrs:[
+                 {label:'See catalog', action:function(){showCatalog();}},
+                 {label:'Closest store', action:function(){askLocation();}},
+                 {label:'Order now', action:function(){showCatalog();}}
+               ]});
+          }},
+          {label:'Ver catálogo', action:function(){showCatalogES();}},
+          {label:'Punto más cercano', action:function(){askLocationES();}}
+        ]}},
+
+  ] // los steps continúan dinámicamente via actions
+},
+
+/* ═══════════════════════════════════════
+   FLUJO 1 — ARIANA (TRAZABILIDAD A→E)
+═══════════════════════════════════════ */
+{
+  name:'2·Ariana',
+  hName:'Ariana Páez ✓',
+  hStatus:'Operadora territorial · Santa Cruz · Jelou',
+  stepLabels:['A:Entrega','Confirmación','B:Venta PDV','C:Alerta','D:Reposición','E:Resumen'],
+  flowTabs:['📦 Registro','✅ Stock','🛍️ Venta PDV','🚨 Alerta','🔄 Reposición','📊 Resumen'],
+  steps:[
+
+    // PASO A
+    {type:'usr', text:'entregué 12 100ml en Ikala'},
+    {type:'bot', html:'✅ Entrega registrada:<br><br>🏨 <strong>Hotel Ikala</strong> — +12 unidades 100ml<br>Stock actual: <strong>16 unidades</strong><br>Fecha: hoy 14:32<br><br>¿Confirmas el movimiento?',
+      opts:{tag:'NLU → STOCK_IN · PDV:Ikala · qty:12 · Jelou', lvl:'api',
+        ctx:'🏝️ Santa Cruz · 📦 Registro entrega · Ikala +12u',
+        hint:'👇 Ariana confirma',
+        qrs:[
+          {label:'Sí, confirmar ✓', action:function(){
+            addBot('Stock actualizado en el sistema 📦<br><br>'
+              +'🏨 <strong>Ikala:</strong> 16u ✅<br>'
+              +'🏨 <strong>Red Mangrove:</strong> 9u ✅<br>'
+              +'🏨 <strong>Finch Bay:</strong> 11u ✅<br>'
+              +'🛍️ <strong>Malecón #1:</strong> 6u ⚠️ Stock medio<br>'
+              +'🏨 <strong>Royal Palm:</strong> 7u ✅',
+              {tag:'NLU → STOCK_CONFIRM · sync 5 PDV · Jelou', lvl:'api',
+               ctx:'🏝️ Santa Cruz · ✅ Stock actualizado · Ikala 16u',
+               hint:'👇 Malecón #1 reporta ventas del día',
+               qrs:[
+                 {label:'Malecón #1: vendí 3 frascos hoy', action:function(){
+                   addBot('✅ Venta registrada en <strong>Tienda Malecón #1</strong><br><br>'
+                     +'— 3 unidades 100ml · hoy 16:45<br>'
+                     +'— Stock anterior: 6u → Stock actual: <strong>3u</strong><br><br>'
+                     +'⚠️ Por debajo del umbral mínimo (5u)<br>'
+                     +'Enviando alerta automática a Ariana...',
+                     {tag:'NLU → STOCK_OUT · PDV:Malecón#1 · qty:3 · Jelou', lvl:'api',
+                      ctx:'🏝️ Santa Cruz · 🛍️ Malecón #1 · vendió 3u · stock: 3u',
+                      hint:'👇 Sistema genera alerta automática — presiona Siguiente',
+                      qrs:[]});
+                 }}
+               ]});
+          }},
+          {label:'Corregir cantidad', action:function(){
+            addBot('¿Cuál es la cantidad correcta para Hotel Ikala?',
+              {tag:'NLU → STOCK_CORRECT · Jelou', lvl:'nlu', qrs:[]});
+          }}
+        ]}},
+
+    // PASO C: Alerta automática (sin QR — avanza con botón)
+    {type:'bot', html:'<div style="background:#FFF1F2;border:1.5px solid #E24B4A;border-radius:10px;padding:12px">'
+      +'<div style="font-size:13px;font-weight:800;color:#E24B4A;margin-bottom:5px">🚨 ALERTA AUTOMÁTICA · Stock crítico</div>'
+      +'<div style="font-size:12px;color:#555">📍 <strong>Tienda Malecón #1</strong><br>'
+      +'Solo quedan <strong>3 unidades</strong> disponibles.<br>'
+      +'Velocidad de venta: ~4 u/día<br>'
+      +'<strong style="color:#E24B4A">Agotamiento estimado: 18 horas</strong></div></div>',
+      opts:{tag:'NLU → STOCK_ALERT · umbral:5u · auto · Jelou', lvl:'pay',
+        ctx:'🏝️ Santa Cruz · 🚨 Alerta automática · Malecón #1 crítico',
+        hint:'👇 Ariana decide cómo reponer',
+        qrs:[
+          {label:'Voy a reponer ahora', action:function(){
+            addBot('✅ Reposición local confirmada. Llevarás unidades desde tu stock.<br><br>¿Cuántas unidades llevarás a Malecón #1?',
+              {tag:'NLU → RESTOCK_LOCAL · Jelou', lvl:'api', qrs:[]});
+          }},
+          {label:'Pedir lote a DAWUA GYE', action:function(){
+            addBot('Solicitud enviada automáticamente a DAWUA Guayaquil 📤<br><br>'
+              +'<strong>Destino:</strong> Tienda Malecón #1<br>'
+              +'<strong>Cantidad sugerida:</strong> 15 unidades 100ml<br>'
+              +'<strong>Método:</strong> Próximo vuelo UIO-GPS<br>'
+              +'<strong>ETA:</strong> 2 días hábiles<br><br>'
+              +'DAWUA GYE recibirá la alerta en su WhatsApp ahora.',
+              {tag:'NLU → RESTOCK_REQUEST · ✈️ UIO-GPS · Jelou', lvl:'wa2',
+               ctx:'🏝️ Santa Cruz · 🔄 Reposición solicitada · DAWUA GYE',
+               hint:'👇 Ver resumen semanal',
+               qrs:[
+                 {label:'Ver resumen de la semana', action:function(){showResumenAriana();}}
+               ]});
+          }}
+        ]}},
+
+  ]
+},
+
+/* ═══════════════════════════════════════
+   FLUJO 2 — REPORTE DAWUA GYE (E+F)
+═══════════════════════════════════════ */
+{
+  name:'3·Reporte',
+  hName:'DAWUA GYE ✓',
+  hStatus:'Administración · Guayaquil · Jelou',
+  stepLabels:['E:Reporte','Semáforo','Pedido','F:Despacho'],
+  flowTabs:['📊 Reporte','🚦 Stock','📋 Pedido','✅ Despacho'],
+  steps:[
+    {type:'bot', html:'🌅 <strong>Buenos días, DAWUA Galápagos</strong><br>Reporte semanal automático — lunes 08:00<br><br>'
+      +HDR('📊 REPORTE SEMANAL · 593IA · Jelou','Semana 22–28 Abr 2026 · Santa Cruz · Operación Ariana')
+      +RROW('Unidades vendidas','47 u','#065F46')
+      +RROW('Ingresos brutos','$893','#065F46')
+      +RROW('Pedidos bot 593IA','12 pedidos',null)
+      +RROW('Idiomas atendidos','ES 58% · EN 35% · DE 7%',null)
+      +RROW('Stock total isla','46 u · 1 PDV alerta','#F59E0B'),
+      opts:{tag:'NLU → WEEKLY_AUTO · lunes 08:00 · Jelou', lvl:'api',
+        ctx:'🏝️ Santa Cruz · 📊 Reporte lunes 08:00 · auto',
+        hint:'👇 DAWUA selecciona qué ver',
+        qrs:[
+          {label:'Ver stock por PDV', action:function(){showStockSemaforo();}},
+          {label:'Ver pedido sugerido', action:function(){showPedidoSugerido();}}
+        ]}},
+  ]
+}
+
 ];
 
-// ── CHAT ENGINE ──
-function getTS(){var n=new Date();return n.getHours()+':'+('0'+n.getMinutes()).slice(-2);}
-function scrollDown(){window.scrollTo(0,document.body.scrollHeight+999);}
-function removeTyping(){var t=document.getElementById('td');if(t&&t.parentNode)t.parentNode.removeChild(t);}
-function showTyping(){
-  removeTyping();
+/* ══════════════════════════════════════════════════
+   ACCIONES DINÁMICAS — se llaman desde los QRs
+══════════════════════════════════════════════════ */
+
+function showCatalog(){
+  addBot(
+    HDR('🌿 DAWUA CATALOG · Lemongrass Repellent Oil','100% Ecuadorian · Amazonian · No DEET · Approved Galápagos NP')
+    +CATCARD('🌿','Repellent Oil 100ml','Lemongrass · Ungurahua · Safe for children · 24 month shelf life','$22','PNG ✓')
+    +CATCARD('🌱','Repellent Oil 60ml','Travel size · Carry-on approved (IATA) · Pocket friendly','$15','Carry-on ✓')
+    +'<div style="padding-top:6px;font-size:10px;color:#aaa;text-align:center">Reg. Sanitario NSOC02329-21EC · ARCSA Ecuador · vigente 2028</div>',
+    {tag:'NLU → CATALOG · intent:0.97 · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 🌿 Catálogo EN · seleccionando',
+     hint:'👇 Tourist selects product',
+     qrs:[
+       {label:'I want 100ml - $22', action:function(){askHotelEN();}},
+       {label:'I want 60ml - $15', action:function(){askHotelEN60();}},
+       {label:'Order both', action:function(){askHotelENBoth();}}
+     ]});
+}
+
+function showCatalogES(){
+  addBot(
+    HDR('🌿 CATÁLOGO DAWUA · Aceite Repelente Hierba Luisa','100% Ecuatoriano · Amazónico · Sin DEET · Aprobado Parque Nacional')
+    +CATCARD('🌿','Aceite Repelente 100ml','Hierba Luisa · Ungurahua · Apto niños · Vida útil 24 meses','$22','PNG ✓')
+    +CATCARD('🌱','Aceite Repelente 60ml','Talla viaje · Equipaje de mano (IATA) · Fácil de llevar','$15','Carry-on ✓')
+    +'<div style="padding-top:6px;font-size:10px;color:#aaa;text-align:center">Reg. Sanitario NSOC02329-21EC · ARCSA Ecuador · vigente 2028</div>',
+    {tag:'NLU → CATALOG · intent:0.97 · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 🌿 Catálogo ES · seleccionando',
+     hint:'👇 Cliente selecciona producto',
+     qrs:[
+       {label:'Quiero 100ml - $22', action:function(){askHotelES();}},
+       {label:'Quiero 60ml - $15', action:function(){askHotelES60();}},
+       {label:'Quiero los dos', action:function(){askHotelESBoth();}}
+     ]});
+}
+
+function askLocation(){
+  addBot('Great! 🗺️ To find the closest store with confirmed stock, please share your hotel name or location:',
+    {tag:'NLU → FIND_STORE · radius 1km · stock>0 · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 📍 Buscando PDV cercano',
+     hint:'👇 Tourist types hotel name',
+     qrs:[
+       {label:'Royal Palm Hotel', action:function(){showPDV_EN();}},
+       {label:'Hotel Finch Bay', action:function(){showPDV_EN_FB();}},
+       {label:'Hotel Ikala', action:function(){showPDV_EN_IK();}}
+     ]});
+}
+
+function askLocationES(){
+  addBot('¡Perfecto! 🗺️ Para encontrar el punto más cercano con stock confirmado, comparte el nombre de tu hotel o ubicación:',
+    {tag:'NLU → FIND_STORE · radio 1km · stock>0 · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 📍 Buscando PDV cercano',
+     hint:'👇 Cliente escribe su hotel',
+     qrs:[
+       {label:'Royal Palm Hotel', action:function(){showPDV_ES();}},
+       {label:'Hotel Finch Bay', action:function(){showPDV_ES_FB();}},
+       {label:'Hotel Ikala', action:function(){showPDV_ES_IK();}}
+     ]});
+}
+
+function askHotelEN(){
+  addBot('Great choice! 🌿 To deliver to your hotel or find the closest store, share your hotel name:',
+    {tag:'NLU → PRODUCT_100ML · $22 · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 🌿 100ml $22 · seleccionado',
+     hint:'👇 Tourist selects hotel',
+     qrs:[
+       {label:'Royal Palm Hotel', action:function(){showPDV_EN();}},
+       {label:'Hotel Finch Bay', action:function(){showPDV_EN_FB();}},
+       {label:'Hotel Ikala', action:function(){showPDV_EN_IK();}}
+     ]});
+}
+function askHotelEN60(){askHotelEN();}
+function askHotelENBoth(){askHotelEN();}
+
+function askHotelES(){
+  addBot('¡Perfecto! 🌿 Para entregarlo en tu hotel o indicarte el punto más cercano, dime tu hotel:',
+    {tag:'NLU → PRODUCT_100ML · $22 · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 🌿 100ml $22 · seleccionado',
+     hint:'👇 Cliente selecciona su hotel',
+     qrs:[
+       {label:'Royal Palm Hotel', action:function(){showPDV_ES();}},
+       {label:'Hotel Finch Bay', action:function(){showPDV_ES_FB();}},
+       {label:'Hotel Ikala', action:function(){showPDV_ES_IK();}}
+     ]});
+}
+function askHotelES60(){askHotelES();}
+function askHotelESBoth(){askHotelES();}
+
+function showPDV_EN(){
+  addBot(
+    HDR('📍 CLOSEST STORE · confirmed stock · Jelou','Based on: Royal Palm Hotel · Santa Cruz · Galápagos')
+    +PDVCARD('🏨','Hotel Finch Bay','850m','4 min walk',9,80,'#25D366','Open now')
+    +PDVCARD('🏨','Hotel Ikala','1.1km','6 min walk',5,55,'#F59E0B','Open')
+    +'<div style="background:#F0FDF4;border-radius:8px;padding:8px 12px;margin-top:6px">'
+    +'<a href="https://maps.google.com/?q=Finch+Bay+Hotel+Galapagos" style="color:#065F46;font-size:12px;font-weight:700;text-decoration:none">📍 Open Hotel Finch Bay in Google Maps ↗</a></div>',
+    {tag:'NLU → FIND_STORE · Royal Palm · Google Maps · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 📍 Finch Bay 850m · stock OK',
+     hint:'👇 Tourist chooses how to get product',
+     qrs:[
+       {label:'Walk me there 🗺️', action:function(){
+         addBot('Perfect! 🗺️ Hotel Finch Bay is 850m from Royal Palm. Open Google Maps for directions.<br><br>'
+           +'<a href="https://maps.google.com/?q=Finch+Bay+Hotel+Galapagos" style="color:#065F46;font-weight:700">📍 Navigate to Finch Bay ↗</a><br><br>'
+           +'They have <strong>9 units in stock</strong>. Ask at reception for the DAWUA oil.',
+           {tag:'NLU → MAPS_LINK · walk · Finch Bay · Jelou', lvl:'api',
+            ctx:'🏝️ Santa Cruz · 📍 Caminando · Finch Bay',
+            qrs:[]});
+       }},
+       {label:'Deliver to my hotel 🛵', action:function(){showDeliveryForm_EN();}}
+     ]});
+}
+
+function showPDV_EN_FB(){showPDV_EN();}
+function showPDV_EN_IK(){showPDV_EN();}
+
+function showPDV_ES(){
+  addBot(
+    HDR('📍 PUNTO MÁS CERCANO · stock confirmado · Jelou','Basado en: Royal Palm Hotel · Santa Cruz · Galápagos')
+    +PDVCARD('🏨','Hotel Finch Bay','850m','4 min a pie',9,80,'#25D366','Abierto ahora')
+    +PDVCARD('🏨','Hotel Ikala','1.1km','6 min a pie',5,55,'#F59E0B','Abierto')
+    +'<div style="background:#F0FDF4;border-radius:8px;padding:8px 12px;margin-top:6px">'
+    +'<a href="https://maps.google.com/?q=Finch+Bay+Hotel+Galapagos" style="color:#065F46;font-size:12px;font-weight:700;text-decoration:none">📍 Abrir Hotel Finch Bay en Google Maps ↗</a></div>',
+    {tag:'NLU → FIND_STORE · Royal Palm · Google Maps · Jelou', lvl:'nlu',
+     ctx:'🏝️ Santa Cruz · 📍 Finch Bay 850m · stock OK',
+     hint:'👇 Cliente escoge cómo recibir el producto',
+     qrs:[
+       {label:'Ir a pie 🗺️', action:function(){
+         addBot('¡Perfecto! 🗺️ Hotel Finch Bay está a 850m del Royal Palm.<br><br>'
+           +'<a href="https://maps.google.com/?q=Finch+Bay+Hotel+Galapagos" style="color:#065F46;font-weight:700">📍 Navegar a Finch Bay ↗</a><br><br>'
+           +'Tienen <strong>9 unidades en stock</strong>. Pide en recepción el aceite DAWUA.',
+           {tag:'NLU → MAPS_LINK · a pie · Finch Bay · Jelou', lvl:'api',
+            ctx:'🏝️ Santa Cruz · 📍 Caminando · Finch Bay',
+            qrs:[]});
+       }},
+       {label:'Entregar en mi hotel 🛵', action:function(){showDeliveryForm_ES();}}
+     ]});
+}
+function showPDV_ES_FB(){showPDV_ES();}
+function showPDV_ES_IK(){showPDV_ES();}
+
+function showDeliveryForm_EN(){
+  addBot(
+    WFLOW_HDR('Delivery Form · DAWUA Galápagos','Ariana will deliver to your hotel in ~30 min')
+    +FORMFIELD('HOTEL','Royal Palm Hotel')
+    +FORMFIELD('ROOM','Room 12 — confirm at reception')
+    +FORMFIELD('PRODUCT','Lemongrass Repellent Oil 100ml × 1')
+    +FORMFIELD('TOTAL','$22.00')
+    +FORMFIELD('ESTIMATED DELIVERY','~30 minutes · Ariana Páez')
+    +'<div style="background:#25D366;color:#fff;border-radius:10px;padding:11px;text-align:center;font-size:13px;font-weight:800;margin-top:4px">Confirm delivery ✓</div>'
+    +'<div style="font-size:9px;color:#aaa;text-align:center;margin-top:4px">⚡ WhatsApp Flow nativo · Jelou · DAWUA</div>',
+    {tag:'NLU → DELIVERY · hotel mode · WhatsApp Flow · Jelou', lvl:'wa2',
+     ctx:'🏝️ Santa Cruz · 📦 Entrega en hotel · datos OK',
+     hint:'👇 Tourist confirms and pays',
+     qrs:[
+       {label:'Confirm details ✓', action:function(){showPayment_EN();}}
+     ]});
+}
+
+function showDeliveryForm_ES(){
+  addBot(
+    WFLOW_HDR('Formulario de Entrega · DAWUA Galápagos','Ariana entregará en tu hotel en ~30 min')
+    +FORMFIELD('HOTEL','Royal Palm Hotel')
+    +FORMFIELD('HABITACIÓN','Hab. 12 — confirmar en recepción')
+    +FORMFIELD('PRODUCTO','Aceite Repelente 100ml × 1')
+    +FORMFIELD('TOTAL','$22.00')
+    +FORMFIELD('ENTREGA ESTIMADA','~30 minutos · Ariana Páez')
+    +'<div style="background:#25D366;color:#fff;border-radius:10px;padding:11px;text-align:center;font-size:13px;font-weight:800;margin-top:4px">Confirmar entrega ✓</div>'
+    +'<div style="font-size:9px;color:#aaa;text-align:center;margin-top:4px">⚡ WhatsApp Flow nativo · Jelou · DAWUA</div>',
+    {tag:'NLU → DELIVERY · hotel mode · WhatsApp Flow · Jelou', lvl:'wa2',
+     ctx:'🏝️ Santa Cruz · 📦 Entrega en hotel · datos OK',
+     hint:'👇 Cliente confirma y paga',
+     qrs:[
+       {label:'Confirmar detalles ✓', action:function(){showPayment_ES();}}
+     ]});
+}
+
+function showPayment_EN(){
+  addBot(
+    '<div style="background:linear-gradient(135deg,#0F172A,#1E293B);margin:-10px -13px 10px -13px;padding:12px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:10px">'
+    +'<span style="font-size:22px">💳</span>'
+    +'<div><div style="color:#fff;font-size:13px;font-weight:800">Secure Payment · DAWUA Galápagos</div>'
+    +'<div style="color:rgba(255,255,255,.5);font-size:10px;margin-top:1px">Lemongrass Repellent Oil 100ml</div></div></div>'
+    +'<div style="text-align:center;padding:12px 0;border-bottom:1px solid #f0f0f0">'
+    +'<div style="font-size:11px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Total to pay</div>'
+    +'<div style="font-size:32px;font-weight:800;color:#0F172A;margin-top:4px">$22.00</div></div>'
+    +PMETHOD('🏦','De Una · Banco Pichincha','No interest up to 6 installments · OTP verification','RECOMMENDED','background:#DCFCE7;color:#065F46')
+    +PMETHOD('💳','Credit card','Visa · Mastercard · AmEx · Up to 12 installments','INSTALLMENTS','background:#DBEAFE;color:#1D4ED8')
+    +PMETHOD('💰','Debit card','All Ecuadorian banks · Immediate payment','DEBIT','background:#FEF9C3;color:#854D0E')
+    +'<div style="display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0">'
+    +'<span>🔒</span><span style="font-size:10px;color:#888">Secure payment · SSL · 3D Secure</span>'
+    +'<span style="font-size:10px;color:#6366F1;font-weight:700;margin-left:auto">Powered by Nuvei</span></div>',
+    {tag:'Nuvei · De Una Pichincha · Cards · Jelou · DAWUA', lvl:'pay',
+     ctx:'🏝️ Santa Cruz · 💳 Nuvei · seleccionando método',
+     hint:'👇 In production: tourist taps and pays without leaving chat',
+     qrs:[
+       {label:'De Una · Pichincha — 3 cuotas', action:function(){showConfirmEN('De Una · Banco Pichincha','3 cuotas $7.33/mes');}}
+       ,{label:'Tarjeta de crédito — 6 cuotas', action:function(){showConfirmEN('Tarjeta de crédito','6 cuotas $3.67/mes');}}
+     ]});
+}
+
+function showPayment_ES(){
+  addBot(
+    '<div style="background:linear-gradient(135deg,#0F172A,#1E293B);margin:-10px -13px 10px -13px;padding:12px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:10px">'
+    +'<span style="font-size:22px">💳</span>'
+    +'<div><div style="color:#fff;font-size:13px;font-weight:800">Pago seguro · DAWUA Galápagos</div>'
+    +'<div style="color:rgba(255,255,255,.5);font-size:10px;margin-top:1px">Aceite Repelente Hierba Luisa 100ml</div></div></div>'
+    +'<div style="text-align:center;padding:12px 0;border-bottom:1px solid #f0f0f0">'
+    +'<div style="font-size:11px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Total a pagar</div>'
+    +'<div style="font-size:32px;font-weight:800;color:#0F172A;margin-top:4px">$22.00</div></div>'
+    +PMETHOD('🏦','De Una · Banco Pichincha','Sin interés hasta 6 cuotas · Verificación OTP','RECOMENDADO','background:#DCFCE7;color:#065F46')
+    +PMETHOD('💳','Tarjeta de crédito','Visa · Mastercard · AmEx · Hasta 12 cuotas','CUOTAS','background:#DBEAFE;color:#1D4ED8')
+    +PMETHOD('💰','Tarjeta de débito','Todos los bancos del Ecuador · Pago inmediato','DÉBITO','background:#FEF9C3;color:#854D0E')
+    +'<div style="display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0">'
+    +'<span>🔒</span><span style="font-size:10px;color:#888">Pago seguro · Cifrado SSL · 3D Secure</span>'
+    +'<span style="font-size:10px;color:#6366F1;font-weight:700;margin-left:auto">Powered by Nuvei</span></div>',
+    {tag:'Nuvei · De Una Pichincha · Tarjetas · Jelou · DAWUA', lvl:'pay',
+     ctx:'🏝️ Santa Cruz · 💳 Nuvei · seleccionando método',
+     hint:'👇 En producción: turista toca y paga sin salir del chat',
+     qrs:[
+       {label:'De Una · Pichincha — 3 cuotas', action:function(){showConfirmES('De Una · Banco Pichincha','3 cuotas $7.33/mes');}}
+       ,{label:'Tarjeta de crédito — 6 cuotas', action:function(){showConfirmES('Tarjeta de crédito','6 cuotas $3.67/mes');}}
+     ]});
+}
+
+function showConfirmEN(method,cuotas){
+  addBot(
+    '<div style="background:linear-gradient(135deg,#065F46,#059669);margin:-10px -13px 10px -13px;padding:13px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:12px">'
+    +'<div style="width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🎉</div>'
+    +'<div><div style="color:#fff;font-size:14px;font-weight:800">Order confirmed!</div>'
+    +'<div style="color:rgba(255,255,255,.7);font-size:10px;margin-top:1px">Ariana is on her way · Royal Palm Hotel</div></div></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Order</span><span style="font-size:11px;font-weight:700">#DW-2024-0847</span></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Product</span><span style="font-size:11px;font-weight:700">Repellent Oil 100ml × 1</span></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Payment</span><span style="font-size:11px;font-weight:700">'+method+' · '+cuotas+'</span></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Delivery</span><span style="font-size:11px;font-weight:700;color:#065F46">~28 minutes</span></div>'
+    +'<div style="font-family:monospace;font-size:10px;color:#999;margin-top:8px;padding:6px 10px;background:#f9fafb;border-radius:6px">TX: Nuvei-OK · Ariana notified · DAWUA GYE informed · Jelou</div>',
+    {tag:'Nuvei → Approved · Order placed · Jelou · DAWUA', lvl:'pay',
+     ctx:'🏝️ Santa Cruz · ✅ #DW-2024-0847 confirmed',
+     hint:'✅ Full flow completed. Ariana delivers in ~28 min.',
+     qrs:[]});
+}
+
+function showConfirmES(method,cuotas){
+  addBot(
+    '<div style="background:linear-gradient(135deg,#065F46,#059669);margin:-10px -13px 10px -13px;padding:13px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:12px">'
+    +'<div style="width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🎉</div>'
+    +'<div><div style="color:#fff;font-size:14px;font-weight:800">¡Pedido confirmado!</div>'
+    +'<div style="color:rgba(255,255,255,.7);font-size:10px;margin-top:1px">Ariana está en camino · Royal Palm Hotel</div></div></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Pedido</span><span style="font-size:11px;font-weight:700">#DW-2024-0847</span></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Producto</span><span style="font-size:11px;font-weight:700">Aceite 100ml × 1</span></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Pago</span><span style="font-size:11px;font-weight:700">'+method+' · '+cuotas+'</span></div>'
+    +'<div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:#666">Entrega</span><span style="font-size:11px;font-weight:700;color:#065F46">~28 minutos</span></div>'
+    +'<div style="font-family:monospace;font-size:10px;color:#999;margin-top:8px;padding:6px 10px;background:#f9fafb;border-radius:6px">TX: Nuvei-OK · Ariana notificada · DAWUA GYE informado · Jelou</div>',
+    {tag:'Nuvei → Aprobado · Order placed · Jelou · DAWUA', lvl:'pay',
+     ctx:'🏝️ Santa Cruz · ✅ #DW-2024-0847 confirmado',
+     hint:'✅ Flujo completo. Ariana entrega en ~28 min.',
+     qrs:[]});
+}
+
+function showResumenAriana(){
+  addBot(
+    HDR('📊 RESUMEN SEMANAL · Santa Cruz · 593IA','Semana 22–28 Abr 2026 · Operación Ariana')
+    +RROW('Total vendido','47 u','#065F46')
+    +RROW('Ingresos generados','$893','#065F46')
+    +RROW('PDV más activo','Finch Bay (14u)',null)
+    +RROW('Stock total isla','46 u',null)
+    +RROW('Comisión Ariana (10%)','$89.30','#065F46')
+    +RROW('PDVs con alerta','1 — Malecón #1','#E24B4A')
+    +RROW('Entregas directas','6 deliveries',null),
+    {tag:'NLU → WEEKLY_REPORT · auto · Jelou · DAWUA', lvl:'api',
+     ctx:'🏝️ Santa Cruz · 📊 Resumen semanal listo',
+     hint:'✅ Trazabilidad A→E completa.',
+     qrs:[]});
+}
+
+function showStockSemaforo(){
+  addBot(
+    HDR('🚦 STOCK POR PDV · Santa Cruz · tiempo real','5 puntos de venta activos · Galápagos')
+    +RROW('🏨 Finch Bay','11u ✅','#25D366')
+    +RROW('🏨 Hotel Ikala','16u ✅','#25D366')
+    +RROW('🏨 Red Mangrove','9u ⚠️','#F59E0B')
+    +RROW('🏨 Royal Palm','7u ✅','#25D366')
+    +RROW('🛍️ Malecón #1','3u 🚨 URGENTE','#E24B4A'),
+    {tag:'NLU → STOCK_MAP · 5 PDV · tiempo real · Jelou', lvl:'api',
+     ctx:'🏝️ Santa Cruz · 🚦 Semáforos stock · 5 PDV',
+     hint:'👇 DAWUA revisa pedido sugerido',
+     qrs:[
+       {label:'Ver pedido sugerido', action:function(){showPedidoSugerido();}}
+     ]});
+}
+
+function showPedidoSugerido(){
+  addBot('Basado en la velocidad de venta de esta semana, el sistema sugiere:<br><br>'
+    +'<strong>100ml:</strong> 30 unidades · $300<br>'
+    +'<strong>60ml:</strong> 15 unidades · $225<br>'
+    +'<strong>Total estimado:</strong> $562.50 + logística ~$96<br>'
+    +'<strong>Prioridad:</strong> Malecón #1 — urgente<br>'
+    +'<strong>Cubre:</strong> 14 días + 20% buffer<br><br>'
+    +'¿Apruebas el despacho?',
+    {tag:'NLU → RESTOCK_SUGGEST · velocity · Jelou · DAWUA GYE', lvl:'api',
+     ctx:'🏝️ Santa Cruz · 📋 Pedido sugerido · 30u+15u',
+     hint:'👇 DAWUA aprueba — paso F',
+     qrs:[
+       {label:'✅ Aprobar y despachar', action:function(){showDespacho();}},
+       {label:'📝 Modificar cantidades', action:function(){
+         addBot('¿Qué cantidades prefieres?<br><br>Escribe el ajuste y lo proceso:',
+           {tag:'NLU → MODIFY_ORDER · Jelou', lvl:'api', qrs:[]});
+       }}
+     ]});
+}
+
+function showDespacho(){
+  addBot(
+    '<div style="background:linear-gradient(135deg,#065F46,#059669);margin:-10px -13px 10px -13px;padding:13px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:12px">'
+    +'<div style="width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📦</div>'
+    +'<div><div style="color:#fff;font-size:14px;font-weight:800">¡Despacho confirmado!</div>'
+    +'<div style="color:rgba(255,255,255,.7);font-size:10px;margin-top:1px">Aprobado por DAWUA GYE · paso F</div></div></div>'
+    +RROW('Despacho','#DSP-0291',null)
+    +RROW('Contenido','30u 100ml + 15u 60ml',null)
+    +RROW('Monto','$562.50',null)
+    +RROW('Logística','✈️ Vuelo UIO-GPS próximo',null)
+    +RROW('ETA','2 días hábiles · Ariana recibirá','#065F46')
+    +'<div style="font-family:monospace;font-size:10px;color:#999;margin-top:8px;padding:6px 10px;background:#f9fafb;border-radius:6px">DSP-0291 · DAWUA GYE aprobó · Ariana notificada · 593IA · Jelou</div>',
+    {tag:'NLU → DISPATCH_OK · F completado · Jelou · DAWUA GYE', lvl:'api',
+     ctx:'🏝️ Santa Cruz · ✅ Despacho #DSP-0291 aprobado · F ✓',
+     hint:'✅ Ciclo completo E→F. Reporte → Semáforo → Pedido → Despacho.',
+     qrs:[]});
+}
+
+/* ══════════════════════════════════════════════════
+   ENGINE — control de flujos y steps lineales
+══════════════════════════════════════════════════ */
+var currentFlow=0, stepIdx=0, waitingForQR=false;
+
+function buildFlowSel(){
+  var bar=document.getElementById('flowSel');
+  bar.innerHTML='';
+  FLOWS.forEach(function(f,i){
+    var b=document.createElement('button');
+    b.className='fs-btn'+(i===0?' on':'');
+    b.textContent=f.name;
+    b.onclick=function(){
+      document.querySelectorAll('.fs-btn').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      runFlow(i);
+    };
+    bar.appendChild(b);
+  });
+}
+
+function buildStepTabs(){
+  var flow=FLOWS[currentFlow];
+  var bar=document.getElementById('stepTabs');
+  bar.innerHTML='';
+  flow.stepLabels.forEach(function(s,i){
+    var d=document.createElement('div');
+    d.className='st-btn'+(i===stepIdx?' active':i<stepIdx?' done':'');
+    d.textContent=s;
+    bar.appendChild(d);
+  });
+}
+
+function updateStepTabs(){
+  var tabs=document.getElementById('stepTabs').querySelectorAll('.st-btn');
+  tabs.forEach(function(t,i){
+    t.className='st-btn'+(i===stepIdx?' active':i<stepIdx?' done':'');
+  });
+}
+
+function runFlow(idx){
+  currentFlow=idx; stepIdx=0; waitingForQR=false;
+  var flow=FLOWS[idx];
+  document.getElementById('hName').textContent=flow.hName;
+  document.getElementById('hStatus').textContent=flow.hStatus;
+  document.querySelectorAll('.fs-btn').forEach(function(b,i){b.classList.toggle('on',i===idx);});
+  buildStepTabs();
   var c=document.getElementById('chat');
-  var d=document.createElement('div');d.className='ty';d.id='td';
-  d.innerHTML='<div class="dt"></div><div class="dt"></div><div class="dt"></div>';
-  c.appendChild(d);scrollDown();
+  c.innerHTML='<div class="dp">Hoy · Demo en vivo · WDB / 593IA · DAWUA NATURE S.A.</div>'
+    +'<div class="sm">DAWUA · Repelente Hierba Luisa · 100ml · 60ml · NSO: NSOC02329-21EC · Galápagos</div>';
+  setCtx(flow.steps[0]?'🏝️ Santa Cruz · listo':'');
+  setHint('▶ Presiona "Siguiente paso" para comenzar');
+  var btn=document.getElementById('nxtbtn');
+  btn.disabled=false;
+  btn.textContent='▶ Siguiente paso';
 }
 
-function addMsg(m){
-  removeTyping();
-  var c=document.getElementById('chat');
-  if(m.s==='sys'){
-    var d=document.createElement('div');d.className='sysmsg';d.textContent=m.x;c.appendChild(d);scrollDown();return;
+function advanceStep(){
+  stepIdx++;
+  updateStepTabs();
+  var flow=FLOWS[currentFlow];
+  if(stepIdx>=flow.steps.length){
+    setHint('✅ Flujo completo. Presiona Repetir o cambia de flujo.');
+    document.getElementById('nxtbtn').textContent='✅ Completado';
+    document.getElementById('nxtbtn').disabled=true;
+    return;
   }
-  if(m.s==='flow'){
-    // Flow trigger button
-    var wrap=document.createElement('div');wrap.className='flow-trigger';
-    var btn=document.createElement('button');btn.className='flow-trigger-btn';
-    btn.innerHTML='<div class="flow-icon-sm">&#9889;</div>'+m.label;
-    var fid=m.fid;
-    btn.addEventListener('click',function(){
-      btn.className='flow-trigger-btn used';
-      openFlow(fid,function(){
-        // After submit, continue queue
-        setTimeout(nextMsg,300);
-      });
-    });
-    wrap.appendChild(btn);
-    c.appendChild(wrap);
-    scrollDown();
-    // PAUSE — wait for user to open and submit flow
-    return 'pause';
+  // Ejecutar siguiente step
+  executeStep(stepIdx);
+}
+
+function executeStep(idx){
+  var flow=FLOWS[currentFlow];
+  var step=flow.steps[idx];
+  if(!step) return;
+  if(step.type==='usr'){
+    addUsr(step.text);
+    stepIdx=idx;
+    updateStepTabs();
+    // Auto-avanzar al siguiente (que será bot)
+    setTimeout(function(){advanceStep();},400);
+  } else if(step.type==='bot'){
+    stepIdx=idx;
+    updateStepTabs();
+    addBot(step.html, step.opts||{});
+    // Si el bot tiene QRs, pausar el botón
+    if(step.opts && step.opts.qrs && step.opts.qrs.length>0){
+      waitingForQR=true;
+      document.getElementById('nxtbtn').disabled=true;
+      document.getElementById('nxtbtn').textContent='👆 Toca una opción';
+    } else {
+      waitingForQR=false;
+      document.getElementById('nxtbtn').disabled=false;
+      document.getElementById('nxtbtn').textContent='▶ Siguiente paso';
+    }
   }
-  var d=document.createElement('div');d.className='b '+m.s;
-  var h=m.x.replace(/\n/g,'<br>');
-  if(m.a)h+=' <span class="apitag">API Xtrim</span>';
-  h+='<div class="bt">'+getTS()+(m.s==='usr'?' \u2713\u2713':'')+'</div>';
-  d.innerHTML=h;c.appendChild(d);scrollDown();
 }
-
-function nextMsg(){
-  if(qi>=qm.length){stepDone();return;}
-  var m=qm[qi];qi++;
-  if(m.s==='sys'||m.s==='flow'){
-    var r=addMsg(m);
-    if(r==='pause'){running=false;return;} // Wait for flow
-    setTimeout(nextMsg,350);return;
-  }
-  showTyping();
-  setTimeout(function(){addMsg(m);setTimeout(nextMsg,300);},m.s==='bot'?850:380);
-}
-
-function stepDone(){
-  document.getElementById('bst').textContent='en l\u00ednea';
-  var last=cur===ST.length-1;
-  if(last){
-    document.getElementById('ht').textContent='Venta cerrada \u00b7 comisi\u00f3n de $20 transferida \u2713';
-    btnOn('Completado \u2713');document.getElementById('bn').className='bbtn pr off';
-  } else {
-    document.getElementById('ht').textContent='Etapa '+(cur+1)+' de 7 \u2014 pulsa Siguiente';
-    btnOn('Siguiente etapa \u25ba');
-  }
-  running=false;
-}
-
-function renderProgress(a){
-  document.getElementById('pb').style.width=(a<0?'0':Math.round(((a+1)/7)*100))+'%';
-  document.getElementById('step-count').textContent=(a<0?0:a+1)+' / 7';
-  document.getElementById('step-cur').textContent=a<0?'Listo para comenzar':ST[a].l;
-}
-
-function btnOff(){document.getElementById('bn').className='bbtn pr off';}
-function btnOn(t){var b=document.getElementById('bn');b.className='bbtn pr';b.textContent=t;}
 
 function nextStep(){
-  if(running)return;running=true;btnOff();
-  cur++;
-  if(cur>=ST.length){running=false;return;}
-  renderProgress(cur);
-  document.getElementById('bst').textContent='escribiendo\u2026';
-  qm=ST[cur].m;qi=0;nextMsg();
+  if(waitingForQR) return;
+  var flow=FLOWS[currentFlow];
+  if(stepIdx===0 && flow.steps.length>0){
+    // Primer paso
+    executeStep(0);
+    return;
+  }
+  advanceStep();
 }
 
-function resetDemo(){
-  cur=-1;running=false;qi=0;qm=[];flowCB=null;
-  removeTyping();closeFlow();
-  document.getElementById('chat').innerHTML='<div class="datepill">Hoy</div><div class="sysmsg">WDB/593IA \u00b7 Canal oficial de ventas Xtrim</div>';
-  document.getElementById('ht').textContent='Pulsa Iniciar demo para comenzar';
-  document.getElementById('bst').textContent='en l\u00ednea';
-  btnOn('Iniciar demo \u25ba');
-  renderProgress(-1);
+function restartFlow(){
+  runFlow(currentFlow);
 }
 
 function startApp(){
-  var i=document.getElementById('intro');i.className='hide';
-  setTimeout(function(){i.style.display='none';},500);
-  document.getElementById('main').className='show';
-  renderProgress(-1);
+  document.getElementById('splash').className='hide';
+  setTimeout(function(){document.getElementById('splash').style.display='none';},600);
+  var m=document.getElementById('main');
+  m.className='show';
+  m.style.height=window.innerHeight+'px';
+  buildFlowSel();
+  runFlow(0);
 }
+
+function goHome(){
+  document.getElementById('main').className='';
+  document.getElementById('main').style.display='none';
+  var s=document.getElementById('splash');
+  s.style.display='flex';
+  s.className='';
+}
+
+// iOS resize
+window.addEventListener('resize',function(){
+  var m=document.getElementById('main');
+  if(m.classList.contains('show')) m.style.height=window.innerHeight+'px';
+});
+window.addEventListener('orientationchange',function(){
+  setTimeout(function(){
+    var m=document.getElementById('main');
+    if(m.classList.contains('show')) m.style.height=window.innerHeight+'px';
+  },300);
+});
 </script>
 </body>
 </html>
